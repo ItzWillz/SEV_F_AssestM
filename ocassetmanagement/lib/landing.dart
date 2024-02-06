@@ -47,7 +47,7 @@ class _LandingState extends State<Landing> {
               selectedIndex: _selectedIndex,
               onDestinationSelected: onDestinationSelected,
             ),
-          _mainContent(),
+          Expanded(child: _mainContent()),
         ],
       ),
     );
