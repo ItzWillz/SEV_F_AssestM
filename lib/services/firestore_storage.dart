@@ -34,12 +34,23 @@ class FirestoreStorage {
   //     return tasklist;
   // }
 
-  Future<void> insertTask(int num) {
-    return db.collection('temp').doc('temp').set({'num': num});
+  Future<void> insertAssetInstance(int num) {
+    return db.collection('Asset').doc('Asset Name').set({
+      'id': num,
+      'assetProfileId': 2,
+      'assetCategoryId': 5,
+      'description' : 'Alienware GTX 1080TI Laptop',
+      'serialNum' : 198770987,
+      'status' : 'In Inventory',
+      'wirelessNIC' : "Yep, it's wireless",
+      'internalFeatures' : 'Mhm',
+      'externalAccessories' : 'Wireless G502'
+    
+    });
   }
 
   // @override
-  // Future<void> removeTask(Task task) async {
+  // Future<void> removeAssetInstance(Task task) async {
 
   //   print(task.id);
   //   db.collection(_users).doc(userId).collection(_tasks).doc(task.id).delete().then(

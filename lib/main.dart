@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
-    FirestoreStorage().insertTask(_counter);
+    FirestoreStorage().insertAssetInstance(_counter);
   }
 
   @override
