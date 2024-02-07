@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/landing.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:flutter/src/material/icons.dart';
-import 'package:ocassetmanagement/sidebar.dart';
+import 'package:sidebar.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -128,4 +129,3 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // }
-
