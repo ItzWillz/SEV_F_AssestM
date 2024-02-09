@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
+import 'package:provider/provider.dart';
 
 enum IconLabel {
   smile('Smile', Icons.sentiment_satisfied_outlined),
@@ -66,12 +68,16 @@ class _AssetProfileSelectionPageState extends State<AssetProfileSelectionPage> {
           children: [
             TextButton(
                 onPressed: () {
-                  widget.callBack(null);
+                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                  notifier.completeProfileSelectionScren(assetName: null);
+                  // widget.callBack(null);
                 },
                 child: Text('Continue without profile')),
             ElevatedButton(
                 onPressed: () {
-                  widget.callBack(selectedIcon?.label);
+                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                  notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
+                  // widget.callBack(selectedIcon?.label);
                 },
                 child: Text('Continue'))
           ],

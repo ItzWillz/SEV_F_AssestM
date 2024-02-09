@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../view_models/create_asset_profile.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -11,13 +14,21 @@ class AssetPage extends StatefulWidget {
 }
 
 class _AssetPageState extends State<AssetPage> {
-  
   final _profileNameController = TextEditingController();
   @override
   void initState() {
-      _profileNameController.text = widget.profile?? 'None';
+    _profileNameController.text = widget.profile ?? 'None';
     super.initState();
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+    notifier.completeAssetSelectScreen();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
