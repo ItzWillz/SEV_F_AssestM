@@ -65,6 +65,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
       setState(() {});
+      // Navigate to Landing Page here
     } on Exception catch (e) {
       // TODO
       print('exception->$e');
