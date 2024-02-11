@@ -11,6 +11,8 @@
 .buildlog/
 .history
 .svn/
+.flutter-plugins
+.flutter-plugins-depen
 
 # IntelliJ related
 *.iml
