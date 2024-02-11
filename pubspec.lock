@@ -472,7 +472,7 @@ packages:
   vector_math:
     dependency: transitive
     description:
-      name: typed_data
+      name: vector_math
       sha256: facc8d6582f16042dd49f2463ff1bd6e2c9ef9f3d5da3d9b087e244a7b564b3c
       url: "https://pub.dev"
     source: hosted
@@ -485,14 +485,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  vector_math:
-    dependency: transitive
-    description:
-      name: vector_math
-      sha256: "80b3257d1492ce4d091729e3a67a60407d227c27241d6927be0130c98e741803"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.0"
   win32:
     dependency: transitive
     description:
