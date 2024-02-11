@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '/models/asset_instance.dart';
 // import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
 class FirestoreStorage {
@@ -34,18 +35,41 @@ class FirestoreStorage {
   //     return tasklist;
   // }
 
-  Future<void> insertAssetInstance(int num) {
-    return db.collection('Asset').doc('Asset Name').set({
-      'id': num,
+  Future<AssetInstance> getAsset(int serialNum) async {
+    AssetInstance asset = AssetInstance();
+
+    if (serialNum != null) {
+      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
+
+      QuerySnapshot<Map<String, dynamic>> event = await db
+          .collection('Asset')
+          .where(serialNum)
+          .get();
+
+      for (var doc in event.docs) {
+        final data = doc.data();
+       
+        asset.description = data['description'];
+        asset.serialNum = doc.data()['serialNum'];
+        asset.wirelessNIC = doc.data()['wirelessNIC'];
+        print(asset);
+      }
+    }
+
+    return asset;
+  }
+
+  Future<void> insertAssetInstance(AssetInstance asset) {
+    return db.collection('Asset').doc().set({
+      'id': "33",
       'assetProfileId': 2,
       'assetCategoryId': 5,
-      'description' : 'Alienware GTX 1080TI Laptop',
-      'serialNum' : 198770987,
-      'status' : 'In Inventory',
-      'wirelessNIC' : "Yep, it's wireless",
-      'internalFeatures' : 'Mhm',
-      'externalAccessories' : 'Wireless G502'
-    
+      'description': asset.description,
+      'serialNum': asset.serialNum,
+      'status': 'In Inventory',
+      'wirelessNIC': asset.wirelessNIC,
+      'internalFeatures': 'Mhm',
+      'externalAccessories': 'Wireless G502'
     });
   }
 
