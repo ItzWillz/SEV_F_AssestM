@@ -1,15 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'landing.dart';
-//import 'package:ocassetmanagement/services/firestore_storage.dart';
+//import 'services/firestore_storage.dart';
+import 'package:ocassetmanagement/pages/TempWebAuthPage.dart';
+//import 'package:ocassetmanagement/landing.dart';
+import 'package:ocassetmanagement/services/firestore_storage.dart';
+import 'package:flutter/src/material/icons.dart';
+//import 'package:sidebar.dart';
 
 import 'firebase_options.dart';
 import 'view_models/create_asset_profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -20,6 +23,16 @@ Future<void> main() async {
     ],
     child: const MyApp(),
   ));
+
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
+          authDomain: "ocassetmanagement.firebaseapp.com",
+          projectId: "ocassetmanagement",
+          storageBucket: "ocassetmanagement.appspot.com",
+          messagingSenderId: "647960639907",
+          appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
+          measurementId: "G-DLPHX1WD9Z"));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -28,12 +41,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
+      title: 'OC Asset Management',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Landing(),
+      home: TempWebAuthPage(),
     );
   }
 }
@@ -57,81 +69,31 @@ class MyApp extends StatelessWidget {
 //     FirestoreStorage().insertTask(_counter);
 //   }
 
-//   int _selectedIndex = 0;
-//   bool showNavigationBar = false;
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
 //         title: Text(widget.title),
-//         leading: IconButton(
-//           icon: const Icon(
-//             Icons.menu,
-//             color: Colors.black,
-//           ),
-//           onPressed: () {
-//             setState(() {
-//               showNavigationBar = !showNavigationBar;
-//             });
-//           },
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             const Text(
+//               'You have pushed the button this many times:',
+//             ),
+//             Text(
+//               '$_counter',
+//               style: Theme.of(context).textTheme.headlineMedium,
+//             ),
+//           ],
 //         ),
 //       ),
-//       body: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: <Widget>[
-//           NavigationRail(
-//             onDestinationSelected: (int index) {
-//               setState(() {
-//                 _selectedIndex = index;
-//               });
-//             },
-//             destinations: const [
-//               NavigationRailDestination(
-//                 icon: Icon(Icons.home),
-//                 label: Text('Home'),
-//               ),
-//               NavigationRailDestination(
-//                 icon: Icon(Icons.add_box_outlined),
-//                 label: Text('Asset'),
-//               ),
-//               NavigationRailDestination(
-//                 icon: Icon(Icons.person),
-//                 label: Text('Users'),
-//               ),
-//             ],
-//             selectedIndex: _selectedIndex,
-//             // labelType: labelType,
-//           ),
-//         ],
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: _incrementCounter,
+//         tooltip: 'Increment',
+//         child: const Icon(Icons.add),
 //       ),
-      //  Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       const Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //       Text(
-      //         '$_counter',
-      //         style: Theme.of(context).textTheme.headlineMedium,
-      //       ),
-      //     ElevatedButton(
-      //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(builder: (context) => Landing()),);
-      //   },
-      //   child: Text('Landing'),
-      // ),
-
-      // ],
-      //  ),
-      // ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
 //     );
 //   }
 // }
-

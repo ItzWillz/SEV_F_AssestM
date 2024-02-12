@@ -11,6 +11,8 @@
 .buildlog/
 .history
 .svn/
+.flutter-plugins
+.flutter-plugins-depen
 
 # IntelliJ related
 *.iml
@@ -130,7 +132,6 @@ android/app/google-services.json
 google_maps_api.xml
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Obfuscation related
 app.*.map.json
