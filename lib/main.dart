@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 //import 'services/firestore_storage.dart';
 import 'package:ocassetmanagement/pages/TempWebAuthPage.dart';
 //import 'package:ocassetmanagement/landing.dart';
@@ -8,10 +9,21 @@ import 'package:flutter/src/material/icons.dart';
 //import 'package:sidebar.dart';
 
 import 'firebase_options.dart';
+import 'view_models/create_asset_profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<CreateAssetNotifier>(
+          create: (_) => CreateAssetNotifier()),
+    ],
+    child: const MyApp(),
+  ));
+
       options: const FirebaseOptions(
           apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
           authDomain: "ocassetmanagement.firebaseapp.com",
