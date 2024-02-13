@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ocassetmanagement/landing.dart';
 // import 'package:http/http.dart' as http;
 
 class TempWebAuthPage extends StatefulWidget {
@@ -65,7 +66,10 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
       setState(() {});
-      // Navigate to Landing Page here
+        Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Landing()),
+  );
     } on Exception catch (e) {
       // TODO
       print('exception->$e');
