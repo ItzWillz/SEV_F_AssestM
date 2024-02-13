@@ -31,7 +31,7 @@ Future<void> main() async {
           storageBucket: "ocassetmanagement.appspot.com",
           messagingSenderId: "647960639907",
           appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
-          measurementId: "G-DLPHX1WD9Z"));
+          measurementId: "G-DLPHX1WD9Z");
   runApp(const MyApp());
 }
 

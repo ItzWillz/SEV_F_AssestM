@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../view_models/create_asset_profile.dart';
 import '/services/firestore_storage.dart';
 import '/models/asset_instance.dart';
 
@@ -10,29 +8,8 @@ int serialNum = 0;
 String wirelessNIC = "";
 AssetInstance newAsset = AssetInstance();
 
-class AssetPage extends StatefulWidget {
-  const AssetPage({super.key, this.profile});
-  final String? profile;
-
-  @override
-  State<AssetPage> createState() => _AssetPageState();
-}
-
-class _AssetPageState extends State<AssetPage> {
-  final _profileNameController = TextEditingController();
-  @override
-  void initState() {
-    _profileNameController.text = widget.profile ?? 'None';
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
-    notifier.completeAssetSelectScreen();
-    super.dispose();
-  }
+class AssetPage extends StatelessWidget {
+  const AssetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,27 +40,11 @@ class _AssetPageState extends State<AssetPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Enter description';
                                   }
+                                  description = value;
                                   return null;
                                 },
                               ),
-                              onSaved: (String? value) {
-                                //debugPrint('value for field $index saved as "$value"');
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter something';
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-//                           SizedBox(width: 20),
-//                           SizedBox(
-//                             width: 200,
-//                             child: TextFormField(
-//                               decoration: const InputDecoration(
-//                                 labelText: 'Profile Name',
-
                             SizedBox(width: 20),
                             SizedBox(
                               width: 200,
@@ -102,19 +63,9 @@ class _AssetPageState extends State<AssetPage> {
                                   return null;
                                 },
                               ),
-                              onSaved: (String? value) {
-                                //debugPrint('value for field $index saved as "$value"');
-                              },
-                              controller: _profileNameController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter something2';
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -138,18 +89,9 @@ class _AssetPageState extends State<AssetPage> {
                                   return null;
                                 },
                               ),
-                              onSaved: (String? value) {
-                                //debugPrint('value for field $index saved as "$value"');
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Enter something3';
-                                }
-                                return null;
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -210,9 +152,6 @@ class _AssetPageState extends State<AssetPage> {
                 ],
             )
               ),
-              ElevatedButton(onPressed: () {}, child: Text('Save')),
-            ],
-          )),
     ));
   }
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
-import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
-import 'package:provider/provider.dart';
-import 'pages/asset_page.dart';
+import 'package:ocassetmanagement/pages/asset_page.dart';
 
 import 'pages/home_page.dart';
 import 'sidebar.dart';
@@ -18,8 +15,6 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
   bool _showNavigationBar = false;
-  String? _attachedprofile;
-  bool _isOnAssetProfilePage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,34 +47,18 @@ class _LandingState extends State<Landing> {
               selectedIndex: _selectedIndex,
               onDestinationSelected: onDestinationSelected,
             ),
-          Expanded(child: Consumer<CreateAssetNotifier>(
-            builder: (BuildContext context, CreateAssetNotifier value,
-                Widget? child) {
-              return _mainContent(context);
-            },
-          )),
+          Expanded(child: _mainContent()),
         ],
       ),
     );
   }
 
-  Widget _mainContent(BuildContext context) {
+  Widget _mainContent() {
     if (_selectedIndex == 1) {
-      final notifier = Provider.of<CreateAssetNotifier>(context);
-
-      return notifier.isProfileSelectionScreen
-          ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
-          : AssetPage(profile: _attachedprofile);
+      return AssetPage();
     }
 
     return HomePage();
-  }
-
-  void _navigateToAddAndEditAssetPage(String? profile) {
-    setState(() {
-      _isOnAssetProfilePage = true;
-      _attachedprofile = profile;
-    });
   }
 
   void onDestinationSelected(int index) {
