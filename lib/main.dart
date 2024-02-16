@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),
+      home: Landing(),
+      // home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),
     );
   }
 }
