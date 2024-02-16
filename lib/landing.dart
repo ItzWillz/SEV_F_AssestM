@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 
 import 'pages/home_page.dart';
@@ -56,6 +57,8 @@ class _LandingState extends State<Landing> {
   Widget _mainContent() {
     if (_selectedIndex == 1) {
       return AssetPage();
+    } else if (_selectedIndex == 2) {
+      return AllUsersPage();
     }
 
     return HomePage();

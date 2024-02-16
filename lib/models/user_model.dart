@@ -9,10 +9,10 @@ class User {
         userGroup = '',
         id = id ?? _uuid.v1();
 
-        AssetProfile.fromFirestore(DocumentSnapshot snapshot)
+        User.fromFirestore(DocumentSnapshot snapshot)
         : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
-        name = snapshot['name'] ?? ''
+        name = snapshot['name'] ?? '',
         userId = snapshot['userId'] ?? 0,
         id = snapshot.id;
 

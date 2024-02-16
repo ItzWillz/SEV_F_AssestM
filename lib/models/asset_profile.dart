@@ -21,9 +21,9 @@ class AssetProfile {
         id = id ?? _uuid.v1();
 
         AssetProfile.fromFirestore(DocumentSnapshot snapshot)
-        : assetProfileId = snapshot['assetProfileId'] ?? 0,
-        userGroupId = snapshot['userGroupId'] ?? 0,
-        name = snapshot['name'] ?? ''
+        :
+        assetTypeId = snapshot['assetTypeId'] ?? 0,
+        name = snapshot['name'] ?? '',
         modelNum = snapshot['modelNum'] ?? 0,
         domain = snapshot['domain'] ?? '',
         description = snapshot['description'] ?? '',
