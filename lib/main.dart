@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/landing.dart';
+import 'package:ocassetmanagement/view_models/logged_user.dart';
 import 'package:provider/provider.dart';
 //import 'services/firestore_storage.dart';
 import 'package:ocassetmanagement/pages/TempWebAuthPage.dart';
@@ -20,19 +22,21 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider<CreateAssetNotifier>(
           create: (_) => CreateAssetNotifier()),
+      ChangeNotifierProvider<LoggedUserNotifier>(
+          create: (_) => LoggedUserNotifier()),
     ],
     child: const MyApp(),
   ));
 
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
-          authDomain: "ocassetmanagement.firebaseapp.com",
-          projectId: "ocassetmanagement",
-          storageBucket: "ocassetmanagement.appspot.com",
-          messagingSenderId: "647960639907",
-          appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
-          measurementId: "G-DLPHX1WD9Z");
-  runApp(const MyApp());
+      // options: const FirebaseOptions(
+      //     apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
+      //     authDomain: "ocassetmanagement.firebaseapp.com",
+      //     projectId: "ocassetmanagement",
+      //     storageBucket: "ocassetmanagement.appspot.com",
+      //     messagingSenderId: "647960639907",
+      //     appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
+      //     measurementId: "G-DLPHX1WD9Z");
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -45,7 +49,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TempWebAuthPage(),
+      home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),
     );
   }
 }
