@@ -1,168 +1,72 @@
-import 'dart:html';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:reflectable/reflectable.dart';
-// import 'main.reflectable.dart';
 
-/// Flutter code sample for [PaginatedDataTable].
+import '../view_models/cells/asset_cell.dart';
+import '../models/tableable.dart';
 
 class MyDataSource extends DataTableSource {
-  @override
-  int get rowCount => admins.length;
+  MyDataSource({required this.data});
+
+  final List<Object> data;
 
   @override
-  DataRow? getRow(int index) {
-    final row = admins[index];
-    return DataRow(cells: [
-      DataCell(Text(row.name)),
-      DataCell(Text(row.email)),
-      DataCell(
-        DropdownButton<String>(
-          value: row.userGroup,
-          items: <String>[
-            'Admin',
-            'IT',
-            'Support Central',
-            'Maintenance',
-          ].map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              row.userGroup = value;
-              notifyListeners();
-            }
-          },
-        ),
-      ),
-      DataCell(Text(row.schoolId)),
-    ]);
-  }
+  int get rowCount => data.length;
 
   @override
   bool get isRowCountApproximate => false;
 
   @override
   int get selectedRowCount => 0;
+
+  @override
+  DataRow? getRow(int index) {
+    final row = data[index];
+
+    if (row is Tableable) {
+      return DataRow(cells: row.asRow().map(_toDataCell).toList());
+    } else {
+      if (kDebugMode) print('$row doens\'t implement tableable.');
+      return DataRow(
+          cells: List.filled(data.length, const DataCell(Placeholder())));
+    }
+  }
+
+  DataCell _toDataCell(Object? label) {
+    if (label is AssetCell) {
+      label.addListener(() => notifyListeners());
+      return label.toDataCell();
+    }
+
+    return DataCell(Text(label?.toString() ?? ''));
+  }
 }
 
-final DataTableSource dataSource = MyDataSource();
-
 class AssetDataTable extends StatelessWidget {
-  const AssetDataTable({super.key});
+  AssetDataTable({super.key, required this.data})
+      : dataSource = MyDataSource(data: data);
+
+  final List<Object> data;
+  final DataTableSource dataSource;
 
   @override
   Widget build(BuildContext context) {
-    return PaginatedDataTable(
-      columns: Admin.toDataColumn(),
-      source: dataSource,
-    );
-  }
-}
+    if (data.isEmpty) {
+      return const Text('Table is empty');
+    }
+    final asset = data.first;
 
-final admins = [
-  Admin(
-      name: 'Dan', email: 'dan@oc.edu', schoolId: '234897', userGroup: 'Admin'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'WIll', email: 'will@oc.edu', schoolId: '2348973', userGroup: 'IT'),
-  Admin(
-      name: 'Andrew',
-      email: 'andrew@oc.edu',
-      schoolId: '248973',
-      userGroup: 'Maintenance'),
-];
+    if (asset is Tableable) {
+      return PaginatedDataTable(
+        columns: asset.header().map(columnHeader).toList(),
+        source: dataSource,
+      );
+    }
 
-class Admin {
-  Admin(
-      {required this.name,
-      required this.email,
-      required this.schoolId,
-      required this.userGroup});
-
-  static const columns = {'name': 'Name'};
-
-  String name;
-  String email;
-  String schoolId;
-  String userGroup;
-
-  static List<DataColumn> toDataColumn() => [
-        'Name',
-        'Email',
-        'User Group',
-        'School ID'
-      ].map<DataColumn>((label) => DataColumn(label: Text(label))).toList();
-
-  DataRow? toDataRow() {
-    return DataRow(cells: [
-      DataCell(Text(name)),
-      DataCell(Text(email)),
-      DataCell(
-        DropdownButton<String>(
-          value: userGroup,
-          items: <String>[
-            'Admin',
-            'IT',
-            'Support Central',
-            'Maintenance',
-          ].map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          onChanged: (value) {
-            if (value != null) {
-              userGroup = value;
-            }
-          },
-        ),
-      ),
-      DataCell(Text(schoolId)),
-    ]);
+    return Text(
+        '${asset.runtimeType} does not implement Tableable. Please fix this.');
   }
 
-  //   DataColumn(
-  //     label: Text(),
-  //   ),
-  //   DataColumn(
-  //     label: Text(),
-  //   ),
-  //   DataColumn(
-  //     label: Text(),
-  //   ),
-  // ];
+  DataColumn columnHeader(String label) {
+    return DataColumn(label: Text(label.toString()));
+  }
 }
