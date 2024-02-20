@@ -28,14 +28,14 @@ Future<void> main() async {
     child: const MyApp(),
   ));
 
-      // options: const FirebaseOptions(
-      //     apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
-      //     authDomain: "ocassetmanagement.firebaseapp.com",
-      //     projectId: "ocassetmanagement",
-      //     storageBucket: "ocassetmanagement.appspot.com",
-      //     messagingSenderId: "647960639907",
-      //     appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
-      //     measurementId: "G-DLPHX1WD9Z");
+  // options: const FirebaseOptions(
+  //     apiKey: "AIzaSyCI4R27jYcZUT8osupWtDJH6S3N16vzUNM",
+  //     authDomain: "ocassetmanagement.firebaseapp.com",
+  //     projectId: "ocassetmanagement",
+  //     storageBucket: "ocassetmanagement.appspot.com",
+  //     messagingSenderId: "647960639907",
+  //     appId: "1:647960639907:web:c1bb9c45af3f0a8cd64216",
+  //     measurementId: "G-DLPHX1WD9Z");
   // runApp(const MyApp());
 }
 
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Landing(),
+      home: TempWebAuthPage(),
       // home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),
     );
   }

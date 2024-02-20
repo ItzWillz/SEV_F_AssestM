@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
+import 'package:provider/provider.dart';
+import 'view_models/logged_user.dart';
 
 import 'pages/home_page.dart';
 import 'sidebar.dart';
@@ -19,11 +21,12 @@ class _LandingState extends State<Landing> {
 
   @override
   Widget build(BuildContext context) {
+    var name = context.watch<LoggedUserNotifier>().name;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(199, 108, 13, 13),
-        title: const Text(
-          'Route: Landing',
+        title: Text(
+          'Route: Landing -- Welcome $name',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
         centerTitle: true,

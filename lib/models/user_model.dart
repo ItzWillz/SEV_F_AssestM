@@ -1,26 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
+//import 'package:uuid/uuid.dart';
 
 class User {
-  User({String? id})   // DocumentSnapshot snapshot(?)
-      : userId = 0,
+  User({String? userId, int? schoolId}) // DocumentSnapshot snapshot(?)
+      : userId = userId ?? '',
         name = '',
         email = '',
         userGroup = '',
-        id = id ?? _uuid.v1();
+        schoolId = schoolId ?? 0;
+  //id = id ?? _uuid.v1();
 
-        User.fromFirestore(DocumentSnapshot snapshot)
-        : email = snapshot['email'] ?? '',
+  User.fromFirestore(DocumentSnapshot snapshot)
+      : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
         name = snapshot['name'] ?? '',
         userId = snapshot['userId'] ?? 0,
-        id = snapshot.id;
-
+        schoolId = snapshot['schoolId'] ?? 0;
+  //id = snapshot.id;
 
   late String userGroup;
   late String name;
-  static const _uuid = Uuid();
+  //static const _uuid = Uuid();
   late String email;
-  late final String id;
-  late int userId;
+  //late final String id;
+  late String userId;
+  late int schoolId;
 }
