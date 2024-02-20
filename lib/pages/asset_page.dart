@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '/services/firestore_storage.dart';
 import '/models/asset_instance.dart';
+import 'package:provider/provider.dart';
+import '../view_models/create_asset_profile.dart';
 
 final _formKey = GlobalKey<FormState>();
 String description = "";
@@ -8,8 +10,29 @@ int serialNum = 0;
 String wirelessNIC = "";
 AssetInstance newAsset = AssetInstance();
 
-class AssetPage extends StatelessWidget {
-  const AssetPage({super.key});
+class AssetPage extends StatefulWidget {
+  const AssetPage({super.key, this.profile});
+  final String? profile;
+
+    @override
+  State<AssetPage> createState() => _AssetPageState();
+}
+
+class _AssetPageState extends State<AssetPage> {
+  final _profileNameController = TextEditingController();
+  @override
+  void initState() {
+    _profileNameController.text = widget.profile ?? 'None';
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // implement dispose
+    final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+    notifier.completeAssetSelectScreen();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +113,27 @@ class AssetPage extends StatelessWidget {
                                 },
                               ),
                             ),
-                          ],
-                        ),
+                           SizedBox(
+                             width: 200,
+                             child: TextFormField(
+                               decoration: const InputDecoration(
+                                 labelText: 'Profile Name',
+                                ),
+                                onSaved: (String? value) {
+                                  //debugPrint('value for field $index saved as "$value"');
+                                },
+                              controller: _profileNameController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter something2';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                  
                       ),
                       ElevatedButton(
                         onPressed: () {
