@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/all_users_page.dart';
 import '../pages/asset_page.dart';
 
+import 'pages/check_in_and_out_page.dart';
 import 'pages/home_page.dart';
 import 'pages/reservation_page.dart';
 import 'sidebar.dart';
@@ -59,7 +60,9 @@ class _LandingState extends State<Landing> {
   Widget _mainContent() {
     if (_selectedIndex == 1) {
       return AssetPage();
-    } else if (_selectedIndex == 3) {
+    } else if (_selectedIndex == 2) {
+      return CheckInandOutPage();
+      }else if (_selectedIndex == 3) {
       return ReservationsPage();
     }else if (_selectedIndex == 4) {
       return AllUsersPage();
