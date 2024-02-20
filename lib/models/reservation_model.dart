@@ -2,37 +2,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../view_models/cells/dropdown_cell.dart';
 import 'tableable.dart';
 
-class User implements Tableable {
-  User({
+class Reservations implements Tableable {
+  Reservations({
+    required this.schoolId,
     required this.name,
     required this.email,
-    required this.schoolId,
-    required this.userGroup,
+    required this.assetType,
   }): id = '0';
 
-  User.fromFirestore(DocumentSnapshot snapshot)
+  Reservations.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
-        userGroup = snapshot['userGroup'] ?? '',
+        assetType = snapshot['assetType'] ?? '',
         name = snapshot['name'] ?? '',
         schoolId = snapshot['userId'] ?? 0,
         id = snapshot.id;
 
-  String userGroup;
+  String assetType;
   String name;
   String email;
   final String id;
   int schoolId;
 
-  static final userGroupOptions = <String>[
-    'Admin',
-    'IT',
-    'Support Central',
-    'Maintenance',
+  static final assetTypeOptions = <String>[
+    'Laptop',
+    'Projector',
+    'Calculator',
   ]; // TODO store and pull this from Firestore.
 
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'User Group'];
+    return ['School ID', 'Name', 'Email', 'Request for'];
   }
 
   @override
@@ -42,16 +41,16 @@ class User implements Tableable {
       name,
       email,
       DropdownCell(
-        value: userGroup,
-        items: userGroupOptions,
-        updateValue: updateUserGroup,
+        value: assetType,
+        items: assetTypeOptions,
+        updateValue: updateAssetType,
       )
     ];
   }
 
-  void updateUserGroup(String? value) {
+  void updateAssetType(String? value) {
     if (value != null) {
-      userGroup = value;
+      assetType = value;
     }
   }
 }

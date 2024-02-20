@@ -8,7 +8,7 @@ class AllUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(child: AssetDataTable(data: _admins));
+    return Material(child: AssetDataTable(data: _admins, section: '',));
   }
 }
 

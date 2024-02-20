@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/all_users_page.dart';
-import 'package:ocassetmanagement/pages/asset_page.dart';
+import '../pages/all_users_page.dart';
+import '../pages/asset_page.dart';
 
 import 'pages/home_page.dart';
+import 'pages/reservation_page.dart';
 import 'sidebar.dart';
 // import 'package:ocassetmanagement/sidebar.dart';
 
@@ -23,8 +24,8 @@ class _LandingState extends State<Landing> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(199, 108, 13, 13),
         title: const Text(
-          'Route: Landing',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          'OC Asset Management',
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -38,6 +39,7 @@ class _LandingState extends State<Landing> {
             });
           },
         ),
+
       ),
       // body: Placeholder(),
       body: Row(
@@ -57,7 +59,9 @@ class _LandingState extends State<Landing> {
   Widget _mainContent() {
     if (_selectedIndex == 1) {
       return AssetPage();
-    } else if (_selectedIndex == 2) {
+    } else if (_selectedIndex == 3) {
+      return ReservationsPage();
+    }else if (_selectedIndex == 4) {
       return AllUsersPage();
     }
 

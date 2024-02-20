@@ -33,9 +33,20 @@ class _SideBarState extends State<SideBar> {
           icon: Icon(Icons.add_box_outlined),
           label: Text('Asset'),
         ),
+         NavigationRailDestination(
+          icon: Icon(Icons.checklist),
+          label: Text("Check In/Out"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.edit_document),
+          label: Text("Reservations"),
+        ),
         NavigationRailDestination(
           icon: Icon(Icons.person),
           label: Text('Users'),
+        ),NavigationRailDestination(
+          icon: Icon(Icons.query_stats),
+          label: Text('Reports'),
         ),
       ],
     );
