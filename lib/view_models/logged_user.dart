@@ -24,7 +24,7 @@ class LoggedUserNotifier extends ChangeNotifier {
   }
 
   Future<void> completeLoginFunctionality(User user) async {
-    // TODO get info from Firestore
+    // get info from Firestore
     this.user = um.User(
       email: user.email ?? 'No email',
       name: user.displayName ?? 'No display name',
