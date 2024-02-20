@@ -38,9 +38,6 @@ class FirestoreStorage {
   Future<AssetInstance> getAsset(int serialNum) async {
     AssetInstance asset = AssetInstance();
 
-    if (serialNum != null) {
-      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
-
       QuerySnapshot<Map<String, dynamic>> event = await db
           .collection('Asset')
           .where(serialNum)
@@ -52,9 +49,8 @@ class FirestoreStorage {
         asset.description = data['description'];
         asset.serialNum = doc.data()['serialNum'];
         asset.wirelessNIC = doc.data()['wirelessNIC'];
-        print(asset);
       }
-    }
+    
 
     return asset;
   }

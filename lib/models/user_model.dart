@@ -28,7 +28,7 @@ class User implements Tableable {
     'IT',
     'Support Central',
     'Maintenance',
-  ]; // TODO store and pull this from Firestore.
+  ]; // store and pull this from Firestore.
 
   @override
   List<String> header() {
