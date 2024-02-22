@@ -1,28 +1,57 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:uuid/uuid.dart';
+import '../view_models/cells/dropdown_cell.dart';
+import 'tableable.dart';
 
-class User {
-  User({String? userId, int? schoolId}) // DocumentSnapshot snapshot(?)
+class User implements Tableable {
+  User({String? userId, int? schoolId})
       : userId = userId ?? '',
         name = '',
         email = '',
         userGroup = '',
         schoolId = schoolId ?? 0;
-  //id = id ?? _uuid.v1();
 
   User.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
         name = snapshot['name'] ?? '',
-        userId = snapshot['userId'] ?? 0,
-        schoolId = snapshot['schoolId'] ?? 0;
-  //id = snapshot.id;
+        schoolId = snapshot['schoolId'] ?? 0,
+        userId = snapshot['userId'] ?? '';
 
   late String userGroup;
   late String name;
-  //static const _uuid = Uuid();
   late String email;
-  //late final String id;
   late String userId;
   late int schoolId;
+
+  static final userGroupOptions = <String>[
+    'Admin',
+    'IT',
+    'Support Central',
+    'Maintenance',
+  ]; // store and pull this from Firestore.
+
+  @override
+  List<String> header() {
+    return ['School ID', 'Name', 'Email', 'User Group'];
+  }
+
+  @override
+  List<Object?> asRow() {
+    return [
+      userId,
+      name,
+      email,
+      DropdownCell(
+        value: userGroup,
+        items: userGroupOptions,
+        updateValue: updateUserGroup,
+      )
+    ];
+  }
+
+  void updateUserGroup(String? value) {
+    if (value != null) {
+      userGroup = value;
+    }
+  }
 }

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:ocassetmanagement/landing.dart';
+import 'package:ocassetmanagement/pages/landing.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
 import 'package:provider/provider.dart';

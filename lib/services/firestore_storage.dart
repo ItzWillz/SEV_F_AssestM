@@ -53,7 +53,6 @@ class FirestoreStorage {
         asset.description = data['description'];
         asset.serialNum = doc.data()['serialNum'];
         asset.wirelessNIC = doc.data()['wirelessNIC'];
-        print(asset);
       }
     }
 

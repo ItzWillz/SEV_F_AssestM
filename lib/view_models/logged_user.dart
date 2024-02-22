@@ -83,6 +83,10 @@ class LoggedUserNotifier extends ChangeNotifier {
     // userGroup = userModel.userGroup;
     // userId = userModel.userId;
     // name = userModel.name;
+    // final user = await FirestoreStorage().getValue(); // Change this to grab all user data
+    // userGroup = userModel.userGroup;
+    // userId = userModel.userId;
+    // name = userModel.name;
     // }
 
     notifyListeners();

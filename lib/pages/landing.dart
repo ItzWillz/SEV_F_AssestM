@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
+import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:provider/provider.dart';
-import 'view_models/logged_user.dart';
+import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
+import 'package:ocassetmanagement/view_models/logged_user.dart';
 
-import 'pages/home_page.dart';
-import 'sidebar.dart';
+import 'home_page.dart';
+import '../sidebar.dart';
 // import 'package:ocassetmanagement/sidebar.dart';
 
 class Landing extends StatefulWidget {
@@ -18,13 +20,17 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
   bool _showNavigationBar = false;
+  String? _attachedprofile;
+  // ignore: unused_field
+  bool _isOnAssetProfilePage = false;
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Modify to get all necessary crrent logged-in user information needed.
     var name = context.watch<LoggedUserNotifier>().name;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(199, 108, 13, 13),
+        backgroundColor: const Color.fromARGB(199, 108, 13, 13),
         title: Text(
           'Route: Landing -- Welcome $name',
           style: TextStyle(color: Colors.white, fontSize: 18.0),
@@ -59,12 +65,23 @@ class _LandingState extends State<Landing> {
 
   Widget _mainContent() {
     if (_selectedIndex == 1) {
-      return AssetPage();
+      final notifier = Provider.of<CreateAssetNotifier>(context);
+
+      return notifier.isProfileSelectionScreen
+          ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
+          : AssetPage(profile: _attachedprofile);
     } else if (_selectedIndex == 2) {
-      return AllUsersPage();
+      return const AllUsersPage();
     }
 
-    return HomePage();
+    return const HomePage();
+  }
+
+  void _navigateToAddAndEditAssetPage(String? profile) {
+    setState(() {
+      _isOnAssetProfilePage = true;
+      _attachedprofile = profile;
+    });
   }
 
   void onDestinationSelected(int index) {
