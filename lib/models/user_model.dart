@@ -3,25 +3,25 @@ import '../view_models/cells/dropdown_cell.dart';
 import 'tableable.dart';
 
 class User implements Tableable {
-  User({
-    required this.name,
-    required this.email,
-    required this.schoolId,
-    required this.userGroup,
-  }): id = '0';
+  User({String? userId, int? schoolId})
+      : userId = userId ?? '',
+        name = '',
+        email = '',
+        userGroup = '',
+        schoolId = schoolId ?? 0;
 
   User.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
         name = snapshot['name'] ?? '',
-        schoolId = snapshot['userId'] ?? 0,
-        id = snapshot.id;
+        schoolId = snapshot['schoolId'] ?? 0,
+        userId = snapshot['userId'] ?? '';
 
-  String userGroup;
-  String name;
-  String email;
-  final String id;
-  int schoolId;
+  late String userGroup;
+  late String name;
+  late String email;
+  late String userId;
+  late int schoolId;
 
   static final userGroupOptions = <String>[
     'Admin',
@@ -38,7 +38,7 @@ class User implements Tableable {
   @override
   List<Object?> asRow() {
     return [
-      id,
+      userId,
       name,
       email,
       DropdownCell(

@@ -8,48 +8,49 @@ class AllUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(child: AssetDataTable(data: _admins));
+    return Text("TODO: Get users from Users collection and display here!");
+    // return Material(child: AssetDataTable(data: _admins));
   }
 }
 
-final _admins = [
-  User(
-      name: 'Dan', email: 'dan@oc.edu', schoolId: 234897, userGroup: 'Admin'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
-  User(
-      name: 'Andrew',
-      email: 'andrew@oc.edu',
-      schoolId: 248973,
-      userGroup: 'Maintenance'),
-];
+// final _admins = [
+//   User(
+//       name: 'Dan', email: 'dan@oc.edu', schoolId: 234897, userGroup: 'Admin'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'WIll', email: 'will@oc.edu', schoolId: 2348973, userGroup: 'IT'),
+//   User(
+//       name: 'Andrew',
+//       email: 'andrew@oc.edu',
+//       schoolId: 248973,
+//       userGroup: 'Maintenance'),
+// ];

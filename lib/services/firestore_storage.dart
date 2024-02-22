@@ -1,4 +1,7 @@
+//import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/models/user_model.dart';
 import '/models/asset_instance.dart';
 // import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
@@ -38,19 +41,20 @@ class FirestoreStorage {
   Future<AssetInstance> getAsset(int serialNum) async {
     AssetInstance asset = AssetInstance();
 
-      QuerySnapshot<Map<String, dynamic>> event = await db
-          .collection('Asset')
-          .where(serialNum)
-          .get();
+    if (serialNum != null) {
+      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
+
+      QuerySnapshot<Map<String, dynamic>> event =
+          await db.collection('Asset').where(serialNum).get();
 
       for (var doc in event.docs) {
         final data = doc.data();
-       
+
         asset.description = data['description'];
         asset.serialNum = doc.data()['serialNum'];
         asset.wirelessNIC = doc.data()['wirelessNIC'];
       }
-    
+    }
 
     return asset;
   }
@@ -79,4 +83,65 @@ class FirestoreStorage {
   //   );
 
   // }
+
+  Future<bool> userExists(String userId) async {
+    bool userExists = false;
+    final users = await db
+        .collection("Users")
+        .where("userId", isEqualTo: userId)
+        .count()
+        .get();
+    if (users.count! > 0) {
+      userExists = true;
+    }
+
+    return userExists;
+  }
+
+  Future<bool> userExistsWithEmail(String email) async {
+    bool userExists = false;
+    final users = await db
+        .collection("Users")
+        .where("email", isEqualTo: email)
+        .count()
+        .get();
+    if (users.count! > 0) {
+      userExists = true;
+    }
+
+    return userExists;
+  }
+
+  Future<User> getUser(String userId) async {
+    User user = User();
+
+    if (userId != null) {
+      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
+
+      QuerySnapshot<Map<String, dynamic>> event =
+          await db.collection('Users').where(userId).get();
+
+      for (var doc in event.docs) {
+        final data = doc.data();
+
+        user.email = data['email'];
+        user.name = doc.data()['name'];
+        user.schoolId = doc.data()['schoolId'];
+        user.userGroup = doc.data()['userGroup'];
+        print(user);
+      }
+    }
+
+    return user;
+  }
+
+  Future<void> insertUser(User user) {
+    return db.collection('Users').doc().set({
+      'userId': user.userId,
+      'email': user.email,
+      'name': user.name,
+      'schoolId': user.schoolId,
+      'userGroup': 'default',
+    });
+  }
 }
