@@ -43,6 +43,10 @@ class FirestoreStorage {
     return asset;
   }
 
+   Future<void> updateUser(User user) async {
+     await db.collection(_users).doc(user.userId).update(user.toMap());
+  }
+
   Future<void> insertAssetInstance(AssetInstance asset) {
     return db.collection('Asset').doc().set({
       'id': "33",
@@ -118,12 +122,12 @@ class FirestoreStorage {
   }
 
   Future<void> insertUser(User user) {
-    return db.collection('Users').doc().set({
+    return db.collection('Users').doc(user.userId).set({
       'userId': user.userId,
       'email': user.email,
       'name': user.name,
       'schoolId': user.schoolId,
-      'userGroup': 'default',
+      'userGroup': 'IT',
     });
   }
 }

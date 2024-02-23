@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/services/firestore_storage.dart';
 import '../view_models/cells/dropdown_cell.dart';
 import 'tableable.dart';
 
@@ -52,6 +53,18 @@ class User implements Tableable {
   void updateUserGroup(String? value) {
     if (value != null) {
       userGroup = value;
+      FirestoreStorage().updateUser(this);
     }
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'userId': userId,
+      'name': name,
+      'email': email,
+      'userGroup': userGroup,
+      'schoolId': schoolId,
+    };
+  }
+
 }
