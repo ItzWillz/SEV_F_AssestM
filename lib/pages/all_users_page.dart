@@ -27,7 +27,17 @@ class AllUsersPage extends StatelessWidget {
           return const Text('No users found.');
         } else {
           // If the data is available, build your UI with the data
-          return Material(child: AssetDataTable(data: snapshot.data!));
+          return Material(
+            child: Padding(
+            padding: const EdgeInsets.all(10.0),
+              child: ListView(
+                children:[
+                    Text("    Users", style: TextStyle( fontSize: 20.0)),
+                     AssetDataTable(data: snapshot.data!),
+                     ],
+            )
+          )
+          );
         }
       },
     );

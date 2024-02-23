@@ -29,9 +29,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'OC Asset Management',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
       ),
       home: const Landing(),
       // home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),

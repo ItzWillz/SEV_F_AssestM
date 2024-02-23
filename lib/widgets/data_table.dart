@@ -57,9 +57,9 @@ class AssetDataTable extends StatelessWidget {
 
     if (asset is Tableable) {
       return PaginatedDataTable(
-        columns: asset.header().map(columnHeader).toList(),
-        source: dataSource,
-      );
+          columns: asset.header().map(columnHeader).toList(),
+          source: dataSource,
+          );
     }
 
     return Text(

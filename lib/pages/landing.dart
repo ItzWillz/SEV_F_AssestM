@@ -5,6 +5,8 @@ import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
+import 'check_in_and_out_page.dart';
+import 'reservation_page.dart';
 
 import 'home_page.dart';
 import '../sidebar.dart';
@@ -23,6 +25,7 @@ class _LandingState extends State<Landing> {
   String? _attachedprofile;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,8 @@ class _LandingState extends State<Landing> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(199, 108, 13, 13),
         title: Text(
-          'Route: Landing -- Welcome $name',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+          'OC Asset Management -- Welcome $name',
+          style: const TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -46,6 +49,7 @@ class _LandingState extends State<Landing> {
             });
           },
         ),
+
       ),
       // body: Placeholder(),
       body: Row(
@@ -69,12 +73,19 @@ class _LandingState extends State<Landing> {
       return notifier.isProfileSelectionScreen
           ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
           : AssetPage(profile: _attachedprofile);
+
     } else if (_selectedIndex == 2) {
-      return const AllUsersPage();
+      return CheckInandOutPage();
+      }else if (_selectedIndex == 3) {
+      return ReservationsPage();
+    }else if (_selectedIndex == 4) {
+      return AllUsersPage();
     }
 
     return const HomePage();
   }
+
+  
 
   void _navigateToAddAndEditAssetPage(String? profile) {
     setState(() {
@@ -89,3 +100,4 @@ class _LandingState extends State<Landing> {
     });
   }
 }
+
