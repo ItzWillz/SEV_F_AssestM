@@ -46,6 +46,7 @@ class AssetPage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 20),
+                            
                             SizedBox(
                               width: 200,
                               child: TextFormField(
