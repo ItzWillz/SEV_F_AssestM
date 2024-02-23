@@ -26,14 +26,13 @@ class _LandingState extends State<Landing> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Modify to get all necessary crrent logged-in user information needed.
     var name = context.watch<LoggedUserNotifier>().name;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(199, 108, 13, 13),
         title: Text(
           'Route: Landing -- Welcome $name',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          style: const TextStyle(color: Colors.white, fontSize: 18.0),
         ),
         centerTitle: true,
         leading: IconButton(

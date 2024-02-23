@@ -6,54 +6,38 @@ import '/models/asset_instance.dart';
 // import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
 class FirestoreStorage {
-  // static const _tasks = 'tasks';
   // static const _description = 'description';
-  // static const _dueDate = 'due_date';
-  // static const _users = 'users';
+  static const _users = 'Users';
   final db = FirebaseFirestore.instance;
-  // final userId = AuthController().getUserId();
+  //final _userId = AuthController().getUserId();
 
   Future<int> getValue() async {
     final doc = await db.collection('temp').doc('temp').get();
     return doc.get('num') ?? 0;
   }
 
-  // @override
-  // Future<List<Task>> getTasks() async {
-  //     List<Task> tasklist = [];
+  Future<List<User>> getUsers() async {
 
-  //     if(userId != null) {
-  //       await db.collection(_users).doc(userId).collection(_tasks).get().then((
-  //           event) {
-  //         for (var doc in event.docs) {
-  //           String desc = doc.data()[_description];
-  //           DateTime? dd = toDateTime(doc.data()[_dueDate]);
-  //           Task newtask = Task(description: '$desc', id: doc.id);
-  //           newtask.duedate = dd;
-  //           tasklist.add(newtask);
-  //         }
-  //       });
-  //     }
+    final snapshot = await db.collection(_users).get();
 
-  //     return tasklist;
-  // }
+    return snapshot.docs
+        .map((doc) => User.fromFirestore(doc))
+      .toList();
+  }
 
   Future<AssetInstance> getAsset(int serialNum) async {
     AssetInstance asset = AssetInstance();
+    // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
 
-    if (serialNum != null) {
-      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
+    QuerySnapshot<Map<String, dynamic>> event =
+        await db.collection('Asset').where(serialNum).get();
 
-      QuerySnapshot<Map<String, dynamic>> event =
-          await db.collection('Asset').where(serialNum).get();
+    for (var doc in event.docs) {
+      final data = doc.data();
 
-      for (var doc in event.docs) {
-        final data = doc.data();
-
-        asset.description = data['description'];
-        asset.serialNum = doc.data()['serialNum'];
-        asset.wirelessNIC = doc.data()['wirelessNIC'];
-      }
+      asset.description = data['description'];
+      asset.serialNum = doc.data()['serialNum'];
+      asset.wirelessNIC = doc.data()['wirelessNIC'];
     }
 
     return asset;
@@ -115,20 +99,18 @@ class FirestoreStorage {
   Future<User> getUser(String userId) async {
     User user = User();
 
-    if (userId != null) {
-      // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
+    QuerySnapshot<Map<String, dynamic>> event =
+        await db.collection('Users').get();
 
-      QuerySnapshot<Map<String, dynamic>> event =
-          await db.collection('Users').where(userId).get();
-
-      for (var doc in event.docs) {
+    for (var doc in event.docs) {
+      if (doc.data()['userId'] == userId) {
         final data = doc.data();
 
         user.email = data['email'];
         user.name = doc.data()['name'];
         user.schoolId = doc.data()['schoolId'];
         user.userGroup = doc.data()['userGroup'];
-        print(user);
+        user.userId = doc.data()['userId'];
       }
     }
 

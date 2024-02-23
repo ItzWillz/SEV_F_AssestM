@@ -6,6 +6,7 @@ import 'package:ocassetmanagement/services/firestore_storage.dart';
 class LoggedUserNotifier extends ChangeNotifier {
   // bool isProfileSelectionScreen = true; Change to unshow login screen rather than navigate?
   String? _userGroup;
+  // ignore: unused_field
   String? _userId;
   int? _schoolId;
   String? _name;
@@ -41,18 +42,7 @@ class LoggedUserNotifier extends ChangeNotifier {
     _name = userData.name;
     _schoolId = userData.schoolId;
 
-    // isProfileSelectionScreen = false;
-    // if (field arg here) {
-    //   userId = null;
-    //   userGroup = null;
-    //   name = null;
-    // } else {
-    // final user = await FirestoreStorage().getValue(); // Change this to grab all user data
-    // userGroup = userModel.userGroup;
-    // userId = userModel.userId;
-    // name = userModel.name;
-    // }
-
+    //print("User Data: ${userData.userId} and ${userData.name}");
     notifyListeners();
   }
 
@@ -64,7 +54,7 @@ class LoggedUserNotifier extends ChangeNotifier {
     this.user!.schoolId = schoolId;
 
     firestoreStorage.insertUser(this.user!);
-    print("Inserted new user: ${this.user}");
+    //print("Inserted new user: ${this.user}");
 
     final userData = await firestoreStorage.getUser(this.user!.userId);
     _userId = userData.userId;
@@ -72,22 +62,6 @@ class LoggedUserNotifier extends ChangeNotifier {
     _userGroup = userData.userGroup;
     _name = userData.name;
     _schoolId = userData.schoolId;
-
-    // isProfileSelectionScreen = false;
-    // if (field arg here) {
-    //   userId = null;
-    //   userGroup = null;
-    //   name = null;
-    // } else {
-    // final user = await FirestoreStorage().getValue(); // Change this to grab all user data
-    // userGroup = userModel.userGroup;
-    // userId = userModel.userId;
-    // name = userModel.name;
-    // final user = await FirestoreStorage().getValue(); // Change this to grab all user data
-    // userGroup = userModel.userGroup;
-    // userId = userModel.userId;
-    // name = userModel.name;
-    // }
 
     notifyListeners();
   }
