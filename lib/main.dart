@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-import 'landing.dart';
+import 'pages/landing.dart';
 import 'view_models/create_asset_profile.dart';
 import 'view_models/logged_user.dart';
 
