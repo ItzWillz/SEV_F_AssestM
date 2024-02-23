@@ -32,7 +32,7 @@ class AllUsersPage extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
               child: ListView(
                 children:[
-                    Text("    Users", style: TextStyle( fontSize: 20.0)),
+                    const Text("    Users", style: TextStyle( fontSize: 20.0)),
                      AssetDataTable(data: snapshot.data!),
                      ],
             )

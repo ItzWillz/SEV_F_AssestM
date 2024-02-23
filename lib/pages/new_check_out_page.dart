@@ -22,7 +22,7 @@ Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   mainAxisSize: MainAxisSize.min,
   children: [
-    Text("Check Out Device Form"),
+    const Text("Check Out Device Form"),
     Form(
       key: _formKey,
         child: Padding(
@@ -45,6 +45,7 @@ Column(
                                 description = value;
                                 return null;
                                   }, items: const [
+                                   // ignore: sort_child_properties_last
                                    DropdownMenuItem(child: Text("Person"),value: "Person"),
                                   ], onChanged: (String? value) {  },
                                 ),
@@ -66,6 +67,7 @@ Column(
                                 description = value;
                                 return null;
                                   }, items: const [
+                                   // ignore: sort_child_properties_last
                                    DropdownMenuItem(child: Text("Building"),value: "Building"),
                                   ], onChanged: (String? value) {  },
                                 ),
@@ -89,6 +91,7 @@ Column(
                                 description = value;
                                 return null;
                                   }, items: const [
+                                   // ignore: sort_child_properties_last
                                    DropdownMenuItem(child: Text("Room"),value: "Room"),
                                   ], onChanged: (String? value) {  },
                                 ),
@@ -130,13 +133,13 @@ Column(
                   ),
   ],
 ),
-Column(
+const Column(
 //Fill with Asset selection
 ),
 
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: 200,
                     child: ElevatedButton(

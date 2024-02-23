@@ -10,6 +10,7 @@ class CheckInandOutPage extends StatefulWidget {
 const CheckInandOutPage({super.key});
 
 @override
+  // ignore: library_private_types_in_public_api
   _CheckInandOutPageState createState() => _CheckInandOutPageState(); 
 }
 class _CheckInandOutPageState extends State<CheckInandOutPage>{
@@ -19,6 +20,7 @@ final _checkedOut = [
 CheckedOut(name: 'Dan', email: 'dan@oc.edu', schoolId: 234897, asset: 'Laptop')
 ];
 
+// ignore: unused_field
 List<Tableable> _filtered = [];
 @override
 initState() {

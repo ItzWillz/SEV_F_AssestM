@@ -39,7 +39,7 @@ class User implements Tableable {
   @override
   List<Object?> asRow() {
     return [
-      userId,
+      schoolId,
       name,
       email,
       DropdownCell(

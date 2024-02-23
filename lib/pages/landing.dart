@@ -75,11 +75,11 @@ class _LandingState extends State<Landing> {
           : AssetPage(profile: _attachedprofile);
 
     } else if (_selectedIndex == 2) {
-      return CheckInandOutPage();
+      return const CheckInandOutPage();
       }else if (_selectedIndex == 3) {
-      return ReservationsPage();
+      return const ReservationsPage();
     }else if (_selectedIndex == 4) {
-      return AllUsersPage();
+      return const AllUsersPage();
     }
 
     return const HomePage();

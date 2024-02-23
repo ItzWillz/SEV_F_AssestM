@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import '../models/asset_instance.dart';
 
 import '../models/reservation_model.dart';
@@ -14,7 +15,7 @@ class ReservationsPage extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
               child: ListView(
                 children:[
-                    Text("    Reservations", style: TextStyle( fontSize: 20.0)),
+                    const Text("    Reservations", style: TextStyle( fontSize: 20.0)),
                     AssetDataTable(data: _reservations), //${userGroup}
                 ]
             ),

@@ -27,7 +27,7 @@ class Reservations implements Tableable {
     'Laptop',
     'Projector',
     'Calculator',
-  ]; // TODO store and pull this from Firestore.
+  ];
 
   @override
   List<String> header() {
