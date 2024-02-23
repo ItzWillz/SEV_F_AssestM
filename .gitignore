@@ -1,5 +1,8 @@
 ### ------------------------- Flutter.gitignore ------------------------ ###
 
+#Whitelist build/web folder
+!build/web
+
 # Miscellaneous
 *.class
 #*.lock

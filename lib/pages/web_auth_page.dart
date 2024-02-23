@@ -122,7 +122,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
       );
 
       _googleUser = await _googleSignIn.signIn();
-      print("This is the Google User $_googleUser");
+      //print("This is the Google User $_googleUser");
 
       final GoogleSignInAuthentication? googleAuth =
           await _googleUser?.authentication;
@@ -145,7 +145,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
       }
     } on Exception catch (e) {
       // TODO
-      print('exception->$e');
+      //print('exception->$e');
     }
   }
 
@@ -186,7 +186,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
     // User? user = FirebaseAuth.instance.currentUser;
     notifier.completeLoginFunctionality(user);
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Landing()));
+        .push(MaterialPageRoute(builder: (context) => const Landing()));
   }
 
   void notifySignUp(User user) {
@@ -194,7 +194,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
     // User? user = FirebaseAuth.instance.currentUser;
     notifier.completeSignUpFunctionality(user, int.parse(myController.text));
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Landing()));
+        .push(MaterialPageRoute(builder: (context) => const Landing()));
   }
 
   Future<void> signOut() async {

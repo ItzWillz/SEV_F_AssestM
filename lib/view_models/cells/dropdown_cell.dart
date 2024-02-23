@@ -17,7 +17,7 @@ class DropdownCell extends AssetCell {
   DataCell toDataCell() {
     return DataCell(
       DropdownButton<String>(
-        value: value,
+        value: useDefault() ? items.first : value,
         items: items.map((value) {
           return DropdownMenuItem(
             value: value,
@@ -32,4 +32,7 @@ class DropdownCell extends AssetCell {
       ),
     );
   }
+
+  bool useDefault() =>
+      value == null || (value?.isEmpty ?? false) || value == 'default';
 }
