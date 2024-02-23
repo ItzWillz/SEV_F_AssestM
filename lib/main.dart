@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
       ),
       home: const Landing(),
       // home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? Landing() : TempWebAuthPage(),
