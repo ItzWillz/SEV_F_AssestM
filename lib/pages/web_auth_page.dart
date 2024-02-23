@@ -90,7 +90,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: const InputDecoration(
-                      labelText: "School ID", hintText: "1848375"),
+                      labelText: "School ID", hintText: "ex. 1848375"),
                 )),
             ElevatedButton(
                 onPressed: validSchoolId ? signUp : null,
@@ -143,9 +143,9 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
       } else {
         throw "You must sign-up with a schoolId before logging in to your account.";
       }
+    // ignore: unused_catch_clause
     } on Exception catch (e) {
-      // TODO
-      //print('exception->$e');
+      // Hold Empty
     }
   }
 
@@ -175,9 +175,9 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
       if (credentials.user != null) {
         notifySignUp(credentials.user!);
       }
+    // ignore: unused_catch_clause
     } on Exception catch (e) {
-      // TODO
-      print('exception->$e');
+      // Hold Empty
     }
   }
 
