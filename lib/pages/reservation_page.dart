@@ -10,10 +10,15 @@ class ReservationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      return Material(
-          child: Padding(
+           child: Padding(
             padding: const EdgeInsets.all(10.0),
-              child:AssetDataTable(data: _reservations, section: "   Reservations ",),
-                ),
+              child: ListView(
+                children:[
+                    Text("    Reservations", style: TextStyle( fontSize: 20.0)),
+                    AssetDataTable(data: _reservations), //${userGroup}
+                ]
+            ),
+       )
     );
   }
 }

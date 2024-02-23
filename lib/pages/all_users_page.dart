@@ -8,7 +8,17 @@ class AllUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(child: AssetDataTable(data: _admins, section: '',));
+    return Material(
+       child: Padding(
+            padding: const EdgeInsets.all(10.0),
+              child: ListView(
+                children:[
+                    Text("    Users", style: TextStyle( fontSize: 20.0)),
+                    AssetDataTable(data: _admins), //${userGroup}
+                ]
+            ),
+       )
+    );
   }
 }
 

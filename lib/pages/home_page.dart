@@ -11,8 +11,13 @@ class HomePage extends StatelessWidget {
     return Material(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-              child:AssetDataTable(data: _assetByUserGroup, section: "   Asset's Managed by ",), //${userGroup}
-                ),
+              child: ListView(
+                children:[
+                    Text("    Asset's Managed by ", style: TextStyle( fontSize: 20.0)),
+                    AssetDataTable(data: _assetByUserGroup), //${userGroup}
+                ]
+            ),
+       )
     );
   }
 }

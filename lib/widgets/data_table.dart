@@ -42,12 +42,11 @@ class MyDataSource extends DataTableSource {
 }
 
 class AssetDataTable extends StatelessWidget {
-  AssetDataTable({super.key, required this.data, required this.section})
+  AssetDataTable({super.key, required this.data})
       : dataSource = MyDataSource(data: data);
 
   final List<Object> data;
   final DataTableSource dataSource;
-  final String section;
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +56,10 @@ class AssetDataTable extends StatelessWidget {
     final asset = data.first;
 
     if (asset is Tableable) {
-      return ListView(
-        children: [
-         Text(section, style: TextStyle( fontSize: 20.0)),
-          Expanded(
-          child: PaginatedDataTable(
+      return PaginatedDataTable(
           columns: asset.header().map(columnHeader).toList(),
           source: dataSource,
-          )
-        ),
-        ]
-      );
+          );
     }
 
     return Text(
