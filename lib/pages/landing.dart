@@ -25,9 +25,13 @@ class _LandingState extends State<Landing> {
   String? _attachedprofile;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
+  String? _attachedprofile;
+  // ignore: unused_field
+  bool _isOnAssetProfilePage = false;
 
   @override
   Widget build(BuildContext context) {
+    var name = context.watch<LoggedUserNotifier>().name;
     var name = context.watch<LoggedUserNotifier>().name;
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +76,11 @@ class _LandingState extends State<Landing> {
       return notifier.isProfileSelectionScreen
           ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
           : AssetPage(profile: _attachedprofile);
+      final notifier = Provider.of<CreateAssetNotifier>(context);
+
+      return notifier.isProfileSelectionScreen
+          ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
+          : AssetPage(profile: _attachedprofile);
     } else if (_selectedIndex == 2) {
       return CheckInandOutPage();
       }else if (_selectedIndex == 3) {
@@ -88,6 +97,14 @@ class _LandingState extends State<Landing> {
       _isOnAssetProfilePage = true;
       _attachedprofile = profile;
     });
+    return const HomePage();
+  }
+
+  void _navigateToAddAndEditAssetPage(String? profile) {
+    setState(() {
+      _isOnAssetProfilePage = true;
+      _attachedprofile = profile;
+    });
   }
 
   void onDestinationSelected(int index) {
@@ -96,3 +113,4 @@ class _LandingState extends State<Landing> {
     });
   }
 }
+
