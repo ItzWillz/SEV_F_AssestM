@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/web_auth_page.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 import 'pages/landing.dart';
 import 'view_models/create_asset_profile.dart';
@@ -38,4 +38,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

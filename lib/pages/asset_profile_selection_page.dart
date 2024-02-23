@@ -72,14 +72,14 @@ class _AssetProfileSelectionPageState extends State<AssetProfileSelectionPage> {
                   notifier.completeProfileSelectionScren(assetName: null);
                   // widget.callBack(null);
                 },
-                child: Text('Continue without profile')),
+                child: const Text('Continue without profile')),
             ElevatedButton(
                 onPressed: () {
                   final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
                   notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
                   // widget.callBack(selectedIcon?.label);
                 },
-                child: Text('Continue'))
+                child: const Text('Continue'))
           ],
         )
       ],

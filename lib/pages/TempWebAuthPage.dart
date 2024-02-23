@@ -92,3 +92,4 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
     } on Exception catch (_) {}
   }
 }
+

@@ -1,17 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/user_model.dart' as um;
+import 'package:ocassetmanagement/services/firestore_storage.dart';
 
 class LoggedUserNotifier extends ChangeNotifier {
   // bool isProfileSelectionScreen = true; Change to unshow login screen rather than navigate?
-  // String? userGroup;
-  // String? userId;
-  // int? schoolId;
-  // String? name;
+  String? _userGroup;
+  // ignore: unused_field
+  String? _userId;
+  int? _schoolId;
+  String? _name;
+  String? _email;
   um.User? user;
+  FirestoreStorage firestoreStorage = FirestoreStorage();
 
+  // Getters
   bool get isLoggedIn => user != null;
-//Flip to Landing Page & Back
+  //Map<String, String> get userData => {'email': user.email, 'name': user.name};
+  String? get userGroup => _userGroup;
+  String? get name => _name;
+  String? get email => _email;
+  int? get schoolId => _schoolId;
 
   LoggedUserNotifier() {
     FirebaseAuth.instance.authStateChanges().listen((User? event) {
@@ -24,27 +33,35 @@ class LoggedUserNotifier extends ChangeNotifier {
   }
 
   Future<void> completeLoginFunctionality(User user) async {
-    // TODO get info from Firestore
-    this.user = um.User(
-      email: user.email ?? 'No email',
-      name: user.displayName ?? 'No display name',
-      schoolId: 23409,
-      userGroup: 'Admin',
-    );
+    this.user = um.User(userId: user.uid);
 
+    final userData = await firestoreStorage.getUser(this.user!.userId);
+    _userId = userData.userId;
+    _email = userData.email;
+    _userGroup = userData.userGroup;
+    _name = userData.name;
+    _schoolId = userData.schoolId;
 
-    // this.user = um.User(id: user.uid );
-    // isProfileSelectionScreen = false;
-    // if (field arg here) {
-    //   userId = null;
-    //   userGroup = null;
-    //   name = null;
-    // } else {
-    // final user = await FirestoreStorage().getValue(); // Change this to grab all user data
-    // userGroup = userModel.userGroup;
-    // userId = userModel.userId;
-    // name = userModel.name;
-    // }
+    //print("User Data: ${userData.userId} and ${userData.name}");
+    notifyListeners();
+  }
+
+  Future<void> completeSignUpFunctionality(User user,
+      [int schoolId = 0]) async {
+    this.user = um.User(userId: user.uid);
+    this.user!.email = user.email!;
+    this.user!.name = user.displayName!;
+    this.user!.schoolId = schoolId;
+
+    firestoreStorage.insertUser(this.user!);
+    //print("Inserted new user: ${this.user}");
+
+    final userData = await firestoreStorage.getUser(this.user!.userId);
+    _userId = userData.userId;
+    _email = userData.email;
+    _userGroup = userData.userGroup;
+    _name = userData.name;
+    _schoolId = userData.schoolId;
 
     notifyListeners();
   }
