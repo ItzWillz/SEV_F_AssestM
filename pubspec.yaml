@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.2.2
   easy_dynamic_theme: ^2.3.1
   uuid: ^4.1.0
+  csv: ^5.1.1
 
 dev_dependencies:
   flutter_test:
@@ -57,3 +58,4 @@ flutter:
 
   assets:
     - assets/
+    - assets/init_csv/

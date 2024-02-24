@@ -68,15 +68,18 @@ class _AssetProfileSelectionPageState extends State<AssetProfileSelectionPage> {
           children: [
             TextButton(
                 onPressed: () {
-                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                  final notifier =
+                      Provider.of<CreateAssetNotifier>(context, listen: false);
                   notifier.completeProfileSelectionScren(assetName: null);
                   // widget.callBack(null);
                 },
                 child: const Text('Continue without profile')),
             ElevatedButton(
                 onPressed: () {
-                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
-                  notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
+                  final notifier =
+                      Provider.of<CreateAssetNotifier>(context, listen: false);
+                  notifier.completeProfileSelectionScren(
+                      assetName: selectedIcon?.label);
                   // widget.callBack(selectedIcon?.label);
                 },
                 child: const Text('Continue'))

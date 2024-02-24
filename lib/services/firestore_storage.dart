@@ -1,14 +1,18 @@
 //import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ocassetmanagement/models/user_model.dart';
+import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
+import '/models/asset_profile.dart';
+import '/models/user_model.dart';
 import '/models/asset_instance.dart';
-// import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
 class FirestoreStorage {
   // static const _description = 'description';
   static const _users = 'Users';
-  final db = FirebaseFirestore.instance;
+  static final db = FirebaseFirestore.instance;
   //final _userId = AuthController().getUserId();
 
   Future<int> getValue() async {
@@ -17,12 +21,9 @@ class FirestoreStorage {
   }
 
   Future<List<User>> getUsers() async {
-
     final snapshot = await db.collection(_users).get();
 
-    return snapshot.docs
-        .map((doc) => User.fromFirestore(doc))
-      .toList();
+    return snapshot.docs.map((doc) => User.fromFirestore(doc)).toList();
   }
 
   Future<AssetInstance> getAsset(int serialNum) async {
@@ -43,8 +44,8 @@ class FirestoreStorage {
     return asset;
   }
 
-   Future<void> updateUser(User user) async {
-     await db.collection(_users).doc(user.userId).update(user.toMap());
+  Future<void> updateUser(User user) async {
+    await db.collection(_users).doc(user.userId).update(user.toMap());
   }
 
   Future<void> insertAssetInstance(AssetInstance asset) {
@@ -59,6 +60,13 @@ class FirestoreStorage {
       'internalFeatures': 'Mhm',
       'externalAccessories': 'Wireless G502'
     });
+  }
+
+  Future<void> insertAssetProfile(AssetProfile assetProfile) {
+    return db
+        .collection('AssetProfile')
+        .doc(assetProfile.id)
+        .set(assetProfile.toMap());
   }
 
   // @override
@@ -129,5 +137,67 @@ class FirestoreStorage {
       'schoolId': user.schoolId,
       'userGroup': 'IT',
     });
+  }
+
+  /*
+      Wouldn't load because of special characters (�)
+      To find this I searched for the following Regex - [^a-zA-z0-9 _".'/:;#+&(),@-]
+      I replaced 13.3" with 13.3”
+      I replaced 13.3� with 13.3”
+      I removed all remaining �
+  */
+  Future<void> loadInventoryEquipmentProfile() async {
+    final csvData = await rootBundle
+        .loadString('assets/init_csv/Inventory_Equipment_Profile.csv');
+    final table = _csvToList(csvData);
+
+    final rowsWithIssues = _validateCSV(table);
+    if (rowsWithIssues.isNotEmpty) {
+      if (kDebugMode) {
+        print('These rows have issues: $rowsWithIssues');
+      }
+    }
+
+    final assetProfiles = <AssetProfile>[];
+
+    List<dynamic> assetProfile = [];
+    for (int i = 1 /* skip header */; i < table.length; i++) {
+      final row = table[i];
+      if (row.first.toString().isNotEmpty) {
+        assetProfile = row;
+      } else {
+        final columnsWithMultipleValues = [8, 9];
+        for (final col in columnsWithMultipleValues) {
+          if (row[col].toString().isNotEmpty) {
+            assetProfile[col] += '; ${row[col]}';
+          }
+        }
+      }
+      if (i == table.length - 1 || table[i + 1].first.toString().isNotEmpty) {
+        assetProfiles.add(AssetProfile.fromCSV(assetProfile));
+      }
+    }
+
+    final sendToFirestore = assetProfiles.take(2);
+    for (final profile in sendToFirestore) {
+      insertAssetProfile(profile);
+    }
+    if (kDebugMode) {
+      print('Done');
+    }
+  }
+
+  List<List<dynamic>> _csvToList(String csvData) {
+    return const CsvToListConverter()
+        .convert(csvData, eol: '\n', textDelimiter: '"', textEndDelimiter: '"');
+  }
+
+  Iterable<int> _validateCSV(List<List<dynamic>> table) {
+    final length = table.first.length;
+    return table
+        .asMap()
+        .entries
+        .where((e) => e.value.length != length)
+        .map((e) => e.key);
   }
 }
