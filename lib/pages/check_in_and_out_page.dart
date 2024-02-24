@@ -92,7 +92,7 @@ Widget build(BuildContext context) {
                         SizedBox(
                           width: 1198,
                           height: 650,
-                          child: AssetDataTable(data: _checkedOut), 
+                          child: AssetDataTable(data: _filtered), 
                         ),
                       ],
                     ),
