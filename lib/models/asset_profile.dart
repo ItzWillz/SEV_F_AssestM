@@ -5,6 +5,7 @@ class AssetProfile {
   AssetProfile({String? id})   // DocumentSnapshot snapshot(?)
       : assetTypeId = 0,
         name = '',
+        model = '',
         modelNum = 0,
         domain = '',
         accessories = '',
@@ -24,6 +25,7 @@ class AssetProfile {
         :
         assetTypeId = snapshot['assetTypeId'] ?? 0,
         name = snapshot['name'] ?? '',
+        model = snapshot['model'] ?? '',
         modelNum = snapshot['modelNum'] ?? 0,
         domain = snapshot['domain'] ?? '',
         description = snapshot['description'] ?? '',
@@ -40,7 +42,7 @@ class AssetProfile {
         id = snapshot.id;
 
 
-      
+  late String model;
   late int assetTypeId;
   late int userGroupId;
   late String name;
