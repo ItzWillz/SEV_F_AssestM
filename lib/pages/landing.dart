@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
+import 'package:ocassetmanagement/pages/reports_page.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
@@ -30,6 +31,7 @@ class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
     var name = context.watch<LoggedUserNotifier>().name;
+    var userGroup = context.watch<LoggedUserNotifier>().userGroup;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(199, 108, 13, 13),
@@ -57,6 +59,7 @@ class _LandingState extends State<Landing> {
         children: <Widget>[
           if (_showNavigationBar)
             SideBar(
+              userGroup: userGroup,
               selectedIndex: _selectedIndex,
               onDestinationSelected: onDestinationSelected,
             ),
@@ -77,9 +80,9 @@ class _LandingState extends State<Landing> {
     } else if (_selectedIndex == 2) {
       return const CheckInandOutPage();
       }else if (_selectedIndex == 3) {
-      return const ReservationsPage();
-    }else if (_selectedIndex == 4) {
       return const AllUsersPage();
+    }else if (_selectedIndex == 4) {
+      return const ReportsPage();
     }
 
     return const HomePage();
