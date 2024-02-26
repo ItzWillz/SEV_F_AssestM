@@ -232,35 +232,49 @@ class _AssetPageState extends State<AssetPage> {
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(right: 20.0),
-                      child: SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                            content: Text('Asset Saved!'),
-                                          ));
-                                          newAsset.description = description;
-                                          newAsset.serialNum = serialNum;
-                                          newAsset.wirelessNIC = wirelessNIC;
-                                          
-                                          FirestoreStorage().insertAssetInstance(newAsset);
-                                        }
-                                      },
-                                      child: const Text('Validate'),
-                                    ),
-                                     //Remove elevated button below after checking
-                              //  ElevatedButton(
-                              //   onPressed: () {
-                              //     if (_formKey.currentState!.validate()) {
-                              //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              //         content: Text('Printed!'),
-                              //       ));
-                              //       FirestoreStorage().getAsset(serialNum);
-                              //     }
-                              //   },
-                              //   child: const Text('Get'),
-                              // ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            child: ElevatedButton(
+                        onPressed: () { //Route back to checked out list
+                        dispose();
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                          ),
+                          const SizedBox(width: 20,),
+                          SizedBox(
+                            width: 100,
+                            child: ElevatedButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!.validate()) {
+                                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                content: Text('Asset Saved!'),
+                                              ));
+                                              newAsset.description = description;
+                                              newAsset.serialNum = serialNum;
+                                              newAsset.wirelessNIC = wirelessNIC;
+                                              
+                                              FirestoreStorage().insertAssetInstance(newAsset);
+                                            }
+                                          },
+                                          child: const Text('Submit'),
+                                        ),
+                                         //Remove elevated button below after checking
+                                  //  ElevatedButton(
+                                  //   onPressed: () {
+                                  //     if (_formKey.currentState!.validate()) {
+                                  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                  //         content: Text('Printed!'),
+                                  //       ));
+                                  //       FirestoreStorage().getAsset(serialNum);
+                                  //     }
+                                  //   },
+                                  //   child: const Text('Get'),
+                                  // ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
