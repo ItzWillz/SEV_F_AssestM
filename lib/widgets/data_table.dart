@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../models/asset_model.dart';
 import '../view_models/cells/asset_cell.dart';
 import '../models/tableable.dart';
 
@@ -35,6 +36,8 @@ class MyDataSource extends DataTableSource {
     if (label is AssetCell) {
       label.addListener(() => notifyListeners());
       return label.toDataCell();
+    } else if (label is ActionCell) {
+      return label.toDataCell();
     }
 
     return DataCell(Text(label?.toString() ?? ''));
@@ -57,9 +60,9 @@ class AssetDataTable extends StatelessWidget {
 
     if (asset is Tableable) {
       return PaginatedDataTable(
-          columns: asset.header().map(columnHeader).toList(),
-          source: dataSource,
-          );
+        columns: asset.header().map(columnHeader).toList(),
+        source: dataSource,
+      );
     }
 
     return Text(

@@ -33,11 +33,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        //primarySwatch: Colors.blue,
-      ),
-       //home: const ReportsPage(),
+          //primarySwatch: Colors.blue,
+          ),
+      //home: const ReportsPage(),
       //home: const Landing(),
-       home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? const Landing() : const TempWebAuthPage(),
+      home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
+          ? const Landing()
+          : const TempWebAuthPage(),
     );
   }
 }
