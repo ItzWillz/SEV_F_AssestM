@@ -3,11 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocassetmanagement/models/user_model.dart';
 import '/models/asset_instance.dart';
+import '/models/asset_model.dart';
 // import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
 class FirestoreStorage {
   // static const _description = 'description';
   static const _users = 'Users';
+  static const _assets = 'Asset';
   final db = FirebaseFirestore.instance;
   //final _userId = AuthController().getUserId();
 
@@ -17,12 +19,9 @@ class FirestoreStorage {
   }
 
   Future<List<User>> getUsers() async {
-
     final snapshot = await db.collection(_users).get();
 
-    return snapshot.docs
-        .map((doc) => User.fromFirestore(doc))
-      .toList();
+    return snapshot.docs.map((doc) => User.fromFirestore(doc)).toList();
   }
 
   Future<AssetInstance> getAsset(int serialNum) async {
@@ -43,8 +42,8 @@ class FirestoreStorage {
     return asset;
   }
 
-   Future<void> updateUser(User user) async {
-     await db.collection(_users).doc(user.userId).update(user.toMap());
+  Future<void> updateUser(User user) async {
+    await db.collection(_users).doc(user.userId).update(user.toMap());
   }
 
   Future<void> insertAssetInstance(AssetInstance asset) {
@@ -59,6 +58,11 @@ class FirestoreStorage {
       'internalFeatures': 'Mhm',
       'externalAccessories': 'Wireless G502'
     });
+  }
+
+  Future<List<Asset>> getAssets() async {
+    final snapshot = await db.collection(_assets).get();
+    return snapshot.docs.map((doc) => Asset.fromFirestore(doc)).toList();
   }
 
   // @override
