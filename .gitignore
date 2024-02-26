@@ -59,7 +59,10 @@ analysis_benchmark.json
 .pub/
 build/
 #Whitelist build/web folder
+!build/web
+!build/web*
 !build/web/
+!build/web/*
 flutter_*.png
 linked_*.ds
 unlinked.ds
