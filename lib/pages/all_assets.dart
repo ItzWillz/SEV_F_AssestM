@@ -29,7 +29,7 @@ class AllAssetsPage extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: ListView(
                 children: [
-                  Text("Assets", style: TextStyle(fontSize: 20.0)),
+                  const Text("Assets", style: TextStyle(fontSize: 20.0)),
                   AssetDataTable(data: snapshot.data!),
                 ],
               ),
@@ -40,7 +40,9 @@ class AllAssetsPage extends StatelessWidget {
     );
   }
 
+  // ignore: unused_element
   _viewMoreInfo(BuildContext context, Asset asset) {}
 
+  // ignore: unused_element
   _editAsset(BuildContext context, Asset asset) {}
 }

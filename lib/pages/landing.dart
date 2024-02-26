@@ -30,6 +30,7 @@ class _LandingState extends State<Landing> {
   Object? _attachedasset;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
+  // ignore: unused_field
   bool _isOnCheckOutPage = false;
 
 

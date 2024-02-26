@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
@@ -78,11 +76,11 @@ class ActionCell {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: Icon(Icons.info_outline),
+          icon: const Icon(Icons.info_outline),
           onPressed: onViewMore,
         ),
         IconButton(
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           onPressed: onEdit,
         ),
       ],

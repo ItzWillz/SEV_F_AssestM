@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SideBar extends StatefulWidget {
   SideBar({
     super.key,
@@ -12,6 +13,7 @@ class SideBar extends StatefulWidget {
 
   final NavigationRailLabelType labelType;
   final int selectedIndex;
+  // ignore: prefer_typing_uninitialized_variables
   final userGroup;
   List<NavigationRailDestination> navigationDestinations = [];
   final void Function(int) onDestinationSelected;
@@ -110,7 +112,7 @@ class _SideBarState extends State<SideBar> {
     }
 
     return NavigationRail(
-      indicatorColor: Color.fromARGB(111, 108, 13, 13),
+      indicatorColor: const Color.fromARGB(111, 108, 13, 13),
       selectedIndex: widget.selectedIndex,
       labelType: widget.labelType,
       elevation: 5,

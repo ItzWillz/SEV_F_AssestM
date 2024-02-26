@@ -1,8 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/asset_page.dart';
-import 'package:ocassetmanagement/pages/new_check_out_page.dart';
-import 'package:ocassetmanagement/pages/reports_page.dart';
 // ignore: unused_import
 import 'package:ocassetmanagement/pages/web_auth_page.dart';
 import 'package:ocassetmanagement/view_models/create_check_out.dart';
