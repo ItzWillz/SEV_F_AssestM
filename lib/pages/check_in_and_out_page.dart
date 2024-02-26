@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/new_check_out_page.dart';
+//import 'package:ocassetmanagement/pages/new_check_out_page.dart';
+import 'package:ocassetmanagement/view_models/create_check_out.dart';
+import 'package:provider/provider.dart';
 
 import '../models/check_out_model.dart';
 import '../models/tableable.dart';
@@ -7,7 +9,8 @@ import '../widgets/data_table.dart';
 
 
 class CheckInandOutPage extends StatefulWidget {
-const CheckInandOutPage({super.key});
+const CheckInandOutPage({super.key,  required this.callBack});
+  final void Function(Object?) callBack;
 
 @override
   // ignore: library_private_types_in_public_api
@@ -74,9 +77,13 @@ Widget build(BuildContext context) {
                                 width: 200,
                                 child: ElevatedButton.icon(
                                     onPressed: (){
-                                      Navigator.of(
-                                        context
-                                      ).push(MaterialPageRoute(builder: (context) => const NewCheckOutPage()));
+                              final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
+                                    notifier.newCheckOutScreen(asset: null);
+                                       //notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
+
+                                      // Navigator.of(
+                                      //   context
+                                      // ).push(MaterialPageRoute(builder: (context) => const NewCheckOutPage()));
                                     }, 
                                   icon: const Icon(Icons.add, color: Colors.white,), 
                                   label: const Text("Add Check-Out", style: TextStyle(color: Colors.white)),

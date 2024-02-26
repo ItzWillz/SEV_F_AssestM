@@ -110,6 +110,7 @@ class _SideBarState extends State<SideBar> {
     }
 
     return NavigationRail(
+      indicatorColor: Color.fromARGB(111, 108, 13, 13),
       selectedIndex: widget.selectedIndex,
       labelType: widget.labelType,
       elevation: 5,

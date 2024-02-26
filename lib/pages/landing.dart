@@ -3,12 +3,14 @@ import 'package:ocassetmanagement/pages/all_assets.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
+import 'package:ocassetmanagement/pages/new_check_out_page.dart';
 import 'package:ocassetmanagement/pages/reports_page.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
+import '../view_models/create_check_out.dart';
 import 'check_in_and_out_page.dart';
-import 'reservation_page.dart';
+//import 'reservation_page.dart';
 
 import 'home_page.dart';
 import '../sidebar.dart';
@@ -25,8 +27,11 @@ class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
   bool _showNavigationBar = false;
   String? _attachedprofile;
+  Object? _attachedasset;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
+  bool _isOnCheckOutPage = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +81,15 @@ class _LandingState extends State<Landing> {
           ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
           : AssetPage(profile: _attachedprofile);
     } else if (_selectedIndex == 2) {
-      return const CheckInandOutPage();
-    } else if (_selectedIndex == 3) {
+      final notifierTwo = Provider.of<CreateCheckOutNotifier>(context);
+
+      return notifierTwo.isCheckOutScreen
+           ? CheckInandOutPage(callBack: _navigateToAddAndEditCheckOutPage)
+           : NewCheckOutPage(asset: _attachedasset,);
+
+      //return const CheckInandOutPage();
+      }else if (_selectedIndex == 3) {
+
       return const AllUsersPage();
     } else if (_selectedIndex == 4) {
       return const ReportsPage();
@@ -92,6 +104,13 @@ class _LandingState extends State<Landing> {
     setState(() {
       _isOnAssetProfilePage = true;
       _attachedprofile = profile;
+    });
+  }
+
+  void _navigateToAddAndEditCheckOutPage(Object? asset) {
+    setState(() {
+      _isOnCheckOutPage = true;
+      _attachedasset = asset;
     });
   }
 
