@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -63,7 +64,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
         body: Container(
           decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/campus.png"),
+            image: AssetImage("${(kDebugMode && kIsWeb) ? '' : 'assets/'}assets/campus.png"),
             fit: BoxFit.cover,
           ),
         ),
