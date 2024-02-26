@@ -64733,7 +64733,7 @@ case 2:return A.G(o,r)}})
 return A.I($async$xX,r)}}
 A.aoo.prototype={}
 A.xQ.prototype={
-gqN(){return"../lib/images/campus.png"},
+gqN(){return"assets/campus.png"},
 aor(a){var s,r={},q=a.a
 if(q==null)q=$.a16()
 r.a=r.b=null

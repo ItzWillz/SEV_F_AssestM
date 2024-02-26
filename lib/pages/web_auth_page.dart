@@ -63,7 +63,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
         body: Container(
           decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("../lib/images/campus.png"),
+            image: AssetImage("assets/campus.png"),
             fit: BoxFit.cover,
           ),
         ),
