@@ -1,6 +1,9 @@
 //import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/models/building_model.dart';
+import 'package:ocassetmanagement/models/person_model.dart';
+import 'package:ocassetmanagement/models/room_model.dart';
 import 'package:ocassetmanagement/models/user_model.dart';
 import '/models/asset_instance.dart';
 import '/models/asset_model.dart';
@@ -10,6 +13,10 @@ class FirestoreStorage {
   // static const _description = 'description';
   static const _users = 'Users';
   static const _assets = 'Asset';
+  static const _people = 'People';
+  static const _buildings = 'Buildings';
+  static const _rooms = 'Rooms';
+
   final db = FirebaseFirestore.instance;
   //final _userId = AuthController().getUserId();
 
@@ -60,9 +67,45 @@ class FirestoreStorage {
     });
   }
 
+// Get all asset instances
   Future<List<Asset>> getAssets() async {
     final snapshot = await db.collection(_assets).get();
     return snapshot.docs.map((doc) => Asset.fromFirestore(doc)).toList();
+  }
+
+// Get all people
+  Future<List<Person>> getPeople() async {
+    final snapshot = await db.collection(_people).get();
+    return snapshot.docs.map((doc) => Person.fromFirestore(doc)).toList();
+  }
+
+// Get all buildings
+  Future<List<Building>> getBuildings() async {
+    final snapshot = await db.collection(_buildings).get();
+    return snapshot.docs.map((doc) => Building.fromFirestore(doc)).toList();
+  }
+
+// Get all rooms
+  Future<List<Room>> getRooms() async {
+    final snapshot = await db.collection(_rooms).get();
+    return snapshot.docs.map((doc) => Room.fromFirestore(doc)).toList();
+  }
+
+// Get all the names of rooms for a certain building.
+  Future<List<String>> getRoomsForBuilding(String buildingName) async {
+    List<String> rooms = [];
+
+    QuerySnapshot<Map<String, dynamic>> event =
+        await db.collection('Buildings').get();
+
+    for (var doc in event.docs) {
+      if (doc.data()['name'] == buildingName) {
+        final data = doc.data();
+        rooms = data['rooms'];
+      }
+    }
+
+    return rooms;
   }
 
   // @override

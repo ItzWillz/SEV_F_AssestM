@@ -1,5 +1,10 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/web_auth_page.dart';
+import 'package:ocassetmanagement/view_models/logged_user.dart';
+import 'package:provider/provider.dart';
 
 class SideBar extends StatefulWidget {
   SideBar({
@@ -116,6 +121,18 @@ class _SideBarState extends State<SideBar> {
       elevation: 5,
       onDestinationSelected: widget.onDestinationSelected,
       destinations: widget.navigationDestinations,
+      trailing: Expanded(
+          child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.logout),
+            label: const Text("Sign Out"),
+            onPressed: signOut,
+          ),
+        ),
+      )),
       // const <NavigationRailDestination>[
       //   NavigationRailDestination(
       //     icon: Icon(Icons.home),
@@ -144,6 +161,17 @@ class _SideBarState extends State<SideBar> {
       //],
     );
   }
+
+  // TODO: Throw exception if error.
+  void signOut() {
+    final notifier = Provider.of<LoggedUserNotifier>(context, listen: false);
+    notifier.loggedUserOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const TempWebAuthPage()),
+        (_) => false);
+  }
 }
 
 //List navigationDestinations = [];
+

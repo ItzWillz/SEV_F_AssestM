@@ -32,7 +32,6 @@ class _LandingState extends State<Landing> {
   bool _isOnAssetProfilePage = false;
   bool _isOnCheckOutPage = false;
 
-
   @override
   Widget build(BuildContext context) {
     var name = context.watch<LoggedUserNotifier>().name;
@@ -84,12 +83,13 @@ class _LandingState extends State<Landing> {
       final notifierTwo = Provider.of<CreateCheckOutNotifier>(context);
 
       return notifierTwo.isCheckOutScreen
-           ? CheckInandOutPage(callBack: _navigateToAddAndEditCheckOutPage)
-           : NewCheckOutPage(asset: _attachedasset,);
+          ? CheckInandOutPage(callBack: _navigateToAddAndEditCheckOutPage)
+          : NewCheckOutPage(
+              asset: _attachedasset,
+            );
 
       //return const CheckInandOutPage();
-      }else if (_selectedIndex == 3) {
-
+    } else if (_selectedIndex == 3) {
       return const AllUsersPage();
     } else if (_selectedIndex == 4) {
       return const ReportsPage();
