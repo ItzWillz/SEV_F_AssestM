@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +6,8 @@ import 'package:ocassetmanagement/pages/landing.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
 import 'package:provider/provider.dart';
+
+import '../services/image_converter.dart';
 // import 'package:http/http.dart' as http;
 
 class TempWebAuthPage extends StatefulWidget {
@@ -62,9 +63,9 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
         centerTitle: true,
       ),
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("${(kDebugMode && kIsWeb) ? '' : 'assets/'}assets/campus.png"),
+            image: convertToImage('assets/campus.png'),
             fit: BoxFit.cover,
           ),
         ),
