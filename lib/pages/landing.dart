@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/all_assets.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
@@ -30,7 +31,7 @@ class _LandingState extends State<Landing> {
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
   bool _isOnCheckOutPage = false;
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,6 @@ class _LandingState extends State<Landing> {
             });
           },
         ),
-
       ),
       // body: Placeholder(),
       body: Row(
@@ -80,7 +80,6 @@ class _LandingState extends State<Landing> {
       return notifier.isProfileSelectionScreen
           ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
           : AssetPage(profile: _attachedprofile);
-
     } else if (_selectedIndex == 2) {
       final notifierTwo = Provider.of<CreateCheckOutNotifier>(context);
 
@@ -90,15 +89,16 @@ class _LandingState extends State<Landing> {
 
       //return const CheckInandOutPage();
       }else if (_selectedIndex == 3) {
+
       return const AllUsersPage();
-    }else if (_selectedIndex == 4) {
+    } else if (_selectedIndex == 4) {
       return const ReportsPage();
+    } else if (_selectedIndex == 5) {
+      return const AllAssetsPage();
     }
 
     return const HomePage();
   }
-
-  
 
   void _navigateToAddAndEditAssetPage(String? profile) {
     setState(() {
@@ -120,4 +120,3 @@ class _LandingState extends State<Landing> {
     });
   }
 }
-

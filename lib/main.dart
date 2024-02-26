@@ -41,8 +41,11 @@ class MyApp extends StatelessWidget {
         //primarySwatch: Colors.blue,
       ),
        //home: const NewCheckOutPage(),
+
       //home: const Landing(),
-       home: Provider.of<LoggedUserNotifier>(context).isLoggedIn ? const Landing() : const TempWebAuthPage(),
+      home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
+          ? const Landing()
+          : const TempWebAuthPage(),
     );
   }
 }
