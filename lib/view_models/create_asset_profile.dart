@@ -18,7 +18,7 @@ class CreateAssetNotifier extends ChangeNotifier {
   }
 
   void completeAssetSelectScreen() {
-    isProfileSelectionScreen = false;
+    isProfileSelectionScreen = true;
     assetProfile = null;
     notifyListeners();
   }

@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/reports_page.dart';
 // ignore: unused_import
 import 'package:ocassetmanagement/pages/web_auth_page.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
+import 'package:ocassetmanagement/view_models/create_check_out.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'pages/landing.dart';
@@ -19,6 +19,8 @@ Future<void> main() async {
     providers: [
       ChangeNotifierProvider<CreateAssetNotifier>(
           create: (_) => CreateAssetNotifier()),
+      ChangeNotifierProvider<CreateCheckOutNotifier>(
+          create: (_) => CreateCheckOutNotifier()),
       ChangeNotifierProvider<LoggedUserNotifier>(
           create: (_) => LoggedUserNotifier()),
     ],
@@ -34,9 +36,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          //primarySwatch: Colors.blue,
-          ),
-      //home: const ReportsPage(),
+        //primarySwatch: Colors.blue,
+      ),
+       //home: const NewCheckOutPage(),
+
       //home: const Landing(),
       home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
           ? const Landing()
