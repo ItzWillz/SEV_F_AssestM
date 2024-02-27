@@ -91972,7 +91972,7 @@ r=(s==null?$.bu=$.dB():s).dQ("[DEFAULT]")
 A.bH(r,$.de(),!0)
 s=A.na(new A.cO(r))
 q=$.aCS()
-s=A.mm(s,s.gev().ht("Assets")).akO()
+s=A.mm(s,s.gev().ht("Asset")).akO()
 p=q.x
 p===$&&A.b()
 o=q.c
@@ -92334,7 +92334,7 @@ var $async$wt=A.F(function(b,c){if(b===1)return A.G(c,r)
 while(true)switch(s){case 0:k=A.ayT()
 j=p.a
 s=3
-return A.O(A.mm(j,j.gev().ht("Assets")).fz(0,a).fb(0),$async$wt)
+return A.O(A.mm(j,j.gev().ht("Asset")).fz(0,a).fb(0),$async$wt)
 case 3:j=c.gqd(),o=j.length,n=0
 case 4:if(!(n<j.length)){s=6
 break}m=j[n]
@@ -92377,7 +92377,7 @@ wv(){var s=0,r=A.J(t.RJ),q,p=this,o,n
 var $async$wv=A.F(function(a,b){if(a===1)return A.G(b,r)
 while(true)switch(s){case 0:n=p.a
 s=3
-return A.O(A.mm(n,n.gev().ht("Assets")).fb(0),$async$wv)
+return A.O(A.mm(n,n.gev().ht("Asset")).fb(0),$async$wv)
 case 3:n=b.gqd()
 o=A.a3(n).i("X<1,hW>")
 q=A.a2(new A.X(n,new A.a7Z(),o),!0,o.i("aB.E"))
@@ -92428,7 +92428,7 @@ Cn(a,b){return this.aqT(a,b)},
 aqT(a,b){var s=0,r=A.J(t.H),q,p=this,o,n
 var $async$Cn=A.F(function(c,d){if(c===1)return A.G(d,r)
 while(true)switch(s){case 0:n=p.a
-n=A.mm(n,n.gev().ht("Assets")).hv(a)
+n=A.mm(n,n.gev().ht("Asset")).hv(a)
 o=A.aHW(b)
 o.toString
 s=3
@@ -92467,7 +92467,7 @@ n=A.eS(l.br(0,"internalFeatures"),k)
 if(n==null)n=""
 m=A.eS(l.br(0,"wirelessNIC"),k)
 if(m==null)m=""
-return new A.hW(s,j,r,q,o,n,m,p,A.eS(l.br(0,"assetId"),k))},
+return new A.hW(s,j,r,q,o,n,m,p,A.eS(l.br(0,"id"),k))},
 $S:588}
 A.D1.prototype={
 ac(){return new A.Z1(B.i)}}
