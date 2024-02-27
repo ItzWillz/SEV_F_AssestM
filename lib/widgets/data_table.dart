@@ -36,8 +36,6 @@ class MyDataSource extends DataTableSource {
     if (label is AssetCell) {
       label.addListener(() => notifyListeners());
       return label.toDataCell();
-    } else if (label is ActionCell) {
-      return label.toDataCell();
     }
 
     return DataCell(Text(label?.toString() ?? ''));

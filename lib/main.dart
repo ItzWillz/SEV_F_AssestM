@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/reports_page.dart';
 // ignore: unused_import
 import 'package:ocassetmanagement/pages/web_auth_page.dart';
+import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'pages/landing.dart';

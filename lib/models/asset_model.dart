@@ -1,54 +1,42 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
+import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class Asset implements Tableable {
-  Asset(
-      {String? id,
-      required String description,
-      required int assetType,
-      required int serialNum,
-      required String status,
-      required Function() onViewMore,
-      required Function() onEdit})
-      : assetType = 0,
-        assetProfileId = 0,
-        serialNum = 0,
-        status = '',
-        description = '',
+  Asset({
+    String? id,
+    required this.description,
+    required this.assetType,
+    required this.serialNum,
+    required this.status,
+  })  : assetProfileId = 0,
         externalAccessories = '',
         internalFeatures = '',
         wirelessNIC = '',
-        id = id ?? _uuid.v1();
+        id = id ?? Uuid().v1();
 
   Asset.fromFirestore(DocumentSnapshot snapshot)
       : assetProfileId = snapshot['assetProfileId'] ?? 0,
-        assetType = snapshot['assetCategoryId'] ?? '',
+        assetType = snapshot['assetCategoryId'] ?? 0,
         serialNum = snapshot['serialNum'] ?? 0,
         status = snapshot['status'] ?? '',
         description = snapshot['description'] ?? '',
         externalAccessories = snapshot['externalAccessories'] ?? '',
         internalFeatures = snapshot['internalFeatures'] ?? '',
         wirelessNIC = snapshot['wirelessNIC'] ?? '',
-        id = snapshot.id;
+        id = snapshot['assetId'];
 
-  late int assetType;
-  late int assetProfileId;
-  late int serialNum;
-  late String status;
-  late String externalAccessories;
-  late String internalFeatures;
-  late String wirelessNIC;
-  static const _uuid = Uuid();
-  late String description;
-  late final String id;
-
-  get onViewMore => null;
-
-  get onEdit => null;
+  final int assetType;
+  final int assetProfileId;
+  final int serialNum;
+  final String status;
+  final String externalAccessories;
+  final String internalFeatures;
+  final String wirelessNIC;
+  final String description;
+  final String id;
 
   @override
   List<String> header() {
@@ -62,30 +50,7 @@ class Asset implements Tableable {
       assetType,
       serialNum,
       status,
-      ActionCell(onViewMore: onViewMore ?? () {}, onEdit: onEdit ?? () {}),
-    ];
-  }
-}
-
-class ActionCell {
-  final VoidCallback onViewMore;
-  final VoidCallback onEdit;
-
-  ActionCell({required this.onViewMore, required this.onEdit});
-
-  DataCell toDataCell() {
-    return DataCell(Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: Icon(Icons.info_outline),
-          onPressed: onViewMore,
-        ),
-        IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: onEdit,
-        ),
-      ],
-    ));
+      null
+    ]; // Actions will be added in the data table source
   }
 }
