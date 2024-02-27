@@ -26,10 +26,9 @@ class FirestoreStorage {
 
   Future<AssetInstance> getAsset(int serialNum) async {
     AssetInstance asset = AssetInstance();
-    // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
 
     QuerySnapshot<Map<String, dynamic>> event =
-        await db.collection('Asset').where(serialNum).get();
+        await db.collection(_assets).where(serialNum).get();
 
     for (var doc in event.docs) {
       final data = doc.data();
@@ -47,7 +46,7 @@ class FirestoreStorage {
   }
 
   Future<void> insertAssetInstance(AssetInstance asset) {
-    return db.collection('Asset').doc().set({
+    return db.collection(_assets).doc().set({
       'id': "33",
       'assetProfileId': 2,
       'assetCategoryId': 5,
