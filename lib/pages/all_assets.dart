@@ -7,6 +7,7 @@ class AllAssetsPage extends StatefulWidget {
   const AllAssetsPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _AllAssetsPageState createState() => _AllAssetsPageState();
 }
 
@@ -109,12 +110,13 @@ class _AllAssetsPageState extends State<AllAssetsPage>
           ),
           actions: <Widget>[
             TextButton(
+              // ignore: sort_child_properties_last
               child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(199, 108, 13, 13),
+                  backgroundColor: const Color.fromARGB(199, 108, 13, 13),
                   foregroundColor: Colors.white),
             ),
           ],
@@ -170,6 +172,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
   }
 
   void _editAsset(BuildContext context, Asset asset) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final _formKey = GlobalKey<FormState>();
     final TextEditingController descriptionController =
         TextEditingController(text: asset.description);
@@ -277,6 +280,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
               },
             ),
             TextButton(
+              // ignore: sort_child_properties_last
               child: const Text('Save'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -296,7 +300,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
                 }
               },
               style: TextButton.styleFrom(
-                  backgroundColor: Color.fromARGB(199, 108, 13, 13),
+                  backgroundColor: const Color.fromARGB(199, 108, 13, 13),
                   foregroundColor: Colors.white),
             ),
           ],

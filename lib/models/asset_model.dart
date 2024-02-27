@@ -13,7 +13,7 @@ class Asset implements Tableable {
         externalAccessories = '',
         internalFeatures = '',
         wirelessNIC = '',
-        id = id ?? Uuid().v1();
+        id = id ?? const Uuid().v1();
 
   Asset.fromFirestore(DocumentSnapshot snapshot)
       : assetProfileId = snapshot['assetProfileId'] ?? 0,
