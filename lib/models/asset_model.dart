@@ -24,7 +24,7 @@ class Asset implements Tableable {
         externalAccessories = snapshot['externalAccessories'] ?? '',
         internalFeatures = snapshot['internalFeatures'] ?? '',
         wirelessNIC = snapshot['wirelessNIC'] ?? '',
-        id = snapshot['assetId'];
+        id = snapshot['id'];
 
   final int assetType;
   final int assetProfileId;
