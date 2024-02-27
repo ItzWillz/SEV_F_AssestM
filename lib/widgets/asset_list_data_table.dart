@@ -40,7 +40,7 @@ class MyDataSource extends DataTableSource {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () => onEdit(asset),
-          ),
+          )
         ],
       )),
     ]);

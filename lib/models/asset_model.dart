@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
-import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class Asset implements Tableable {
@@ -45,12 +43,6 @@ class Asset implements Tableable {
 
   @override
   List<Object?> asRow() {
-    return [
-      description,
-      assetType,
-      serialNum,
-      status,
-      null
-    ]; // Actions will be added in the data table source
+    return [description, assetType, serialNum, status, null];
   }
 }

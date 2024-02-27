@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../models/asset_model.dart';
 import '../view_models/cells/asset_cell.dart';
 import '../models/tableable.dart';
 

@@ -3,45 +3,83 @@ import 'package:ocassetmanagement/widgets/asset_list_data_table.dart';
 import '../services/firestore_storage.dart';
 import '../models/asset_model.dart';
 
-final _assetListFuture = FirestoreStorage().getAssets();
+class AllAssetsPage extends StatefulWidget {
+  const AllAssetsPage({Key? key}) : super(key: key);
 
-class AllAssetsPage extends StatelessWidget {
-  const AllAssetsPage({super.key});
+  @override
+  _AllAssetsPageState createState() => _AllAssetsPageState();
+}
+
+class _AllAssetsPageState extends State<AllAssetsPage>
+    with WidgetsBindingObserver {
+  late Future<List<Asset>> _assetListFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refreshAssets();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshAssets();
+    }
+  }
+
+  void _refreshAssets() {
+    setState(() {
+      _assetListFuture = FirestoreStorage().getAssets();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //FirestoreStorage().insertAsset();
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Assets'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshAssets,
+          ),
+        ],
       ),
       body: FutureBuilder<List<Asset>>(
-        future: _assetListFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error is here: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No assets found.'));
-          } else {
+          future: _assetListFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('No assets found.'));
+            }
             return Material(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
                   children: [
                     AssetListDataTable(
-                        data: snapshot.data!,
-                        onViewMore: (Asset asset) =>
-                            _viewMoreInfo(context, asset),
-                        onEdit: (Asset asset) => _editAsset(context, asset)),
+                      data: snapshot.data!,
+                      onViewMore: (Asset asset) =>
+                          _viewMoreInfo(context, asset),
+                      onEdit: (Asset asset) => _editAsset(context, asset),
+                    ),
                   ],
                 ),
               ),
             );
-          }
-        },
-      ),
+          }),
     );
   }
 
@@ -75,6 +113,9 @@ class AllAssetsPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(199, 108, 13, 13),
+                  foregroundColor: Colors.white),
             ),
           ],
         );
@@ -84,16 +125,17 @@ class AllAssetsPage extends StatelessWidget {
 
   void _updateAsset(
       String assetId,
+      int type,
+      int serialNum,
+      int assetCategoryId,
       String description,
       String status,
-      String type,
-      String serialNum,
       String externalAccessories,
       String internalFeatures,
       String wirelessNIC) {
     FirestoreStorage().updateAsset(assetId, {
-      'assetProfileId': 2,
-      'assetCategoryId': 5,
+      'assetProfileId': type,
+      'assetCategoryId': assetCategoryId,
       'description': description,
       'serialNum': serialNum,
       'status': status,
@@ -101,9 +143,10 @@ class AllAssetsPage extends StatelessWidget {
       'internalFeatures': internalFeatures,
       'externalAccessories': externalAccessories,
     }).then((_) {
-      // Handle successful update, maybe show a success message
+      _refreshAssets();
+      return "Success";
     }).catchError((error) {
-      // Handle errors, maybe show an error message
+      return "$error occurred while updating";
     });
   }
 
@@ -128,19 +171,21 @@ class AllAssetsPage extends StatelessWidget {
 
   void _editAsset(BuildContext context, Asset asset) {
     final _formKey = GlobalKey<FormState>();
-    final TextEditingController _descriptionController =
+    final TextEditingController descriptionController =
         TextEditingController(text: asset.description);
-    final TextEditingController _serialNumController =
+    final TextEditingController serialNumController =
         TextEditingController(text: asset.serialNum.toString());
-    final TextEditingController _externalAccessoriesController =
+    final TextEditingController externalAccessoriesController =
         TextEditingController(text: asset.externalAccessories);
-    final TextEditingController _internalFeaturesController =
+    final TextEditingController internalFeaturesController =
         TextEditingController(text: asset.internalFeatures);
-    final TextEditingController _wirelessNICController =
+    final TextEditingController wirelessNICController =
         TextEditingController(text: asset.wirelessNIC);
+    final TextEditingController assetCategoryIdController =
+        TextEditingController(text: asset.assetProfileId.toString());
 
-    String _selectedStatus = asset.status;
-    String _selectedType = asset.assetType.toString();
+    String selectedStatus = asset.status;
+    String selectedType = asset.assetType.toString();
 
     showDialog(
       context: context,
@@ -153,7 +198,7 @@ class AllAssetsPage extends StatelessWidget {
               child: ListBody(
                 children: <Widget>[
                   TextFormField(
-                    controller: _descriptionController,
+                    controller: descriptionController,
                     decoration: const InputDecoration(labelText: 'Description'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -163,13 +208,13 @@ class AllAssetsPage extends StatelessWidget {
                     },
                   ),
                   TextFormField(
-                    controller: _serialNumController,
+                    controller: serialNumController,
                     decoration:
                         const InputDecoration(labelText: 'Serial Number'),
                     // Add validator if needed
                   ),
                   DropdownButtonFormField<String>(
-                    value: _selectedStatus,
+                    value: selectedStatus,
                     items: [
                       'In Inventory',
                       'Checked Out',
@@ -182,12 +227,12 @@ class AllAssetsPage extends StatelessWidget {
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      _selectedStatus = newValue!;
+                      selectedStatus = newValue!;
                     },
                     decoration: const InputDecoration(labelText: 'Status'),
                   ),
                   DropdownButtonFormField<String>(
-                    value: _selectedType,
+                    value: selectedType,
                     items: ['1', '2', '3', '4', '5']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -196,24 +241,24 @@ class AllAssetsPage extends StatelessWidget {
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
-                      _selectedType = newValue!;
+                      selectedType = newValue!;
                     },
                     decoration: const InputDecoration(labelText: 'Type'),
                   ),
                   TextFormField(
-                    controller: _externalAccessoriesController,
+                    controller: externalAccessoriesController,
                     decoration: const InputDecoration(
                         labelText: 'External Accessories'),
                     // Add validator if needed
                   ),
                   TextFormField(
-                    controller: _internalFeaturesController,
+                    controller: internalFeaturesController,
                     decoration:
                         const InputDecoration(labelText: 'Internal Features'),
                     // Add validator if needed
                   ),
                   TextFormField(
-                    controller: _wirelessNICController,
+                    controller: wirelessNICController,
                     decoration:
                         const InputDecoration(labelText: 'Wireless NIC'),
                     // Add validator if needed
@@ -227,6 +272,7 @@ class AllAssetsPage extends StatelessWidget {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
+                _refreshAssets();
                 Navigator.of(context).pop();
               },
             ),
@@ -236,17 +282,22 @@ class AllAssetsPage extends StatelessWidget {
                 if (_formKey.currentState!.validate()) {
                   _updateAsset(
                     asset.id,
-                    _descriptionController.text,
-                    _selectedStatus,
-                    _selectedType,
-                    _serialNumController.text,
-                    _externalAccessoriesController.text,
-                    _internalFeaturesController.text,
-                    _wirelessNICController.text,
+                    int.parse(selectedType),
+                    int.parse(serialNumController.text),
+                    int.parse(assetCategoryIdController.text),
+                    descriptionController.text,
+                    selectedStatus,
+                    wirelessNICController.text,
+                    externalAccessoriesController.text,
+                    internalFeaturesController.text,
                   );
+                  _refreshAssets();
                   Navigator.of(context).pop();
                 }
               },
+              style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(199, 108, 13, 13),
+                  foregroundColor: Colors.white),
             ),
           ],
         );
