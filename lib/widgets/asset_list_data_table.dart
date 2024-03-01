@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/asset_model.dart';
-import '../models/tableable.dart';
 
 class MyDataSource extends DataTableSource {
   MyDataSource({
@@ -34,11 +33,11 @@ class MyDataSource extends DataTableSource {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () => onViewMore(asset),
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () => onEdit(asset),
           )
         ],
