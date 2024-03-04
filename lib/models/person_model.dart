@@ -16,6 +16,10 @@ class Person implements Tableable {
   late String email;
   late int schoolId;
 
+  get personName => name;
+  get personEmail => email;
+  get personSchoolId => schoolId;
+
   @override
   List<String> header() {
     return ['Name', 'Email', 'School ID'];
@@ -25,5 +29,4 @@ class Person implements Tableable {
   List<Object?> asRow() {
     return [name, email, schoolId];
   }
-
 }

@@ -1,6 +1,7 @@
 //import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/building_model.dart';
 import 'package:ocassetmanagement/models/person_model.dart';
 import 'package:ocassetmanagement/models/room_model.dart';
@@ -12,7 +13,7 @@ import '/models/asset_model.dart';
 class FirestoreStorage {
   // static const _description = 'description';
   static const _users = 'Users';
-  static const _assets = 'Asset';
+  static const _assets = 'Assets';
   static const _people = 'People';
   static const _buildings = 'Buildings';
   static const _rooms = 'Rooms';
@@ -36,7 +37,7 @@ class FirestoreStorage {
     // db.collection('Asset').where('serialNum', isEqualTo: serialNum).limit(1).get();
 
     QuerySnapshot<Map<String, dynamic>> event =
-        await db.collection('Asset').where(serialNum).get();
+        await db.collection(_assets).where(serialNum).get();
 
     for (var doc in event.docs) {
       final data = doc.data();
@@ -54,7 +55,7 @@ class FirestoreStorage {
   }
 
   Future<void> insertAssetInstance(AssetInstance asset) {
-    return db.collection('Asset').doc().set({
+    return db.collection(_assets).doc().set({
       'id': "33",
       'assetProfileId': 2,
       'assetCategoryId': 5,
@@ -92,8 +93,8 @@ class FirestoreStorage {
   }
 
 // Get all the names of rooms for a certain building.
-  Future<List<String>> getRoomsForBuilding(String buildingName) async {
-    List<String> rooms = [];
+  Future<List<dynamic>> getRoomsForBuilding(String buildingName) async {
+    List<dynamic> rooms = [];
 
     QuerySnapshot<Map<String, dynamic>> event =
         await db.collection('Buildings').get();
@@ -106,6 +107,44 @@ class FirestoreStorage {
     }
 
     return rooms;
+  }
+
+  Future<List<DropdownMenuItem>> getPeopleAsDropdownMenuItems() async {
+    var people = await getPeople();
+    List<DropdownMenuItem> menuItems = [];
+    for (Person person in people) {
+      var newItem = DropdownMenuItem(
+          value: '${person.name} ${person.schoolId}',
+          child: Text('${person.name} ${person.schoolId}'));
+
+      menuItems.add(newItem);
+    }
+    return menuItems;
+  }
+
+  Future<List<DropdownMenuItem>> getBuildingsAsDropdownMenuItems() async {
+    var buildings = await getBuildings();
+    List<DropdownMenuItem> menuItems = [];
+    for (Building building in buildings) {
+      var newItem =
+          DropdownMenuItem(value: building.name, child: Text(building.name));
+
+      menuItems.add(newItem);
+    }
+    return menuItems;
+  }
+
+  Future<List<DropdownMenuItem>> getRoomsForBuildingAsDropdownMenuItems(
+      String buildingName) async {
+    var rooms = await getRoomsForBuilding(buildingName);
+    List<DropdownMenuItem> menuItems = [];
+    for (String room in rooms) {
+      var newItem = DropdownMenuItem(value: room, child: Text(room));
+
+      menuItems.add(newItem);
+    }
+
+    return menuItems;
   }
 
   // @override
