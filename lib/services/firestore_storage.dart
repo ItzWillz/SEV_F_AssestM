@@ -1,28 +1,45 @@
 //import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/models/user_group_model.dart';
 import 'package:ocassetmanagement/models/user_model.dart';
+import 'package:ocassetmanagement/models/vendor_model.dart';
 import '/models/asset_instance.dart';
 import '/models/asset_model.dart';
-// import 'package:todo_william_mcdonald/controllers/auth_controller.dart';
 
 class FirestoreStorage {
-  // static const _description = 'description';
   static const _users = 'Users';
   static const _assets = 'Asset';
+  static const _vendors = 'Vendors';
+  static const _userGroups = 'UserGroups';
   final db = FirebaseFirestore.instance;
-  //final _userId = AuthController().getUserId();
 
   Future<int> getValue() async {
     final doc = await db.collection('temp').doc('temp').get();
     return doc.get('num') ?? 0;
   }
 
-  Future<List<User>> getUsers() async {
-    final snapshot = await db.collection(_users).get();
+  // All Firestore methods for 'Vendors'
 
-    return snapshot.docs.map((doc) => User.fromFirestore(doc)).toList();
+  Future<List<Vendor>> getVendors() async {
+    final snapshot = await db.collection(_vendors).get();
+
+    return snapshot.docs.map((doc) => Vendor.fromFirestore(doc)).toList();
   }
+
+  Future<void> updateVendor(Vendor vendor) async {
+    await db.collection(_vendors).doc(vendor.vendorId).update(vendor.toMap());
+  }
+
+  Future<void> insertVendor(Vendor vendor) {
+    return db.collection(_vendors).doc(vendor.vendorId).set({
+      'vendorId': vendor.vendorId,
+      'type': vendor.type,
+      'name': vendor.name,
+    });
+  }
+  
+
+  // All Firestore methods for 'Asset' (Asset Instances)
 
   Future<AssetInstance> getAsset(int serialNum) async {
     AssetInstance asset = AssetInstance();
@@ -39,10 +56,6 @@ class FirestoreStorage {
     }
 
     return asset;
-  }
-
-  Future<void> updateUser(User user) async {
-    await db.collection(_users).doc(user.userId).update(user.toMap());
   }
 
   Future<void> insertAssetInstance(AssetInstance asset) {
@@ -64,16 +77,16 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => Asset.fromFirestore(doc)).toList();
   }
 
-  // @override
-  // Future<void> removeAssetInstance(Task task) async {
+  Future<void> removeAssetInstance(Asset asset) async {
+    db.collection(_assets).doc(asset.id).delete();
+  }
 
-  //   print(task.id);
-  //   db.collection(_users).doc(userId).collection(_tasks).doc(task.id).delete().then(
-  //         (doc) => print("Document deleted"),
-  //     onError: (e) => print("Error updating document $e"),
-  //   );
+  Future<void> updateAsset(String assetId, Map<String, dynamic> data) async {
+    return await db.collection(_assets).doc(assetId).update(data);
+  }
 
-  // }
+
+  // All Firestore Functions for 'Users'
 
   Future<bool> userExists(String userId) async {
     bool userExists = false;
@@ -107,7 +120,7 @@ class FirestoreStorage {
     User user = User();
 
     QuerySnapshot<Map<String, dynamic>> event =
-        await db.collection('Users').get();
+        await db.collection(_users).get();
 
     for (var doc in event.docs) {
       if (doc.data()['userId'] == userId) {
@@ -125,7 +138,7 @@ class FirestoreStorage {
   }
 
   Future<void> insertUser(User user) {
-    return db.collection('Users').doc(user.userId).set({
+    return db.collection(_users).doc(user.userId).set({
       'userId': user.userId,
       'email': user.email,
       'name': user.name,
@@ -134,7 +147,27 @@ class FirestoreStorage {
     });
   }
 
-  Future<void> updateAsset(String assetId, Map<String, dynamic> data) async {
-    return await db.collection(_assets).doc(assetId).update(data);
+  Future<void> updateUser(User user) async {
+    await db.collection(_users).doc(user.userId).update(user.toMap());
+  }
+
+  Future<List<User>> getUsers() async {
+    final snapshot = await db.collection(_users).get();
+
+    return snapshot.docs.map((doc) => User.fromFirestore(doc)).toList();
+  }
+
+  // All methods for 'UserGroups' in Firebase
+
+  Future<List<UserGroup>> getUserGroups() async {
+    final snapshot = await db.collection(_userGroups).get();
+
+    return snapshot.docs.map((doc) => UserGroup.fromFirestore(doc)).toList();
+  }
+
+  Future<void> insertUserGroup(UserGroup userGroup) {
+    return db.collection(_userGroups).doc(userGroup.name).set({
+      'name': userGroup.name,
+    });
   }
 }

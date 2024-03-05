@@ -70,3 +70,33 @@ class AssetDataTable extends StatelessWidget {
     return DataColumn(label: Text(label.toString()));
   }
 }
+
+class VendorDataTable extends StatelessWidget {
+  VendorDataTable({super.key, required this.data})
+      : dataSource = MyDataSource(data: data);
+
+  final List<Object> data;
+  final DataTableSource dataSource;
+
+  @override
+  Widget build(BuildContext context) {
+    if (data.isEmpty) {
+      return const Text('Table is empty');
+    }
+    final vendor = data.first;
+
+    if (vendor is Tableable) {
+      return PaginatedDataTable(
+        columns: vendor.header().map(columnHeader).toList(),
+        source: dataSource,
+      );
+    }
+
+    return Text(
+        '${vendor.runtimeType} does not implement Tableable. Please fix this.');
+  }
+
+  DataColumn columnHeader(String label) {
+    return DataColumn(label: Text(label.toString()));
+  }
+}
