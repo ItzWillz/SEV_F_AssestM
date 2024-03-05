@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
 import 'package:uuid/uuid.dart';
 
-class AssetInstance implements Tableable{
-  AssetInstance({String? id})   // DocumentSnapshot snapshot(?)
+class AssetInstance implements Tableable {
+  AssetInstance({String? id}) // DocumentSnapshot snapshot(?)
       : assetType = '',
         assetProfileId = 0,
         serialNum = 0,
@@ -22,8 +22,8 @@ class AssetInstance implements Tableable{
   //   required this.userGroup,
   // }): id = '0';
 
-        AssetInstance.fromFirestore(DocumentSnapshot snapshot)
-        : assetProfileId = snapshot['assetProfileId'] ?? 0,
+  AssetInstance.fromFirestore(DocumentSnapshot snapshot)
+      : assetProfileId = snapshot['assetProfileId'] ?? 0,
         assetType = snapshot['assetTypeId'] ?? '',
         serialNum = snapshot['serialNum'] ?? 0,
         status = snapshot['status'] ?? '',
@@ -34,8 +34,6 @@ class AssetInstance implements Tableable{
         wirelessNIC = snapshot['wirelessNIC'] ?? '',
         id = snapshot.id;
 
-
-      
   late String assetType;
   late int assetProfileId;
   late int serialNum;
@@ -48,7 +46,7 @@ class AssetInstance implements Tableable{
   late String description;
   late final String id;
 
- @override
+  @override
   List<String> header() {
     return ['Description', 'Type', 'User Group', 'Status'];
   }
@@ -60,11 +58,6 @@ class AssetInstance implements Tableable{
       assetType,
       userGroup,
       status,
-       
     ];
   }
-
- 
-
-
 }
