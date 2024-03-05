@@ -43,6 +43,6 @@ class Asset implements Tableable {
 
   @override
   List<Object?> asRow() {
-    return [description, assetType, serialNum, status, null];
+    return [description, assetType, serialNum, status];
   }
 }
