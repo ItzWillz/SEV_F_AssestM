@@ -13,7 +13,7 @@ import '/models/asset_model.dart';
 class FirestoreStorage {
   // static const _description = 'description';
   static const _users = 'Users';
-  static const _assets = 'Assets';
+  static const _assets = 'Asset';
   static const _people = 'People';
   static const _buildings = 'Buildings';
   static const _rooms = 'Rooms';
@@ -112,6 +112,7 @@ class FirestoreStorage {
   Future<List<DropdownMenuItem>> getPeopleAsDropdownMenuItems() async {
     var people = await getPeople();
     List<DropdownMenuItem> menuItems = [];
+    menuItems.add(DropdownMenuItem(value: '', child: Text('')));
     for (Person person in people) {
       var newItem = DropdownMenuItem(
           value: '${person.name} ${person.schoolId}',
@@ -125,6 +126,7 @@ class FirestoreStorage {
   Future<List<DropdownMenuItem>> getBuildingsAsDropdownMenuItems() async {
     var buildings = await getBuildings();
     List<DropdownMenuItem> menuItems = [];
+    menuItems.add(DropdownMenuItem(value: '', child: Text('')));
     for (Building building in buildings) {
       var newItem =
           DropdownMenuItem(value: building.name, child: Text(building.name));
@@ -138,12 +140,12 @@ class FirestoreStorage {
       String buildingName) async {
     var rooms = await getRoomsForBuilding(buildingName);
     List<DropdownMenuItem> menuItems = [];
+    menuItems.add(DropdownMenuItem(value: '', child: Text('')));
     for (String room in rooms) {
       var newItem = DropdownMenuItem(value: room, child: Text(room));
 
       menuItems.add(newItem);
     }
-
     return menuItems;
   }
 
@@ -214,6 +216,27 @@ class FirestoreStorage {
       'name': user.name,
       'schoolId': user.schoolId,
       'userGroup': 'IT',
+    });
+  }
+
+  Future<void> insertPerson(Person person) {
+    return db.collection('People').doc().set({
+      'email': person.email,
+      'name': person.name,
+      'schoolId': person.schoolId,
+    });
+  }
+
+  Future<void> assignAsset(String assetSerial, int? personSchoolID,
+      String buildingName, String roomName, String returnDate) async {
+    // Add new document to Assignments collection
+    return db.collection('Assignments').doc().set({
+      'assetSerialNumber': assetSerial,
+      'personSchoolID': personSchoolID,
+      'building': buildingName,
+      'room': roomName,
+      'assignedDate': DateTime.now().toString().split(" ")[0],
+      'returnDate': returnDate,
     });
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/models/asset_model.dart';
+import 'package:ocassetmanagement/models/person_model.dart';
+import 'package:ocassetmanagement/widgets/data_table.dart';
 import 'package:provider/provider.dart';
 import '../view_models/create_check_out.dart';
 import '/services/firestore_storage.dart';
@@ -16,8 +19,10 @@ List<DropdownMenuItem>? rooms;
 String selectedPerson = '';
 String selectedBuildingName = '';
 String selectedRoomName = '';
+String selectedAssetSerial = '';
 
 bool isNewPerson = false;
+bool isTemporary = false;
 
 class NewCheckOutPage extends StatefulWidget {
   const NewCheckOutPage({super.key, this.asset});
@@ -28,6 +33,11 @@ class NewCheckOutPage extends StatefulWidget {
 }
 
 class _NewCheckOutPageState extends State<NewCheckOutPage> {
+  TextEditingController _personNameController = TextEditingController();
+  TextEditingController _personEmailController = TextEditingController();
+  TextEditingController _personSchoolIDController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+
   @override
   void dispose() {
     // implement dispose
@@ -77,13 +87,14 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                         ],
                       ),
                       isNewPerson
-                          ? const Row(
+                          ? Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 SizedBox(
                                   width: 200,
                                   child: TextField(
-                                    decoration: InputDecoration(
+                                    controller: _personNameController,
+                                    decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       hintText: 'Person Name',
                                     ),
@@ -92,7 +103,8 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                                 SizedBox(
                                   width: 200,
                                   child: TextField(
-                                    decoration: InputDecoration(
+                                    controller: _personEmailController,
+                                    decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       hintText: 'Person Email',
                                     ),
@@ -101,7 +113,8 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                                 SizedBox(
                                   width: 200,
                                   child: TextField(
-                                    decoration: InputDecoration(
+                                    controller: _personSchoolIDController,
+                                    decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       hintText: 'Person School ID',
                                     ),
@@ -123,12 +136,20 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                                     return SizedBox(
                                       width: 200,
                                       child: DropdownButtonFormField(
+                                        value: selectedPerson,
                                         decoration: const InputDecoration(
                                           labelText: 'Person',
                                         ),
                                         validator: (value) {
-                                          if (value == null) {
-                                            return 'Enter Person';
+                                          if (selectedPerson == '' &&
+                                              selectedBuildingName == '' &&
+                                              _personEmailController.text ==
+                                                  '' &&
+                                              _personNameController.text ==
+                                                  '' &&
+                                              _personSchoolIDController.text ==
+                                                  '') {
+                                            return 'Building or person needed';
                                           }
                                           description = value.toString();
                                           return null;
@@ -155,19 +176,25 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                               return SizedBox(
                                 width: 200,
                                 child: DropdownButtonFormField(
+                                  value: selectedBuildingName,
                                   decoration: const InputDecoration(
                                     labelText: 'Building',
                                   ),
                                   validator: (value) {
-                                    if (value == null) {
-                                      return 'Enter Building';
+                                    if (selectedBuildingName == '' &&
+                                        selectedPerson == '' &&
+                                        _personEmailController.text == '' &&
+                                        _personNameController.text == '' &&
+                                        _personSchoolIDController.text == '') {
+                                      return 'Building or person needed';
                                     }
                                     description = value.toString();
                                     return null;
                                   },
                                   items: snapshot.data,
-                                  onChanged: (value) =>
-                                      setBuildingAndGetRooms(value),
+                                  onChanged: (value) => setState(() {
+                                    setBuildingAndGetRooms(value);
+                                  }),
                                 ),
                               );
                             },
@@ -202,6 +229,41 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                       const SizedBox(
                         height: 20,
                       ),
+                      Row(
+                        children: [
+                          const Text("Temporary Assignment"),
+                          Checkbox(
+                              value: isTemporary,
+                              onChanged: (_) => setState(() {
+                                    isTemporary = !isTemporary;
+                                  })),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      isTemporary
+                          ? SizedBox(
+                              width: 200,
+                              child: TextField(
+                                controller: _dateController,
+                                decoration: const InputDecoration(
+                                  labelText: 'RETURN DATE',
+                                  filled: true,
+                                  prefixIcon: Icon(Icons.calendar_today),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide.none),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.blue)),
+                                ),
+                                readOnly: true,
+                                onTap: () {
+                                  _selectDate();
+                                },
+                              ),
+                            )
+                          : const SizedBox(height: 1),
                       const SizedBox(
                         height: 20,
                       ),
@@ -228,7 +290,16 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                               ElevatedButton.icon(
                                 icon: const Icon(Icons.add),
                                 label: const Text("Select Asset"),
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Asset List'),
+                                          content: setupAssetListContainer(),
+                                        );
+                                      });
+                                },
                               ),
                             ],
                           ),
@@ -251,6 +322,15 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
               width: 200,
               child: ElevatedButton(
                 onPressed: () {
+                  setState(() {
+                    rooms = [];
+                    selectedPerson = '';
+                    selectedBuildingName = '';
+                    selectedRoomName = '';
+
+                    isNewPerson = false;
+                    isTemporary = false;
+                  });
                   //Route back to checked out list
                   dispose();
                 },
@@ -267,9 +347,57 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Asset Attached'),
+                      content: Text('Successful Check-out'),
                     ));
-                    FirestoreStorage().getAsset(serialNum);
+
+                    String returnDate =
+                        _dateController.text.toString().split(" ")[0];
+
+                    // If entering a new person's data, insert the person into the database before checking-out the asset.
+                    if (isNewPerson) {
+                      Person newPerson = Person();
+                      newPerson.name = _personNameController.text;
+                      newPerson.email = _personEmailController.text;
+                      newPerson.schoolId =
+                          int.parse(_personSchoolIDController.text);
+
+                      // Insert new person into database.
+                      firestoreStorage.insertPerson(newPerson);
+
+                      // Check-out selected asset
+                      // TODO: Change from hardcoded serial# to selectedAssetSerial. Have option to scan serial number.
+                      firestoreStorage.assignAsset(
+                          selectedAssetSerial,
+                          newPerson.schoolId,
+                          selectedBuildingName,
+                          selectedRoomName,
+                          returnDate);
+                    }
+                    // If selecting existing person, parse schoolID from text field and check-out asset.
+                    else {
+                      int? selectedPersonSchoolID;
+                      if (selectedPerson != '') {
+                        selectedPersonSchoolID =
+                            int.parse(selectedPerson.split(" ")[2]);
+                      }
+                      firestoreStorage.assignAsset(
+                          selectedAssetSerial,
+                          selectedPersonSchoolID,
+                          selectedBuildingName,
+                          selectedRoomName,
+                          returnDate);
+                    }
+
+                    // Clear fields and reset values to default
+                    setState(() {
+                      rooms = [];
+                      selectedPerson = '';
+                      selectedBuildingName = '';
+                      selectedRoomName = '';
+
+                      isNewPerson = false;
+                      isTemporary = false;
+                    });
                   }
                 },
                 child: const Text('Submit'),
@@ -286,7 +414,49 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
         await firestoreStorage.getRoomsForBuildingAsDropdownMenuItems(value);
     setState(() {
       selectedBuildingName = value;
-      selectedRoomName = rooms!.first.value;
+      selectedRoomName = '';
     });
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? _pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100));
+
+    if (_pickedDate != null) {
+      setState(() {
+        _dateController.text = _pickedDate.toString().split(" ")[0];
+      });
+    }
+  }
+
+  Widget setupAssetListContainer() {
+    return FutureBuilder<List<Asset>>(
+        future: FirestoreStorage().getAssets(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No assets found.'));
+          } else {
+            return Material(
+                child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SizedBox(
+                      height: 600,
+                      width: 1200,
+                      child: ListView(
+                        children: [
+                          Text("Assets", style: TextStyle(fontSize: 20.0)),
+                          AssetDataTable(data: snapshot.data!),
+                        ],
+                      ),
+                    )));
+          }
+        });
   }
 }
