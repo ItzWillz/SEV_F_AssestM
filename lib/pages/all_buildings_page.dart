@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-//import 'package:ocassetmanagement/pages/new_check_out_page.dart';
-import 'package:ocassetmanagement/view_models/create_check_out.dart';
+import 'package:ocassetmanagement/models/building_model.dart';
 import 'package:provider/provider.dart';
 
-import '../models/check_out_model.dart';
 import '../models/tableable.dart';
 import '../widgets/data_table.dart';
 
 
-class CheckInandOutPage extends StatefulWidget {
-const CheckInandOutPage({super.key,  required this.callBack});
-  final void Function(Object?) callBack;
+class AllBuildingsPage extends StatefulWidget {
+const AllBuildingsPage({super.key});
 
 @override
   // ignore: library_private_types_in_public_api
-  _CheckInandOutPageState createState() => _CheckInandOutPageState(); 
+  _AllBuildingsPageState createState() => _AllBuildingsPageState(); 
 }
-class _CheckInandOutPageState extends State<CheckInandOutPage>{
+class _AllBuildingsPageState extends State<AllBuildingsPage>{
 
 
 final _checkedOut = [
-CheckedOut(name: 'Dan', email: 'dan@oc.edu', schoolId: 234897, asset: 'Laptop')
+Building(name: 'Prince Engineering Center (PEC)', roomNum: 30, assetTotal: 235)
 ];
 
 // ignore: unused_field
@@ -52,7 +49,7 @@ Widget build(BuildContext context) {
             
             child: ListView(
               children: [
-                const Text("    Checked Out Assets ", style: TextStyle( fontSize: 20.0,), textAlign: TextAlign.center,),
+                const Text("    Buildings List ", style: TextStyle( fontSize: 20.0,), textAlign: TextAlign.center,),
                 Row(
                 children: [
                              Padding(
@@ -77,18 +74,14 @@ Widget build(BuildContext context) {
                               width: 50,
                               child: IconButton(
                                   onPressed: (){
-                            final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
-                                  notifier.newCheckOutScreen(asset: null);
-                                     //notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
-                    
-                                    // Navigator.of(
-                                    //   context
-                                    // ).push(MaterialPageRoute(builder: (context) => const NewCheckOutPage()));
+                            //final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
+                                  //notifier.newCheckOutScreen(asset: null);
+                                     
                                   }, 
                                 icon: const Icon(Icons.add, color: Colors.white,), 
                                 //label: const Text("", style: TextStyle(color: Colors.white)),
                                 style: IconButton.styleFrom(
-                                  backgroundColor: Color.fromARGB(255, 76, 200, 63),
+                                  backgroundColor: const Color.fromARGB(255, 76, 200, 63),
                                   //textStyle: const TextStyle(color: Colors.white),
                                 )),
                                   ),

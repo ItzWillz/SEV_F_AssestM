@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/all_assets.dart';
+import 'package:ocassetmanagement/pages/all_buildings_page.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 //import 'package:ocassetmanagement/pages/all_vendors_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
@@ -26,7 +27,7 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
-  bool _showNavigationBar = false;
+  bool _showNavigationBar = true;
   String? _attachedprofile;
   Object? _attachedasset;
   // ignore: unused_field
@@ -34,23 +35,30 @@ class _LandingState extends State<Landing> {
   // ignore: unused_field
   bool _isOnCheckOutPage = false;
 
+// abc() async {
+//    final x = await Future.wait([Future.value(1), Future.value(2)]);
+//    final d = x[0] as int;
+//    final y = x[1] as int;
+// }
 
   @override
   Widget build(BuildContext context) {
+     
+
     var name = context.watch<LoggedUserNotifier>().name;
     var userGroup = context.watch<LoggedUserNotifier>().userGroup;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(199, 108, 13, 13),
         title: Text(
-          'OC Asset Management -- Welcome $name',
+          'OC Asset Management | Welcome $name',
           style: const TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(
             Icons.menu,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             setState(() {
@@ -58,6 +66,16 @@ class _LandingState extends State<Landing> {
             });
           },
         ),
+        actions: [       
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: IconButton(icon: const Icon(Icons.person), onPressed: () {  },
+              style: IconButton.styleFrom(
+              backgroundColor: Colors.white),
+                                  //textStyle: const TextStyle(color: Colors.white),
+                                )
+           ),
+],
       ),
       // body: Placeholder(),
       body: Row(
@@ -99,7 +117,7 @@ class _LandingState extends State<Landing> {
       return const AllAssetsPage();
     }
 
-    return const HomePage();
+    return const AllBuildingsPage();
   }
 
   void _navigateToAddAndEditAssetPage(String? profile) {

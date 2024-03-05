@@ -9,6 +9,7 @@ final _formKey = GlobalKey<FormState>();
 String description = "";
 int serialNum = 0;
 String wirelessNIC = "";
+bool profileFilled = false;
 AssetInstance newAsset = AssetInstance();
 
 class AssetPage extends StatefulWidget {
@@ -36,8 +37,14 @@ class _AssetPageState extends State<AssetPage> {
     super.dispose();
   }
 
+void checkProfileFilled() {
+  if (_profileNameController.text != 'None') {
+    profileFilled = true;
+  }
+}
   @override
   Widget build(BuildContext context) {
+    checkProfileFilled();
     
     // return FutureBuilder<List<AssetInstance>>(
     //   future: _assetProfile,
@@ -150,75 +157,78 @@ class _AssetPageState extends State<AssetPage> {
                               Expanded(
                                 flex: 4,
                                 child: 
-                                  Column(
-                                    children: [
-                                       const Row(
-                                        //mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            width: 200,
-                                            child: Text('Profile Info', style: TextStyle(fontSize: 25),),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(children: [
-                                        SizedBox(
-                                            width: 150,
-                                            child: TextFormField(
-                                       decoration: const InputDecoration(
-                                         labelText: 'Profile Name',
-                                        ),
-                                        onSaved: (String? value) {
-                                          //debugPrint('value for field $index saved as "$value"');
-                                        },
-                                      controller: _profileNameController,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Must have Specific Profile or None';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                          ),
-                                        const Spacer(),
-                                          SizedBox(
-                                            width: 220,
-                                            child: ElevatedButton(child: const Text('Change or Remove Profile'),
-                                            onPressed: () {  },),
-                                          ),
-                                          const SizedBox(width: 20,),
-                                          SizedBox(
-                                            width: 150,
-                                            child: ElevatedButton(child: const Text('Edit Profile'),
-                                            onPressed: () {  },),
-                                          ),],),
-                                      Row(
-                                          mainAxisSize: MainAxisSize.min,
+                                  Card(
+                                    child: Column(
+                                      children: [
+                                         const Row(
+                                          //mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
                                               width: 200,
-                                              child: TextFormField(
-                                                decoration: const InputDecoration(
-                                                  labelText: 'Manufacturer',
-                                                ),
-                                                //initialValue: _assetManufacturer,
-                                                // if (AssetProfile.fromFirestore().manufacturer.isNotEmpty){
-                                                // initialValue: AssetProfile.fromFirestore(snapshot).manufacturer,
-                                                // },
-                                                onSaved: (String? value) {
-                                                  //debugPrint('value for field $index saved as "$value"');
-                                                },
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return 'Enter something3';
-                                                  }
-                                                  return null;
-                                                },
-                                              ),
+                                              child: Text('Profile Info', style: TextStyle(fontSize: 25),),
                                             ),
                                           ],
                                         ),
-                                    ],
+                                        Row(children: [
+                                          SizedBox(
+                                              width: 150,
+                                              child: TextFormField(
+                                         decoration: const InputDecoration(
+                                           labelText: 'Profile Name',
+                                          ),
+                                          onSaved: (String? value) {
+                                            //debugPrint('value for field $index saved as "$value"');
+                                          },
+                                        controller: _profileNameController,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Must have Specific Profile or None';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                            ),
+                                          const Spacer(),
+                                            SizedBox(
+                                              width: 220,
+                                              child: ElevatedButton(child: const Text('Change or Remove Profile'),
+                                              onPressed: () {  },),
+                                            ),
+                                            const SizedBox(width: 20,),
+                                            SizedBox(
+                                              width: 150,
+                                              child: ElevatedButton(child: const Text('Edit Profile'),
+                                              onPressed: () {  },),
+                                            ),],),
+                                        Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                    labelText: 'Manufacturer',
+                                                  ),
+                                                  readOnly: profileFilled,
+                                                  //initialValue: _assetManufacturer,
+                                                  // if (AssetProfile.fromFirestore().manufacturer.isNotEmpty){
+                                                  // initialValue: AssetProfile.fromFirestore(snapshot).manufacturer,
+                                                  // },
+                                                  onSaved: (String? value) {
+                                                    //debugPrint('value for field $index saved as "$value"');
+                                                  },
+                                                  validator: (value) {
+                                                    if (value == null || value.isEmpty) {
+                                                      return 'Enter something3';
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 
                               ),
