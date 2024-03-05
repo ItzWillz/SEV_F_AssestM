@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/widgets/asset_list_data_table.dart';
-import '../services/firestore_storage.dart';
 import '../models/asset_model.dart';
+import '../services/firestore_storage.dart';
+import '../models/asset_instance.dart';
 
 class AllAssetsPage extends StatefulWidget {
   const AllAssetsPage({Key? key}) : super(key: key);
@@ -72,9 +73,8 @@ class _AllAssetsPageState extends State<AllAssetsPage>
                   children: [
                     AssetListDataTable(
                       data: snapshot.data!,
-                      onViewMore: (Asset asset) =>
-                          _viewMoreInfo(context, asset),
-                      onEdit: (Asset asset) => _editAsset(context, asset),
+                      onViewMore: (asset) => _viewMoreInfo(context, asset),
+                      onEdit: (asset) => _editAsset(context, asset),
                     ),
                   ],
                 ),
