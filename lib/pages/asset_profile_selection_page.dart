@@ -33,56 +33,79 @@ class _AssetProfileSelectionPageState extends State<AssetProfileSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: DropdownMenu<IconLabel>(
-            controller: iconController,
-            enableFilter: true,
-            requestFocusOnTap: true,
-            width: 350,
-            leadingIcon: const Icon(Icons.search),
-            label: const Text('Select Profile...'),
-            inputDecorationTheme: const InputDecorationTheme(
-              filled: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(height: 150,),
+          const Text("Select a profile for new Asset(s)", style: TextStyle(fontSize: 20),),
+          Card(
+            child: SizedBox(
+              width: 400,
+              height: 300,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownMenu<IconLabel>(
+                      controller: iconController,
+                      enableFilter: true,
+                      requestFocusOnTap: true,
+                      width: 350,
+                      leadingIcon: const Icon(Icons.search),
+                      label: const Text('Select Profile...'),
+                      inputDecorationTheme: const InputDecorationTheme(
+                        filled: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 5.0),
+                      ),
+                      onSelected: (IconLabel? icon) {
+                        setState(() {
+                          selectedIcon = icon;
+                        });
+                      },
+                      dropdownMenuEntries:
+                          IconLabel.values.map<DropdownMenuEntry<IconLabel>>(
+                        (IconLabel icon) {
+                          return DropdownMenuEntry<IconLabel>(
+                            value: icon,
+                            label: icon.label,
+                            leadingIcon: Icon(icon.icon),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const Spacer(),
+                        TextButton(
+                            onPressed: () {
+                              final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                              notifier.completeProfileSelectionScren(assetName: null);
+                              // widget.callBack(null);
+                            },
+                            child: const Text('Continue without profile')),
+                        ElevatedButton(
+                            onPressed: () {
+                              final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                              notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
+                              // widget.callBack(selectedIcon?.label);
+                            },
+                            child: const Text('Continue'))
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            onSelected: (IconLabel? icon) {
-              setState(() {
-                selectedIcon = icon;
-              });
-            },
-            dropdownMenuEntries:
-                IconLabel.values.map<DropdownMenuEntry<IconLabel>>(
-              (IconLabel icon) {
-                return DropdownMenuEntry<IconLabel>(
-                  value: icon,
-                  label: icon.label,
-                  leadingIcon: Icon(icon.icon),
-                );
-              },
-            ).toList(),
           ),
-        ),
-        Row(
-          children: [
-            TextButton(
-                onPressed: () {
-                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
-                  notifier.completeProfileSelectionScren(assetName: null);
-                  // widget.callBack(null);
-                },
-                child: const Text('Continue without profile')),
-            ElevatedButton(
-                onPressed: () {
-                  final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
-                  notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
-                  // widget.callBack(selectedIcon?.label);
-                },
-                child: const Text('Continue'))
-          ],
-        )
-      ],
+        ],
+      ),
     );
   }
 }

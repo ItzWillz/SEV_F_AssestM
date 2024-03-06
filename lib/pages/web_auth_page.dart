@@ -81,60 +81,56 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                        children:  [
-                        //Spacer(),
                       const Text('Sign In', style: TextStyle(fontSize: 22.0),),
                      const SizedBox(height: 20,),
-                      ElevatedButton(
-                          onPressed: swapSignInMethod,
-                          child: const Text("Sign Up/Log In")
-                          ),
-                      const SizedBox(height: 20,),
-                           SizedBox(
-                          width: 100,
-                          child: 
-                            Visibility(
-                              visible: isLogin,
-                              child: Column(
-                                children: [
-                                  TextField(
-                                  controller: myController,
-                                  maxLength: 7,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: const InputDecoration(
-                                      labelText: "School ID", hintText: "ex. 1848375"),
-                                   ),
-                                   ElevatedButton(
-                                      onPressed: validSchoolId ? signUp : null,
-                                      child: const Text("Sign Up")),
-                                ],
-                              ),
-                            )
-                          ),
-                          
-                      Visibility(
-                        visible: !isLogin,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40),
                         child: Column(
                           children: [
                             ElevatedButton(
-                              onPressed: login, 
-                              child: const Text("Login with Google")
+                                onPressed: swapSignInMethod,
+                                child: const Text("Sign Up/Log In")
+                                ),
+                            const SizedBox(height: 20,),
+                                 SizedBox(
+                                width: 100,
+                                child: 
+                                  Visibility(
+                                    visible: isLogin,
+                                    child: Column(
+                                      children: [
+                                        TextField(
+                                        controller: myController,
+                                        maxLength: 7,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        decoration: const InputDecoration(
+                                            labelText: "School ID", hintText: "ex. 1848375"),
+                                         ),
+                                         ElevatedButton(
+                                            onPressed: validSchoolId ? signUp : null,
+                                            child: const Text("Sign Up")),
+                                      ],
+                                    ),
+                                  )
+                                ),
+                                
+                            Visibility(
+                              visible: !isLogin,
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: login, 
+                                    child: const Text("Login with Google")
+                                    ),
+                                    const SizedBox(height: 20,),                      
+                                ],
+                              )
                               ),
-                              const SizedBox(height: 20,),
-                      // const SizedBox(height: 10),
-                      // Text(user?.uid ?? 'no uid'),
-                      // const SizedBox(height: 10),
-                      // Text(user?.email ?? ' no email'),
-                      // const SizedBox(height: 10),
-                      // Text(user?.toString() ?? 'no user'),
-                      // const SizedBox(height: 10),
-                      // Text(FirebaseAuth.instance.currentUser?.toString() ?? 'no user2'),
-                      // const SizedBox(height: 10),
-                      ElevatedButton(onPressed: signOut, child: const Text(" Sign out")),
                           ],
-                        )
                         ),
+                      ),
                         
                                   ],
                                 ),
@@ -144,42 +140,6 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
           ),
         ),
       );
-    //  } else {
-    //   return Scaffold(
-    //     body: Center(
-    //         child: Column(
-    //       children: [
-    //         ElevatedButton(
-    //             onPressed: swapSignInMethod,
-    //             child: const Text("Sign Up/Log In")),
-    //         SizedBox(
-    //             width: 100,
-    //             child: TextField(
-    //               controller: myController,
-    //               maxLength: 7,
-    //               inputFormatters: <TextInputFormatter>[
-    //                 FilteringTextInputFormatter.digitsOnly
-    //               ],
-    //               decoration: const InputDecoration(
-    //                   labelText: "School ID", hintText: "ex. 1848375"),
-    //             )),
-    //         ElevatedButton(
-    //             onPressed: validSchoolId ? signUp : null,
-    //             child: const Text("Sign Up")),
-    //         const SizedBox(height: 10),
-    //         Text(user?.uid ?? 'no uid'),
-    //         const SizedBox(height: 10),
-    //         Text(user?.email ?? ' no email'),
-    //         const SizedBox(height: 10),
-    //         Text(user?.toString() ?? 'no user'),
-    //         const SizedBox(height: 10),
-    //         Text(FirebaseAuth.instance.currentUser?.toString() ?? 'no user2'),
-    //         const SizedBox(height: 10),
-    //         ElevatedButton(onPressed: signOut, child: const Text(" Sign out")),
-    //       ],
-    //     )),
-    //   );
-    // }
   }
 
 
