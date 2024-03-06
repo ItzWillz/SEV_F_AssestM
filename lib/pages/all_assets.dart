@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/widgets/asset_list_data_table.dart';
 import '../models/asset_model.dart';
 import '../services/firestore_storage.dart';
-import '../models/asset_instance.dart';
 
 class AllAssetsPage extends StatefulWidget {
   const AllAssetsPage({Key? key}) : super(key: key);
@@ -97,7 +96,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
               child: ListBody(
                 children: <Widget>[
                   _buildDetailRow('Description:', asset.description),
-                  _buildDetailRow('Type:', asset.assetType.toString()),
+                  _buildDetailRow('Type:', asset.assetTypeId.toString()),
                   _buildDetailRow('Serial Number:', asset.serialNum.toString()),
                   _buildDetailRow('Status:', asset.status),
                   _buildDetailRow(
@@ -126,7 +125,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
   }
 
   void _updateAsset(
-      String assetId,
+      String id,
       int type,
       int serialNum,
       int assetCategoryId,
@@ -135,7 +134,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
       String externalAccessories,
       String internalFeatures,
       String wirelessNIC) {
-    FirestoreStorage().updateAsset(assetId, {
+    FirestoreStorage().updateAsset(id, {
       'assetProfileId': type,
       'assetCategoryId': assetCategoryId,
       'description': description,
@@ -188,7 +187,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
         TextEditingController(text: asset.assetProfileId.toString());
 
     String selectedStatus = asset.status;
-    String selectedType = asset.assetType.toString();
+    String selectedType = asset.assetTypeId.toString();
 
     showDialog(
       context: context,
