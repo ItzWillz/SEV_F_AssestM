@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../models/asset_model.dart';
 import '../view_models/cells/asset_cell.dart';
 import '../models/tableable.dart';
 
@@ -36,8 +35,6 @@ class MyDataSource extends DataTableSource {
     if (label is AssetCell) {
       label.addListener(() => notifyListeners());
       return label.toDataCell();
-    } else if (label is ActionCell) {
-      return label.toDataCell();
     }
 
     return DataCell(Text(label?.toString() ?? ''));
@@ -67,6 +64,36 @@ class AssetDataTable extends StatelessWidget {
 
     return Text(
         '${asset.runtimeType} does not implement Tableable. Please fix this.');
+  }
+
+  DataColumn columnHeader(String label) {
+    return DataColumn(label: Text(label.toString()));
+  }
+}
+
+class VendorDataTable extends StatelessWidget {
+  VendorDataTable({super.key, required this.data})
+      : dataSource = MyDataSource(data: data);
+
+  final List<Object> data;
+  final DataTableSource dataSource;
+
+  @override
+  Widget build(BuildContext context) {
+    if (data.isEmpty) {
+      return const Text('Table is empty');
+    }
+    final vendor = data.first;
+
+    if (vendor is Tableable) {
+      return PaginatedDataTable(
+        columns: vendor.header().map(columnHeader).toList(),
+        source: dataSource,
+      );
+    }
+
+    return Text(
+        '${vendor.runtimeType} does not implement Tableable. Please fix this.');
   }
 
   DataColumn columnHeader(String label) {

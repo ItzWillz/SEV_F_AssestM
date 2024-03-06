@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class AssetType {
-  AssetType({this.description = '', String? id})   //Task({this.description = '', String? id})
+  AssetType({this.description = '', String? id})
       : 
         id = id ?? _uuid.v1();
       

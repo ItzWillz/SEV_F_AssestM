@@ -52,60 +52,56 @@ Widget build(BuildContext context) {
             
             child: ListView(
               children: [
-                Column(
-                  
-                  children: [
-                    const Text("    Checked Out Assets ", style: TextStyle( fontSize: 20.0)),
-                    Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  // mainAxisSize: MainAxisSize.max,
-                    children: [
-                                 SizedBox(
-                                  width: 200,
-                                  child: TextField(
-                                    onChanged: (value) => setState(() {
-                                      _filter(value);
-                                    }
-                                    ),
-                                    decoration: const InputDecoration(
-                                      labelText: 'Search', suffixIcon: Icon(Icons.search),
-                                    ),
+                const Text("    Checked Out Assets ", style: TextStyle( fontSize: 20.0,), textAlign: TextAlign.center,),
+                Row(
+                children: [
+                             Padding(
+                               padding: const EdgeInsets.only(bottom: 22.0, left: 20),
+                               child: SizedBox(
+                                width: 200,
+                                child: TextField(
+                                  onChanged: (value) => setState(() {
+                                    _filter(value);
+                                  }
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: 'Search', suffixIcon: Icon(Icons.search),
                                   ),
                                 ),
-                    const Spacer(),
-                      SizedBox(
-                                width: 200,
-                                child: ElevatedButton.icon(
-                                    onPressed: (){
-                              final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
-                                    notifier.newCheckOutScreen(asset: null);
-                                       //notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
-
-                                      // Navigator.of(
-                                      //   context
-                                      // ).push(MaterialPageRoute(builder: (context) => const NewCheckOutPage()));
-                                    }, 
-                                  icon: const Icon(Icons.add, color: Colors.white,), 
-                                  label: const Text("Add Check-Out", style: TextStyle(color: Colors.white)),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFB9E2A7),
-                                    textStyle: const TextStyle(color: Colors.white),
-                                  )),
-                                    ),        
-                    ] ),
-                    Row(
-                  //mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 1198,
-                          height: 650,
-                          child: AssetDataTable(data: _filtered), 
-                        ),
-                      ],
+                                                               ),
+                             ),
+                const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: SizedBox(
+                              width: 50,
+                              child: IconButton(
+                                  onPressed: (){
+                            final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
+                                  notifier.newCheckOutScreen(asset: null);
+                                     //notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
+                    
+                                    // Navigator.of(
+                                    //   context
+                                    // ).push(MaterialPageRoute(builder: (context) => const NewCheckOutPage()));
+                                  }, 
+                                icon: const Icon(Icons.add, color: Colors.white,), 
+                                //label: const Text("", style: TextStyle(color: Colors.white)),
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Color.fromARGB(255, 76, 200, 63),
+                                  //textStyle: const TextStyle(color: Colors.white),
+                                )),
+                                  ),
+                  ),        
+                ] ),
+                Row(
+                  children: [
+                    Expanded(
+                     flex: 4,
+                      child: AssetDataTable(data: _filtered), 
                     ),
-                  
-                    ],
-                  ) ],
+                  ],
+                ) ],
                 ),
             
             ),

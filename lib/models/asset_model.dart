@@ -1,91 +1,70 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
 import 'package:uuid/uuid.dart';
 
 class Asset implements Tableable {
-  Asset(
-      {String? id,
-      required String description,
-      required int assetType,
-      required int serialNum,
-      required String status,
-      required Function() onViewMore,
-      required Function() onEdit})
-      : assetType = 0,
+  Asset({
+    String? id,
+    required this.description,
+    required this.serialNum,
+    required this.status,
+  })  : userGroup = "Admin",
+        assetTypeId = 1,
         assetProfileId = 0,
-        serialNum = 0,
-        status = '',
-        description = '',
+        assetCategoryId = 0,
         externalAccessories = '',
         internalFeatures = '',
         wirelessNIC = '',
-        id = id ?? _uuid.v1();
+        id = id ?? const Uuid().v1();
 
   Asset.fromFirestore(DocumentSnapshot snapshot)
       : assetProfileId = snapshot['assetProfileId'] ?? 0,
-        assetType = snapshot['assetCategoryId'] ?? '',
+        assetTypeId = snapshot['assetTypeId'] ?? 1,
         serialNum = snapshot['serialNum'] ?? 0,
-        status = snapshot['status'] ?? '',
+        assetCategoryId = snapshot['assetCategoryId'] ?? 0,
+        status = snapshot['status'] ?? 'In Inventory',
         description = snapshot['description'] ?? '',
         externalAccessories = snapshot['externalAccessories'] ?? '',
         internalFeatures = snapshot['internalFeatures'] ?? '',
         wirelessNIC = snapshot['wirelessNIC'] ?? '',
-        id = snapshot.id;
+        id = snapshot['id'],
+        userGroup = snapshot['userGroup'];
 
-  late int assetType;
+  late int assetTypeId;
   late int assetProfileId;
+  late int assetCategoryId;
   late int serialNum;
   late String status;
   late String externalAccessories;
   late String internalFeatures;
   late String wirelessNIC;
-  static const _uuid = Uuid();
   late String description;
-  late final String id;
-
-  get onViewMore => null;
-
-  get onEdit => null;
+  late String id;
+  late String userGroup;
 
   @override
   List<String> header() {
-    return ['Description', 'Type', 'Serial Number', 'Status', 'Action'];
+    return ['Description', ' Serial Number', 'User Group', 'Status', 'Action'];
   }
 
   @override
   List<Object?> asRow() {
-    return [
-      description,
-      assetType,
-      serialNum,
-      status,
-      ActionCell(onViewMore: onViewMore ?? () {}, onEdit: onEdit ?? () {}),
-    ];
+    return [description, serialNum, userGroup, status];
   }
-}
 
-class ActionCell {
-  final VoidCallback onViewMore;
-  final VoidCallback onEdit;
-
-  ActionCell({required this.onViewMore, required this.onEdit});
-
-  DataCell toDataCell() {
-    return DataCell(Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: Icon(Icons.info_outline),
-          onPressed: onViewMore,
-        ),
-        IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: onEdit,
-        ),
-      ],
-    ));
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'description': description,
+      'serialNum': serialNum,
+      'status': status,
+      'userGroup': userGroup,
+      'assetTypeId': assetTypeId,
+      'assetProfileId': assetProfileId,
+      'assetCategoryId': assetCategoryId,
+      'externalAccessories': externalAccessories,
+      'internalFeatures': internalFeatures,
+      'wirelessNIC': wirelessNIC,
+      'id': id
+    };
   }
 }

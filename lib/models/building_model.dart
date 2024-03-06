@@ -1,27 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ocassetmanagement/models/tableable.dart';
+// ignore: unused_import
+import '../view_models/cells/dropdown_cell.dart';
+import 'tableable.dart';
 
 class Building implements Tableable {
-  Building({String? name})
-      : name = '',
+  Building({
+    required this.name,
+    required this.roomNum,
+    required this.assetTotal,
+  })  : id = '0',
         rooms = [];
 
   Building.fromFirestore(DocumentSnapshot snapshot)
-      : name = snapshot['name'] ?? '',
+      : roomNum = snapshot['roomNum'] ?? '',
+        assetTotal = snapshot['assetTotal'] ?? '',
+        name = snapshot['name'] ?? '',
+        id = snapshot.id,
         rooms = snapshot['rooms'] ?? [];
 
-  late String name;
+  String name;
+  int roomNum;
+  int assetTotal;
+  final String id;
   late List<dynamic> rooms;
 
   @override
   List<String> header() {
-    return ['Name', '# Rooms'];
+    return ['Name', 'Number of Rooms', "Total Asset's assigned"];
   }
 
   @override
   List<Object?> asRow() {
-    return [name, rooms.length];
+    return [
+      name,
+      roomNum,
+      assetTotal,
+    ];
   }
-
-  
 }
