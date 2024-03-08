@@ -15,8 +15,9 @@ class AllUsersPage extends StatefulWidget {
 
 
 
-class _AllUsersPageState extends State<AllUsersPage> {
-  late Future<List<User>> _userListFuture;
+class _AllUsersPageState extends State<AllUsersPage> 
+      with WidgetsBindingObserver {
+  late Future<List<User>> _userListFuture = FirestoreStorage().getUsers();
 
 
 void _refreshUsers() {
@@ -49,8 +50,8 @@ void _refreshUsers() {
                 children:[
                     const Text("    Users", style: TextStyle( fontSize: 20.0)),
                      AssetDataTable(data: snapshot.data!, 
-                     onViewMore: (user ) => _viewMoreInfo(context, User()), 
-                     onEdit: (user ) => _editUser(context, User()),
+                     onViewMore: (user ) => _viewMoreInfo(context, user as User), 
+                     onEdit: (user ) => _editUser(context, user as User),
                      ),
                      ],
             )
@@ -76,7 +77,7 @@ void _refreshUsers() {
                   _buildDetailRow('School Id:', user.schoolId.toString()),
                   _buildDetailRow('Name:', user.name),
                   _buildDetailRow('Email:', user.email),
-                  _buildDetailRow('UserGroup:', user.userGroup),
+                  _buildDetailRow('User Group:', user.userGroup),
                 ]
               ),
             ),
