@@ -117,7 +117,7 @@ class _LandingState extends State<Landing> {
       return const AllAssetsPage();
     }
 
-    return const AllBuildingsPage();
+    return const HomePage();
   }
 
   void _navigateToAddAndEditAssetPage(String? profile) {

@@ -91,7 +91,7 @@ Widget build(BuildContext context) {
                   children: [
                     Expanded(
                      flex: 4,
-                      child: AssetDataTable(data: _filtered), 
+                      child: AssetDataTable(data: _filtered, onViewMore: (Object ) {  }, onEdit: (Object ) {  },), 
                     ),
                   ],
                 ) ],
