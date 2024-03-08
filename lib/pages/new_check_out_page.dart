@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/models/asset_model.dart';
 import 'package:ocassetmanagement/models/person_model.dart';
-import 'package:ocassetmanagement/widgets/data_table.dart';
 import 'package:provider/provider.dart';
 import '../view_models/create_check_out.dart';
 import '/services/firestore_storage.dart';
@@ -19,7 +17,6 @@ List<DropdownMenuItem>? rooms;
 String selectedPerson = '';
 String selectedBuildingName = '';
 String selectedRoomName = '';
-String selectedAssetSerial = '';
 
 bool isNewPerson = false;
 bool isTemporary = false;
@@ -37,6 +34,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
   TextEditingController _personEmailController = TextEditingController();
   TextEditingController _personSchoolIDController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
+  TextEditingController _assetSerialController = TextEditingController();
 
   @override
   void dispose() {
@@ -273,38 +271,16 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                     width: 300,
                   ),
                   Column(
-                    // TODO: Fill with Asset selection
+                    // TODO: Different assets have different kinds of identifiers other than serial number, such as keys (key-ID).
+                    // Need to account for those. Maybe by dropdown field of asset types which controls the type of asset identifier needed?
                     children: [
-                      const Text(
-                        "Select Asset to Check-Out",
-                        style: TextStyle(fontSize: 18),
-                      ),
                       SizedBox(
-                        width: 300,
-                        height: 370,
-                        child: Card(
-                            child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ElevatedButton.icon(
-                                icon: const Icon(Icons.add),
-                                label: const Text("Select Asset"),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Asset List'),
-                                          content: setupAssetListContainer(),
-                                        );
-                                      });
-                                },
-                              ),
-                            ],
-                          ),
-                        )),
-                      ),
+                        width: 200,
+                        child: TextField(
+                            controller: _assetSerialController,
+                            decoration:
+                                InputDecoration(labelText: 'Serial Number')),
+                      )
                     ],
                   ),
                 ],
@@ -327,6 +303,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                     selectedPerson = '';
                     selectedBuildingName = '';
                     selectedRoomName = '';
+                    _assetSerialController.text = '';
 
                     isNewPerson = false;
                     isTemporary = false;
@@ -365,9 +342,8 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                       firestoreStorage.insertPerson(newPerson);
 
                       // Check-out selected asset
-                      // TODO: Change from hardcoded serial# to selectedAssetSerial. Have option to scan serial number.
                       firestoreStorage.assignAsset(
-                          selectedAssetSerial,
+                          int.parse(_assetSerialController.text),
                           newPerson.schoolId,
                           selectedBuildingName,
                           selectedRoomName,
@@ -381,7 +357,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                             int.parse(selectedPerson.split(" ")[2]);
                       }
                       firestoreStorage.assignAsset(
-                          selectedAssetSerial,
+                          int.parse(_assetSerialController.text),
                           selectedPersonSchoolID,
                           selectedBuildingName,
                           selectedRoomName,
@@ -394,6 +370,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                       selectedPerson = '';
                       selectedBuildingName = '';
                       selectedRoomName = '';
+                      _assetSerialController.clear();
 
                       isNewPerson = false;
                       isTemporary = false;
@@ -432,31 +409,35 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
     }
   }
 
-  Widget setupAssetListContainer() {
-    return FutureBuilder<List<Asset>>(
-        future: FirestoreStorage().getAssets(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No assets found.'));
-          } else {
-            return Material(
-                child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      height: 600,
-                      width: 1200,
-                      child: ListView(
-                        children: [
-                          Text("Assets", style: TextStyle(fontSize: 20.0)),
-                          AssetDataTable(data: snapshot.data!),
-                        ],
-                      ),
-                    )));
-          }
-        });
-  }
+  // Widget setupAssetListContainer() {
+  //   return FutureBuilder<List<Asset>>(
+  //       future: FirestoreStorage().getAssets(),
+  //       builder: (context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return const Center(child: CircularProgressIndicator());
+  //         } else if (snapshot.hasError) {
+  //           return Center(child: Text('Error: ${snapshot.error}'));
+  //         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+  //           return const Center(child: Text('No assets found.'));
+  //         } else {
+  //           return Material(
+  //               child: Padding(
+  //                   padding: const EdgeInsets.all(10.0),
+  //                   child: SizedBox(
+  //                     height: 600,
+  //                     width: 1200,
+  //                     child: ListView.builder(
+  //                       itemCount: snapshot.data!.length,
+  //                       itemBuilder: (context, index) {
+  //                         return ListTile()
+  //                       },
+  //                       children: [
+  //                         Text("Assets", style: TextStyle(fontSize: 20.0)),
+  //                         AssetDataTable(data: snapshot.data!),
+  //                       ],
+  //                     ),
+  //                   )));
+  //         }
+  //       });
+  // }
 }

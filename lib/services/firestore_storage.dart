@@ -6,6 +6,7 @@ import 'package:ocassetmanagement/models/room_model.dart';
 import 'package:ocassetmanagement/models/user_group_model.dart';
 import 'package:ocassetmanagement/models/user_model.dart';
 import 'package:ocassetmanagement/models/vendor_model.dart';
+import 'package:ocassetmanagement/pages/asset_page.dart';
 import '/models/asset_instance.dart';
 import '/models/asset_model.dart';
 
@@ -51,7 +52,7 @@ class FirestoreStorage {
     AssetInstance asset = AssetInstance();
 
     QuerySnapshot<Map<String, dynamic>> event =
-    await db.collection(_assets).where(serialNum).get();
+        await db.collection(_assets).where(serialNum).get();
 
     for (var doc in event.docs) {
       final data = doc.data();
@@ -246,17 +247,34 @@ class FirestoreStorage {
     });
   }
 
-  Future<void> assignAsset(String assetSerial, int? personSchoolID,
+  Future<void> assignAsset(int assetSerial, int? personSchoolID,
       String buildingName, String roomName, String returnDate) async {
-    // Add new document to Assignments collection
-    return db.collection('Assignments').doc().set({
-      'assetSerialNumber': assetSerial,
-      'personSchoolID': personSchoolID,
-      'building': buildingName,
-      'room': roomName,
-      'assignedDate': DateTime.now().toString().split(" ")[0],
-      'returnDate': returnDate,
+    // TODO: Check to see if asset exists (only based on serial number right now).
+    // Needs to be expanded to deal with asset identifiers of other types, such as keys (e.g. key ID).
+    bool assetExists = false;
+    await db
+        .collection(_assets)
+        .where('serialNum', isEqualTo: assetSerial)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        assetExists = true;
+      }
     });
+
+    // Add new document to Assignments collection if asset identifier (serial number, key-ID, etc.) matches an asset in the system.
+    if (assetExists) {
+      return db.collection('Assignments').doc().set({
+        'assetSerial': assetSerial,
+        'personSchoolID': personSchoolID,
+        'building': buildingName,
+        'room': roomName,
+        'assignedDate': DateTime.now().toString().split(" ")[0],
+        'returnDate': returnDate,
+      });
+    } else {
+      return;
+    }
   }
 
   Future<void> updateUser(User user) async {
