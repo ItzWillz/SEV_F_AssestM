@@ -18,18 +18,31 @@ class User implements Tableable {
         schoolId = snapshot['schoolId'] ?? 0,
         userId = snapshot['userId'] ?? '';
 
-  late String userGroup;
-  late String name;
-  late String email;
-  late String userId;
-  late int schoolId;
+  String userGroup;
+  String name;
+  String email;
+  String userId;
+  int schoolId;
 
-  static final userGroupOptions = <String>[
-    'Admin',
-    'IT',
-    'Support Central',
-    'Maintenance',
-  ]; // store and pull this from Firestore.
+  // static final userGroupOptions = <String>[
+  //   'Admin',
+  //   'IT',
+  //   'Support Central',
+  //   'Maintenance',
+  // ]; // store and pull this from Firestore.
+
+  static final List<String> userGroupOptions = [];
+
+  static init() async {
+    final userGroups = await FirestoreStorage().getUserGroups();
+    final names = userGroups.map<String>((e) => e.name);
+    userGroupOptions.addAll(names);
+  }
+
+  // Future<List<String>> getNames( ) async {
+  //   final userGroups = await userGroupOptions;
+  //   List<String> names = userGroups.map<String>((UserGroup e) => e.name).toList();
+  // }
 
   @override
   List<String> header() {
@@ -66,5 +79,4 @@ class User implements Tableable {
       'schoolId': schoolId,
     };
   }
-
 }

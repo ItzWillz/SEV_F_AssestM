@@ -10,7 +10,9 @@ class FirestoreStorage {
   static const _assets = 'Asset';
   static const _vendors = 'Vendors';
   static const _userGroups = 'UserGroups';
+  static const _miscellaneous = 'Miscellaneous';
   final db = FirebaseFirestore.instance;
+  List<String> ug = [];
 
   Future<int> getValue() async {
     final doc = await db.collection('temp').doc('temp').get();
@@ -173,8 +175,33 @@ class FirestoreStorage {
   }
 
   Future<void> insertUserGroup(UserGroup userGroup) {
-    return db.collection(_userGroups).doc(userGroup.name).set({
-      'name': userGroup.name,
+    ug.add(userGroup.name);
+    return db.collection(_miscellaneous).doc('miscellaneous').set({
+      'UserGroup': FieldValue.arrayUnion(ug),
     });
+  }
+
+  Future<void> updateUserGroup(String group) async {
+    final newGroup = <String, dynamic>{
+      'UserGroup': group,
+    };
+    await db.collection(_miscellaneous).doc('miscellaneous').update(newGroup);
+  }
+
+  Future<void> removeUserGroup(String group) async {
+    final misc = await getUserGroups();
+
+    print(misc);
+  }
+
+  Future<void> loadMisc() async {
+    
+
+    DocumentSnapshot<Map<String, dynamic>> event =
+        await db.collection(_miscellaneous).doc('miscellaneous').get();
+
+    ug = event.data()?['UserGroups'];
+
+    print(ug);
   }
 }

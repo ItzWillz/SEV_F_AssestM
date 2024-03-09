@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/add_user_group.dart';
 import 'package:ocassetmanagement/pages/all_assets.dart';
 import 'package:ocassetmanagement/pages/all_buildings_page.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
@@ -114,7 +115,7 @@ class _LandingState extends State<Landing> {
     } else if (_selectedIndex == 4) {
       return const ReportsPage();
     } else if (_selectedIndex == 5) {
-      return const AllAssetsPage();
+      return const AddUGPage();
     }
 
     return const AllBuildingsPage();

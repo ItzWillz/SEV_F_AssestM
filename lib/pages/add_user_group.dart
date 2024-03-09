@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/models/vendor_model.dart';
+import 'package:ocassetmanagement/models/user_group_model.dart';
 import '/services/firestore_storage.dart';
 
 final _formKey = GlobalKey<FormState>();
 String name = "";
 String type = "";
-Vendor newVendor = Vendor();
+UserGroup newUserGroup = UserGroup();
+FirestoreStorage firestore = FirestoreStorage();
 
-class AddVendorPage extends StatefulWidget {
-const AddVendorPage({super.key});
+class AddUGPage extends StatefulWidget {
+const AddUGPage({super.key});
 
 
   @override
-State<AddVendorPage> createState() => _AssetPageState();
+State<AddUGPage> createState() => _AssetPageState();
 }
 
-class _AssetPageState extends State<AddVendorPage> {
+class _AssetPageState extends State<AddUGPage> {
 @override
 void initState() {
   super.initState();
@@ -41,7 +42,7 @@ Widget build(BuildContext context) {
                                       children: [
                                         SizedBox(
                                           width: 200,
-                                          child: Text('Vendor Info', style: TextStyle(fontSize: 25),),
+                                          child: Text('User Group Info', style: TextStyle(fontSize: 25),),
                                         ),
                                       ],
                                     ),
@@ -65,27 +66,7 @@ Widget build(BuildContext context) {
                                   ),
                                 ),
                               ],
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 200,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                      labelText: 'Type of Vendor',
-                                    ),
-                                    onSaved: (String? value) {},
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Enter Vendor Type';
-                                      }
-                                      type = value;
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                            ],
-                          ),        
+                            ),       
                           ],
                         ),
                     ),      
@@ -103,10 +84,19 @@ Widget build(BuildContext context) {
                         SizedBox(
                           width: 100,
                           child: ElevatedButton(
-                      onPressed: () { //Route back to Vendor List
+                      onPressed: () { //Route back to ug List
                       dispose();
                       },
                       child: const Text('Cancel'),
+                    ),
+                        ),
+                                                SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                      onPressed: () { //Route back to ug List
+                      firestore.loadMisc();
+                      },
+                      child: const Text('Load'),
                     ),
                         ),
                         const SizedBox(width: 20,),
@@ -116,12 +106,11 @@ Widget build(BuildContext context) {
                                         onPressed: () {
                                           if (_formKey.currentState!.validate()) {
                                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                              content: Text('Vendor Saved!'),
+                                              content: Text('User Group Saved!'),
                                             ));
-                                            newVendor.name = name;
-                                            newVendor.type = type;
+                                            newUserGroup.name = name;
                                             
-                                            FirestoreStorage().insertVendor(newVendor);
+                                            firestore.insertUserGroup(newUserGroup);
                                           }
                                         },
                                         child: const Text('Submit'),
