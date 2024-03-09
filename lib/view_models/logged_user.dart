@@ -52,6 +52,7 @@ class LoggedUserNotifier extends ChangeNotifier {
     this.user!.email = user.email!;
     this.user!.name = user.displayName!;
     this.user!.schoolId = schoolId;
+    this.user!.userGroup = "IT";
 
     firestoreStorage.insertUser(this.user!);
     //print("Inserted new user: ${this.user}");
