@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'pages/landing.dart';
 import 'view_models/create_asset_profile.dart';
+import 'view_models/create_new_screen.dart';
 import 'view_models/logged_user.dart';
 
 Future<void> main() async {
@@ -23,6 +24,8 @@ Future<void> main() async {
           create: (_) => CreateAssetNotifier()),
       ChangeNotifierProvider<CreateCheckOutNotifier>(
           create: (_) => CreateCheckOutNotifier()),
+      ChangeNotifierProvider<CreateNewScreenNotifier>(
+          create: (_) => CreateNewScreenNotifier()),
       ChangeNotifierProvider<LoggedUserNotifier>(
           create: (_) => LoggedUserNotifier()),
     ],
@@ -41,10 +44,10 @@ class MyApp extends StatelessWidget {
         //primarySwatch: Colors.blue,
       ),
 
-      home: const Landing(),
-      //home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
-         //? const Landing()
-          //: const TempWebAuthPage(),
+     //home: const Landing(),
+      home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
+         ? const Landing()
+          : const TempWebAuthPage(),
     );
   }
 }
