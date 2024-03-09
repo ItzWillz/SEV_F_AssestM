@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/widgets/asset_list_data_table.dart';
+import 'package:provider/provider.dart';
 import '../models/asset_model.dart';
 import '../services/firestore_storage.dart';
 
@@ -44,15 +46,15 @@ class _AllAssetsPageState extends State<AllAssetsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Assets'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshAssets,
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text('All Assets'),
+      //   actions: [
+      //     IconButton(
+      //       icon: const Icon(Icons.refresh),
+      //       onPressed: _refreshAssets,
+      //     ),
+      //   ],
+      // ),
       body: FutureBuilder<List<Asset>>(
           future: _assetListFuture,
           builder: (context, snapshot) {
@@ -70,10 +72,54 @@ class _AllAssetsPageState extends State<AllAssetsPage>
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
                   children: [
-                    AssetListDataTable(
-                      data: snapshot.data!,
-                      onViewMore: (asset) => _viewMoreInfo(context, asset),
-                      onEdit: (asset) => _editAsset(context, asset),
+                 const Center(child: const Text("All Assets", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
+
+                    Row(
+                      children: [
+                              Padding(
+                               padding: const EdgeInsets.only(bottom: 22.0, left: 20),
+                               child: SizedBox(
+                                width: 200,
+                                child: TextField(
+                                  onChanged: (value) => setState(() {
+                                   // _filter(value);
+                                  }
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: 'Search', suffixIcon: Icon(Icons.search),
+                                  ),
+                                ),
+                                                               ),
+                             ),
+                const Spacer(),
+                SizedBox(
+                            width: 50,
+                            child: IconButton(
+                                onPressed: (){
+                          final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                                notifier.completeAllAssetScreen();
+                                }, 
+                              icon: const Icon(Icons.add, color: Colors.white,), 
+                              //label: const Text("", style: TextStyle(color: Colors.white)),
+                              style: IconButton.styleFrom(
+                                backgroundColor: const Color.fromARGB(255, 76, 200, 63),
+                                //textStyle: const TextStyle(color: Colors.white),
+                              )),
+                                ), 
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: AssetListDataTable(
+                            data: snapshot.data!,
+                            onViewMore: (asset) => _viewMoreInfo(context, asset),
+                            onEdit: (asset) => _editAsset(context, asset),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
