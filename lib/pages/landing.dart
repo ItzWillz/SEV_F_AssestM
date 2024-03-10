@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/pages/add_user_group.dart';
 import 'package:ocassetmanagement/pages/add_vendor_page.dart';
 import 'package:ocassetmanagement/pages/all_assets.dart';
-import 'package:ocassetmanagement/pages/all_buildings_page.dart';
+//import 'package:ocassetmanagement/pages/all_buildings_page.dart';
+import 'package:ocassetmanagement/pages/all_user_groups_page.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
 import 'package:ocassetmanagement/pages/all_vendors_page.dart';
-//import 'package:ocassetmanagement/pages/all_vendors_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:ocassetmanagement/pages/new_check_out_page.dart';
@@ -39,6 +39,7 @@ class _LandingState extends State<Landing> {
   bool _isOnAssetProfilePage = false;
   // ignore: unused_field
   bool _isOnCheckOutPage = false;
+  // ignore: unused_field
   bool _isOnMaintenancePage = false;
 
 
@@ -131,10 +132,16 @@ class _LandingState extends State<Landing> {
       return MaintenancePage(callBack: _navigateToMaintenancePage);
       }
       else if (notifierGeneric.isAllVendors){
-        return AllVendorsPage();
+        return const AllVendorsPage();
       } 
-      else {
-        return AddVendorPage();
+      else if (notifierGeneric.isNewVendorPage){
+        return const AddVendorPage();
+      }
+      else if (notifierGeneric.isAllUserGroupsPage){
+        return const AllUserGroupsPage();
+      }
+      else if (notifierGeneric.isNewUserGroup){
+        return const AddUGPage();
       }
       
       //const MaintenancePage();

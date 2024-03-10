@@ -72,7 +72,7 @@ class _AllAssetsPageState extends State<AllAssetsPage>
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
                   children: [
-                 const Center(child: const Text("All Assets", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
+                 const Center(child: Text("All Assets", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
 
                     Row(
                       children: [

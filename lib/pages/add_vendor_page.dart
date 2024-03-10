@@ -23,10 +23,11 @@ void initState() {
   super.initState();
 }
 
+@override
 void dispose() {
     // implement dispose
     final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-    notifier.completeNewScreen();
+    notifier.completeNewVScreen();
     super.dispose();
   }
 
@@ -129,8 +130,8 @@ Widget build(BuildContext context) {
                                             ));
                                             newVendor.name = name;
                                             newVendor.type = type;
-                                            
                                             FirestoreStorage().insertVendor(newVendor);
+                                            newVendor = Vendor();
                                           }
                                         },
                                         child: const Text('Submit'),

@@ -16,6 +16,7 @@ class MaintenancePage extends StatefulWidget {
 
 class _MaintenancePageState extends State<MaintenancePage> {
 
+// ignore: annotate_overrides
 Widget build(BuildContext context) {
     
     return Scaffold(
@@ -36,7 +37,7 @@ Widget build(BuildContext context) {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(onPressed: () {
                       final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-                                  notifier.newScreen();
+                                  notifier.allVendorScreen();
                     }, child: const Text("Vendors")),
                   ),
                   Padding(
@@ -54,7 +55,10 @@ Widget build(BuildContext context) {
                     children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(onPressed: () {}, child: const Text("Hold")),
+                    child: ElevatedButton(onPressed: () {
+                      final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
+                                  notifier.allUGScreen();
+                    }, child: const Text("User Groups")),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

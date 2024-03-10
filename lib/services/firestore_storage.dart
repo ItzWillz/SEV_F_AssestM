@@ -27,8 +27,8 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => Vendor.fromFirestore(doc)).toList();
   }
 
-  Future<void> updateVendor(Vendor vendor) async {
-    await db.collection(_vendors).doc(vendor.vendorId).update(vendor.toMap());
+  Future<void> updateVendor(String vendorId, Map<String, dynamic> data) async {
+    await db.collection(_vendors).doc(vendorId).update(data);
   }
 
   Future<void> insertVendor(Vendor vendor) {
@@ -174,6 +174,13 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => UserGroup.fromFirestore(doc)).toList();
   }
 
+  Future<List<String>> getUserG() async {
+    DocumentSnapshot<Map<String, dynamic>> event =
+        await db.collection(_miscellaneous).doc('miscellaneous').get();
+
+    return event.data()?['UserGroups'];
+  }
+
   Future<void> insertUserGroup(UserGroup userGroup) {
     ug.add(userGroup.name);
     return db.collection(_miscellaneous).doc('miscellaneous').set({
@@ -194,8 +201,9 @@ class FirestoreStorage {
     print(misc);
   }
 
+  // Miscellaneous Load
+
   Future<void> loadMisc() async {
-    
 
     DocumentSnapshot<Map<String, dynamic>> event =
         await db.collection(_miscellaneous).doc('miscellaneous').get();

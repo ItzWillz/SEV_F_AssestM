@@ -2,24 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:ocassetmanagement/view_models/create_new_screen.dart';
 import 'package:provider/provider.dart';
-
-import '../models/vendor_model.dart';
 import '../widgets/data_table.dart';
 
-class AllVendorsPage extends StatefulWidget {
-const AllVendorsPage({super.key});
+class AllUserGroupsPage extends StatefulWidget {
+const AllUserGroupsPage({super.key});
 
   @override
-  State<AllVendorsPage> createState() => _AllVendorsPageState();
+  State<AllUserGroupsPage> createState() => _AllUserGroupsPageState();
 }
 
 
-class _AllVendorsPageState extends State<AllVendorsPage> {
-  late Future<List<Vendor>> _vendorsListFuture = FirestoreStorage().getVendors();
+class _AllUserGroupsPageState extends State<AllUserGroupsPage> {
+  Future<List<String>> _userGroups = FirestoreStorage().getUserG();
  
-  void _refreshVendors() {
+  void _refreshUserGroups() {
     setState(() {
-      _vendorsListFuture = FirestoreStorage().getVendors();
+      _userGroups = FirestoreStorage().getUserG();
     });
   }
 
@@ -27,15 +25,15 @@ class _AllVendorsPageState extends State<AllVendorsPage> {
   void dispose() {
     // implement dispose
     final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-    notifier.completeAllVendorPage();
+    notifier.completeAllUGPage();
     super.dispose();
   }
 // Future Builder Way
 @override
 Widget build(BuildContext context) {
 
-  return FutureBuilder<List<Vendor>>(
-    future: _vendorsListFuture,
+  return FutureBuilder<List<String>>(
+    future: _userGroups,
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         // While the future is still running, show a loading indicator or placeholder
@@ -43,7 +41,7 @@ Widget build(BuildContext context) {
       } else if (snapshot.hasError) {
         return Text('Error: ${snapshot.error}');
       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return const Text('No vendors found.');
+        return const Text('No User Groups found.');
       } else {
         return Material(
           child: Padding(
@@ -59,7 +57,7 @@ Widget build(BuildContext context) {
                         dispose();
                       } , icon: const Icon(Icons.arrow_back))),
                     
-                      const Center(child: Text("Vendors", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
+                      const Center(child: Text("User Groups", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
                   ],
                 ),
                   Row(
@@ -85,7 +83,7 @@ Widget build(BuildContext context) {
                             child: IconButton(
                                 onPressed: (){
                           final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-                                notifier.newVendor();
+                                notifier.newUserGroup();
                                 }, 
                               icon: const Icon(Icons.add, color: Colors.white,), 
                               //label: const Text("", style: TextStyle(color: Colors.white)),
@@ -97,8 +95,8 @@ Widget build(BuildContext context) {
                 ],
                   ),
                     AssetDataTable(data: snapshot.data!, 
-                    onViewMore: (vendor ) => _viewMoreInfo(context, vendor as Vendor), 
-                    onEdit: (vendor ) => _editVendor(context, vendor as Vendor)),
+                    onViewMore: (userG ) => _viewMoreInfo(context, userG as String), 
+                    onEdit: (userG ) => _editUserGroup(context, userG as String)),
                     ],
           )
         ),
@@ -110,20 +108,20 @@ Widget build(BuildContext context) {
 }
 
 
-void _viewMoreInfo(BuildContext context, Vendor vendor) {
+void _viewMoreInfo(BuildContext context, String userG) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Vendor Details'),
+          title: const Text('User Group Details'),
           content: ConstrainedBox(
             constraints: BoxConstraints(
                 minWidth: MediaQuery.of(context).size.width * 0.3),
             child: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  _buildDetailRow('Name:', vendor.name),
-                  _buildDetailRow('Type:', vendor.type),
+                  _buildDetailRow('Name:', userG),
+                  // Add the Permission listed here
                 ]
               ),
             ),
@@ -145,16 +143,11 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
     );
   }
 
-  void _updateVendor(
-      String vendorId,
+  void _updateUserGroup(
       String name,
-      String type,
       ) {
-    FirestoreStorage().updateVendor(vendorId, {
-      'vendorName': name,
-      'vendorType': type,
-    }).then((_) {
-      _refreshVendors();
+    FirestoreStorage().updateUserGroup(name).then((_) {
+      _refreshUserGroups();
       return "Success";
     }).catchError((error) {
       return "$error occurred while updating";
@@ -180,13 +173,11 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
     );
   }
 
-  void _editVendor(BuildContext context, Vendor vendor) {
+  void _editUserGroup(BuildContext context, String userG) {
     // ignore: no_leading_underscores_for_local_identifiers
     final _formKey = GlobalKey<FormState>();
     final TextEditingController nameController =
-        TextEditingController(text: vendor.name);
-    final TextEditingController typeController =
-        TextEditingController(text: vendor.type);
+        TextEditingController(text: userG);
    
 
     showDialog(
@@ -203,19 +194,13 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
                   children: <Widget>[
                     TextFormField(
                       controller: nameController,
-                      decoration: const InputDecoration(labelText: 'Vendor Name'),
+                      decoration: const InputDecoration(labelText: 'User Group Name'),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a Vendor Name';
+                          return 'Please enter a User Group Name';
                         }
                         return null;
                       },
-                    ),
-                    TextFormField(
-                      controller: typeController,
-                      decoration:
-                          const InputDecoration(labelText: 'Type'),
-                      // Add validator if needed
                     ),
                     // Add other fields as necessary
                   ],
@@ -227,7 +212,7 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                _refreshVendors();
+                _refreshUserGroups();
                 Navigator.of(context).pop();
               },
             ),
@@ -236,12 +221,10 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
               child: const Text('Save'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  _updateVendor(
-                    vendor.vendorId,
+                  _updateUserGroup(
                     nameController.text,
-                    typeController.text,
                   );
-                  _refreshVendors();
+                  _refreshUserGroups();
                   Navigator.of(context).pop();
                 }
               },

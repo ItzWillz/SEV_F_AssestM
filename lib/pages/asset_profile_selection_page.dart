@@ -35,6 +35,7 @@ class _AssetProfileSelectionPageState extends State<AssetProfileSelectionPage> {
   //ColorLabel? selectedColor;
   IconLabel? selectedIcon;
 
+@override
 void dispose() {
     // implement dispose
     final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
