@@ -27,7 +27,7 @@ class CheckedOut implements Tableable {
 
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'Checked Out Device'];
+    return ['School ID', 'Name', 'Email', 'Checked Out Device', 'Actions'];
   }
 
   @override

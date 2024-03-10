@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/vendor_model.dart';
+import 'package:provider/provider.dart';
+import '../view_models/create_new_screen.dart';
 import '/services/firestore_storage.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -20,6 +22,13 @@ class _AssetPageState extends State<AddVendorPage> {
 void initState() {
   super.initState();
 }
+
+void dispose() {
+    // implement dispose
+    final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
+    notifier.completeNewScreen();
+    super.dispose();
+  }
 
 @override
 Widget build(BuildContext context) {

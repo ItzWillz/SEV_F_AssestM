@@ -46,7 +46,7 @@ class User implements Tableable {
 
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'User Group'];
+    return ['School ID', 'Name', 'Email', 'User Group', 'Action'];
   }
 
   @override
