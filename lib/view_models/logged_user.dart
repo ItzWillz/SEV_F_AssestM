@@ -5,6 +5,7 @@ import 'package:ocassetmanagement/services/firestore_storage.dart';
 
 class LoggedUserNotifier extends ChangeNotifier {
   // bool isProfileSelectionScreen = true; Change to unshow login screen rather than navigate?
+  bool? _isLoggedIn = false;
   String? _userGroup;
   // ignore: unused_field
   String? _userId;
@@ -42,6 +43,8 @@ class LoggedUserNotifier extends ChangeNotifier {
     _name = userData.name;
     _schoolId = userData.schoolId;
 
+    _isLoggedIn = true;
+
     //print("User Data: ${userData.userId} and ${userData.name}");
     notifyListeners();
   }
@@ -64,11 +67,15 @@ class LoggedUserNotifier extends ChangeNotifier {
     _name = userData.name;
     _schoolId = userData.schoolId;
 
+    _isLoggedIn = true;
+
     notifyListeners();
   }
 
   void loggedUserOut() {
+    FirebaseAuth.instance.signOut();
     user = null;
+    _isLoggedIn = false;
     notifyListeners();
   }
 }

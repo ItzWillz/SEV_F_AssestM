@@ -16,7 +16,7 @@ class ReservationsPage extends StatelessWidget {
               child: ListView(
                 children:[
                     const Text("    Reservations", style: TextStyle( fontSize: 20.0)),
-                    AssetDataTable(data: _reservations), //${userGroup}
+                    AssetDataTable(data: _reservations, onViewMore: (Object ) {  }, onEdit: (Object ) {  },), //${userGroup}
                 ]
             ),
        )

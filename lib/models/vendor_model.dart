@@ -18,7 +18,7 @@ class Vendor implements Tableable {
 
   @override
   List<String> header() {
-    return ['Name', 'Type'];
+    return ['Name', 'Type', 'Actions'];
   }
 
   @override
@@ -36,5 +36,5 @@ class Vendor implements Tableable {
       'type': type,
     };
   }
-
+  
 }

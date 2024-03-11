@@ -1,5 +1,10 @@
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:ui';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/web_auth_page.dart';
+import 'package:ocassetmanagement/view_models/logged_user.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class SideBar extends StatefulWidget {
@@ -23,46 +28,6 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-//   List get navigationDestinations => navigationDestinations;
-//   set navigationDestinations( navigationDestinations) {
-// if (widget.userGroup.toString() == 'Admin'){
-//  this.navigationDestinations = [
-//    const NavigationRailDestination(
-//           icon: Icon(Icons.home),
-//           label: Text('Home'),
-//         ),
-//         const NavigationRailDestination(
-//           icon: Icon(Icons.add_box_outlined),
-//           label: Text('Asset'),
-//         ),
-//          const NavigationRailDestination(
-//           icon: Icon(Icons.checklist),
-//           label: Text("Check In/Out"),
-//         ),
-//         const NavigationRailDestination(
-//           icon: Icon(Icons.person),
-//           label: Text('Users'),
-//         ),const NavigationRailDestination(
-//           icon: Icon(Icons.query_stats),
-//           label: Text('Reports'),
-//         ),
-//  ];
-//     } else {
-//            navigationDestinations = [
-//         const NavigationRailDestination(
-//           icon: Icon(Icons.home),
-//           label: Text('Home'),
-//         ),
-//         const NavigationRailDestination(
-//           icon: Icon(Icons.add_box_outlined),
-//           label: Text('Asset'),
-//         ),
-//          const NavigationRailDestination(
-//           icon: Icon(Icons.checklist),
-//           label: Text("Check In/Out"),
-//         ),
-//            ];
-//         }
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +39,8 @@ class _SideBarState extends State<SideBar> {
           label: Text('Home'),
         ),
         const NavigationRailDestination(
-          icon: Icon(Icons.add_box_outlined),
-          label: Text('Asset'),
+          icon: Icon(Icons.list),
+          label: Text('All Assets'),
         ),
         const NavigationRailDestination(
           icon: Icon(Icons.checklist),
@@ -90,9 +55,10 @@ class _SideBarState extends State<SideBar> {
           label: Text('Reports'),
         ),
         const NavigationRailDestination(
-          icon: Icon(Icons.list),
-          label: Text('All Assets'),
+          icon: Icon(Icons.settings),
+          label: Text('Maintenance'),
         )
+        
       ];
     } else {
       widget.navigationDestinations = [
@@ -101,8 +67,9 @@ class _SideBarState extends State<SideBar> {
           label: Text('Home'),
         ),
         const NavigationRailDestination(
-          icon: Icon(Icons.add_box_outlined),
-          label: Text('Asset'),
+          //icon: Icon(Icons.add_box_outlined),
+          icon: Icon(Icons.list),
+          label: Text('All Asset'),
         ),
         const NavigationRailDestination(
           icon: Icon(Icons.checklist),
@@ -118,6 +85,18 @@ class _SideBarState extends State<SideBar> {
       elevation: 5,
       onDestinationSelected: widget.onDestinationSelected,
       destinations: widget.navigationDestinations,
+      trailing: Expanded(
+          child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.logout),
+            label: const Text("Sign Out"),
+            onPressed: signOut,
+          ),
+        ),
+      )),
       // const <NavigationRailDestination>[
       //   NavigationRailDestination(
       //     icon: Icon(Icons.home),
@@ -146,6 +125,15 @@ class _SideBarState extends State<SideBar> {
       //],
     );
   }
+
+  // TODO: Throw exception if error.
+  void signOut() {
+    final notifier = Provider.of<LoggedUserNotifier>(context, listen: false);
+    notifier.loggedUserOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const TempWebAuthPage()),
+        (_) => false);
+  }
 }
 
-//List navigationDestinations = [];
