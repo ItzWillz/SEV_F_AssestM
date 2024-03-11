@@ -1,7 +1,6 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
+import 'package:ocassetmanagement/utils/string_validator.dart';
 
 import '../models/user_group_model.dart';
 import '../models/user_model.dart';
@@ -17,6 +16,7 @@ class AllUsersPage extends StatefulWidget {
 class _AllUsersPageState extends State<AllUsersPage> {
   late Future<List<User>> _userListFuture;
   late Future<List<UserGroup>> _userGroupsFuture;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -135,67 +135,68 @@ class _AllUsersPageState extends State<AllUsersPage> {
             return AlertDialog(
               title: Text('Add User'),
               content: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(labelText: 'Email'),
-                    ),
-                    TextFormField(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: emailController,
+                        decoration: const InputDecoration(labelText: 'Email'),
+                        validator: validateEmailAddress,
+                      ),
+                      TextFormField(
                         controller: idNumberController,
                         decoration:
                             const InputDecoration(labelText: 'ID Number'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter ID Number';
-                          }
-                          if (int.tryParse(value) == null) {
-                            return 'ID Number must be a valid integer';
-                          }
-                          return null;
-                        }),
-                    TextFormField(
-                      controller: firstNameController,
-                      decoration:
-                          const InputDecoration(labelText: 'First Name'),
-                    ),
-                    TextFormField(
-                      controller: lastNameController,
-                      decoration: const InputDecoration(labelText: 'Last Name'),
-                    ),
-                    DropdownButtonFormField<UserGroup>(
-                      value: selectedUserGroup,
-                      items: userGroups.map((userGroup) {
-                        return DropdownMenuItem<UserGroup>(
-                          value: userGroup,
-                          child: Text(userGroup.name),
-                        );
-                      }).toList(),
-                      onChanged: (userGroup) {
-                        setState(() {
-                          selectedUserGroup = userGroup;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'User Group',
+                        validator: validateSchoolID,
+                        keyboardType: TextInputType.number,
                       ),
-                    ),
-                  ],
+                      TextFormField(
+                        controller: firstNameController,
+                        decoration:
+                            const InputDecoration(labelText: 'First Name'),
+                      ),
+                      TextFormField(
+                        controller: lastNameController,
+                        decoration:
+                            const InputDecoration(labelText: 'Last Name'),
+                      ),
+                      DropdownButtonFormField<UserGroup>(
+                        value: selectedUserGroup,
+                        items: userGroups.map((userGroup) {
+                          return DropdownMenuItem<UserGroup>(
+                            value: userGroup,
+                            child: Text(userGroup.name),
+                          );
+                        }).toList(),
+                        onChanged: (userGroup) {
+                          setState(() {
+                            selectedUserGroup = userGroup;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'User Group',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               actions: [
                 TextButton(
                   onPressed: () async {
-                    User newUser = User();
-                    newUser.email = emailController.text;
-                    newUser.name =
-                        '${firstNameController.text} ${lastNameController.text}';
-                    newUser.schoolId = int.parse(idNumberController.text);
-                    newUser.userGroup = selectedUserGroup?.name ?? 'IT';
-                    await addUser(newUser);
-                    setState(() {});
-                    Navigator.of(context).pop();
+                    if (_formKey.currentState!.validate()) {
+                      User newUser = User();
+                      newUser.email = emailController.text;
+                      newUser.name =
+                          '${firstNameController.text} ${lastNameController.text}';
+                      newUser.schoolId = int.parse(idNumberController.text);
+                      newUser.userGroup = selectedUserGroup?.name ?? 'IT';
+                      await addUser(newUser);
+                      setState(() {});
+                      Navigator.of(context).pop();
+                    }
                   },
                   child: const Text('Submit'),
                 ),
