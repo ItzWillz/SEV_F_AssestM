@@ -65,6 +65,22 @@ class FirestoreStorage {
     return asset;
   }
 
+// TODO: Needs to be expanded to account for assets whose unique identifier is something other than a serial number (e.g. key)
+  Future<bool> assetExists(var assetIdentifier) async {
+    bool assetExists = false;
+    await db
+        .collection(_assets)
+        .where('serialNum', isEqualTo: assetIdentifier)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        assetExists = true;
+      }
+    });
+
+    return assetExists;
+  }
+
   Future<void> insertAssetInstance(AssetInstance asset) {
     return db.collection(_assets).doc().set({
       'id': "33",
@@ -251,19 +267,10 @@ class FirestoreStorage {
       String buildingName, String roomName, String returnDate) async {
     // TODO: Check to see if asset exists (only based on serial number right now).
     // Needs to be expanded to deal with asset identifiers of other types, such as keys (e.g. key ID).
-    bool assetExists = false;
-    await db
-        .collection(_assets)
-        .where('serialNum', isEqualTo: assetSerial)
-        .get()
-        .then((querySnapshot) {
-      if (querySnapshot.docs.isNotEmpty) {
-        assetExists = true;
-      }
-    });
+    bool validAsset = await assetExists(assetSerial);
 
     // Add new document to Assignments collection if asset identifier (serial number, key-ID, etc.) matches an asset in the system.
-    if (assetExists) {
+    if (validAsset) {
       return db.collection('Assignments').doc().set({
         'assetSerial': assetSerial,
         'personSchoolID': personSchoolID,
@@ -273,6 +280,7 @@ class FirestoreStorage {
         'returnDate': returnDate,
       });
     } else {
+      // TODO: Throw error of invalid asset identifier.
       return;
     }
   }

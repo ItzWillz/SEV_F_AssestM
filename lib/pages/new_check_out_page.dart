@@ -153,8 +153,9 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                                           return null;
                                         },
                                         items: snapshot.data,
-                                        onChanged: (value) =>
-                                            selectedPerson = value,
+                                        onChanged: (value) => setState(() {
+                                          selectedPerson = value;
+                                        }),
                                       ),
                                     );
                                   },
@@ -276,8 +277,13 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                     children: [
                       SizedBox(
                         width: 200,
-                        child: TextField(
+                        child: TextFormField(
                             controller: _assetSerialController,
+                            validator: (value) {
+                              if (value == null || value == '') {
+                                return "Enter serial number";
+                              }
+                            },
                             decoration:
                                 InputDecoration(labelText: 'Serial Number')),
                       )
@@ -343,6 +349,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
 
                       // Check-out selected asset
                       firestoreStorage.assignAsset(
+                          //TODO: Display error if invalid asset identifier.
                           int.parse(_assetSerialController.text),
                           newPerson.schoolId,
                           selectedBuildingName,
@@ -357,6 +364,7 @@ class _NewCheckOutPageState extends State<NewCheckOutPage> {
                             int.parse(selectedPerson.split(" ")[2]);
                       }
                       firestoreStorage.assignAsset(
+                          //TODO: Display error if invalid asset identifier.
                           int.parse(_assetSerialController.text),
                           selectedPersonSchoolID,
                           selectedBuildingName,
