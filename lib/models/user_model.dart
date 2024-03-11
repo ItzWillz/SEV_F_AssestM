@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/models/user_group_model.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import '../view_models/cells/dropdown_cell.dart';
 import 'tableable.dart';
@@ -9,27 +10,29 @@ class User implements Tableable {
         name = '',
         email = '',
         userGroup = '',
-        schoolId = schoolId ?? 0;
+        schoolId = schoolId ?? 0 {
+    fetchUserGroupNames(); // Fetch user groups when an instance is created
+  }
 
   User.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
         name = snapshot['name'] ?? '',
         schoolId = snapshot['schoolId'] ?? 0,
-        userId = snapshot['userId'] ?? '';
+        userId = snapshot['userId'] ?? '' {
+    fetchUserGroupNames(); // Fetch user groups when an instance is created
+  }
 
   late String userGroup;
   late String name;
   late String email;
   late String userId;
   late int schoolId;
+  late List<UserGroup> userGroups;
 
-  static final userGroupOptions = <String>[
-    'Admin',
-    'IT',
-    'Support Central',
-    'Maintenance',
-  ]; // store and pull this from Firestore.
+  Future<void> fetchUserGroupNames() async {
+    userGroups = await FirestoreStorage().getUserGroups();
+  }
 
   @override
   List<String> header() {
@@ -38,6 +41,7 @@ class User implements Tableable {
 
   @override
   List<Object?> asRow() {
+    List<String> userGroupOptions = userGroups.map((e) => e.name).toList();
     return [
       schoolId,
       name,
@@ -66,5 +70,4 @@ class User implements Tableable {
       'schoolId': schoolId,
     };
   }
-  
 }
