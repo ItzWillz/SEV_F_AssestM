@@ -66,5 +66,5 @@ class User implements Tableable {
       'schoolId': schoolId,
     };
   }
-
+  
 }

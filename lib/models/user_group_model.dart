@@ -27,5 +27,5 @@ class UserGroup implements Tableable {
       'name': name,
     };
   }
-
+  
 }

@@ -33,7 +33,6 @@ class AssetInstance implements Tableable {
         internalFeatures = snapshot['internalFeatures'] ?? '',
         wirelessNIC = snapshot['wirelessNIC'] ?? '',
         id = snapshot.id;
-
   late String assetType;
   late int assetProfileId;
   late int serialNum;

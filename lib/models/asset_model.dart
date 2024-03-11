@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/tableable.dart';
 import 'package:uuid/uuid.dart';
 
@@ -66,5 +67,28 @@ class Asset implements Tableable {
       'wirelessNIC': wirelessNIC,
       'id': id
     };
+  }
+}
+
+class ActionCell {
+  final VoidCallback onViewMore;
+  final VoidCallback onEdit;
+
+  ActionCell({required this.onViewMore, required this.onEdit});
+
+  DataCell toDataCell() {
+    return DataCell(Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(Icons.info_outline),
+          onPressed: onViewMore,
+        ),
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: onEdit,
+        ),
+      ],
+    ));
   }
 }

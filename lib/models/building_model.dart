@@ -8,25 +8,25 @@ class Building implements Tableable {
     required this.name,
     required this.roomNum,
     required this.assetTotal,
-  }): id = '0';
+  })  : id = '0',
+        rooms = [];
 
   Building.fromFirestore(DocumentSnapshot snapshot)
-      :
-        roomNum = snapshot['roomNum'] ?? '',
+      : roomNum = snapshot['roomNum'] ?? '',
         assetTotal = snapshot['assetTotal'] ?? '',
         name = snapshot['name'] ?? '',
-        id = snapshot.id;
+        id = snapshot.id,
+        rooms = snapshot['rooms'] ?? [];
 
   String name;
   int roomNum;
   int assetTotal;
   final String id;
-
+  late List<dynamic> rooms;
 
   @override
   List<String> header() {
-    return [ 'Name', 'Number of Rooms', "Total Asset's assigned"];
-
+    return ['Name', 'Number of Rooms', "Total Asset's assigned"];
   }
 
   @override
@@ -37,5 +37,4 @@ class Building implements Tableable {
       assetTotal,
     ];
   }
-
 }
