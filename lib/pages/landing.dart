@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/pages/add_vendor_page.dart';
 import 'package:ocassetmanagement/pages/all_assets.dart';
 import 'package:ocassetmanagement/pages/all_buildings_page.dart';
 import 'package:ocassetmanagement/pages/all_users_page.dart';
+import 'package:ocassetmanagement/pages/all_vendors_page.dart';
 //import 'package:ocassetmanagement/pages/all_vendors_page.dart';
 import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:ocassetmanagement/pages/new_check_out_page.dart';
 import 'package:ocassetmanagement/pages/reports_page.dart';
+import 'package:ocassetmanagement/view_models/create_new_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
@@ -16,6 +19,7 @@ import 'check_in_and_out_page.dart';
 
 import 'home_page.dart';
 import '../sidebar.dart';
+import 'maintenance _page.dart';
 // import 'package:ocassetmanagement/sidebar.dart';
 
 class Landing extends StatefulWidget {
@@ -34,6 +38,9 @@ class _LandingState extends State<Landing> {
   bool _isOnAssetProfilePage = false;
   // ignore: unused_field
   bool _isOnCheckOutPage = false;
+  bool _isOnMaintenancePage = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +98,18 @@ class _LandingState extends State<Landing> {
     if (_selectedIndex == 1) {
       final notifier = Provider.of<CreateAssetNotifier>(context);
 
-      return notifier.isProfileSelectionScreen
-          ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
-          : AssetPage(profile: _attachedprofile);
+      if(notifier.isAllAssets){
+        return const AllAssetsPage();
+      }
+      else if(notifier.isProfileSelectionScreen){
+        return AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage);
+      }
+      else if (notifier.isNewAsset){
+        return AssetPage(profile: _attachedprofile,);
+      }
+      // return notifier.isProfileSelectionScreen
+      //     ? AssetProfileSelectionPage(callBack: _navigateToAddAndEditAssetPage)
+      //     : AssetPage(profile: _attachedprofile);
     } else if (_selectedIndex == 2) {
       final notifierTwo = Provider.of<CreateCheckOutNotifier>(context);
 
@@ -109,10 +125,22 @@ class _LandingState extends State<Landing> {
     } else if (_selectedIndex == 4) {
       return const ReportsPage();
     } else if (_selectedIndex == 5) {
-      return const AllAssetsPage();
+      //return const AllAssetsPage();
+      final notifierGeneric = Provider.of<CreateNewScreenNotifier>(context);
+      if(notifierGeneric.isMaintenancescreen){
+      return MaintenancePage(callBack: _navigateToMaintenancePage);
+      }
+      else if (notifierGeneric.isAllVendors){
+        return AllVendorsPage();
+      } 
+      else {
+        return AddVendorPage();
+      }
+      
+      //const MaintenancePage();
     }
 
-    return const AllBuildingsPage();
+    return const HomePage();
   }
 
   void _navigateToAddAndEditAssetPage(String? profile) {
@@ -126,6 +154,12 @@ class _LandingState extends State<Landing> {
     setState(() {
       _isOnCheckOutPage = true;
       _attachedasset = asset;
+    });
+  }
+
+  void _navigateToMaintenancePage(){
+    setState(() {
+      _isOnMaintenancePage = true;
     });
   }
 

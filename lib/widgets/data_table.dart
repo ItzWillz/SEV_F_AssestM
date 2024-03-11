@@ -6,9 +6,13 @@ import '../view_models/cells/asset_cell.dart';
 import '../models/tableable.dart';
 
 class MyDataSource extends DataTableSource {
-  MyDataSource({required this.data});
+  MyDataSource({required this.data, 
+    required this.onViewMore,
+    required this.onEdit,});
 
   final List<Object> data;
+  final Function onViewMore;
+  final Function onEdit;
 
   @override
   int get rowCount => data.length;
@@ -24,7 +28,25 @@ class MyDataSource extends DataTableSource {
     final row = data[index];
 
     if (row is Tableable) {
-      return DataRow(cells: row.asRow().map(_toDataCell).toList());
+      List<DataCell> cells = row.asRow().map(_toDataCell).toList();
+
+      cells.add(DataCell(Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => onViewMore(row),
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => onEdit(row),
+          ),
+        ],
+      )));
+
+      return DataRow(cells: cells);
+      //return DataRow(cells: row.asRow().map(_toDataCell).toList());
+      
     } else {
       if (kDebugMode) print('$row doens\'t implement tableable.');
       return DataRow(
@@ -45,10 +67,13 @@ class MyDataSource extends DataTableSource {
 }
 
 class AssetDataTable extends StatelessWidget {
-  AssetDataTable({super.key, required this.data})
-      : dataSource = MyDataSource(data: data);
+  AssetDataTable({super.key, required this.data, required this.onViewMore,
+    required this.onEdit})
+      : dataSource = MyDataSource(data: data, onViewMore: onViewMore, onEdit: onEdit);
 
   final List<Object> data;
+  final Function(Object) onViewMore;
+  final Function(Object) onEdit;
   final DataTableSource dataSource;
 
   @override
@@ -62,6 +87,7 @@ class AssetDataTable extends StatelessWidget {
       return PaginatedDataTable(
         columns: asset.header().map(columnHeader).toList(),
         source: dataSource,
+        
       );
     }
 
@@ -74,32 +100,32 @@ class AssetDataTable extends StatelessWidget {
   }
 }
 
-class VendorDataTable extends StatelessWidget {
-  VendorDataTable({super.key, required this.data})
-      : dataSource = MyDataSource(data: data);
+// class VendorDataTable extends StatelessWidget {
+//   VendorDataTable({super.key, required this.data})
+//       : dataSource = MyDataSource(data: data);
 
-  final List<Object> data;
-  final DataTableSource dataSource;
+//   final List<Object> data;
+//   final DataTableSource dataSource;
 
-  @override
-  Widget build(BuildContext context) {
-    if (data.isEmpty) {
-      return const Text('Table is empty');
-    }
-    final vendor = data.first;
+//   @override
+//   Widget build(BuildContext context) {
+//     if (data.isEmpty) {
+//       return const Text('Table is empty');
+//     }
+//     final vendor = data.first;
 
-    if (vendor is Tableable) {
-      return PaginatedDataTable(
-        columns: vendor.header().map(columnHeader).toList(),
-        source: dataSource,
-      );
-    }
+//     if (vendor is Tableable) {
+//       return PaginatedDataTable(
+//         columns: vendor.header().map(columnHeader).toList(),
+//         source: dataSource,
+//       );
+//     }
 
-    return Text(
-        '${vendor.runtimeType} does not implement Tableable. Please fix this.');
-  }
+//     return Text(
+//         '${vendor.runtimeType} does not implement Tableable. Please fix this.');
+//   }
 
-  DataColumn columnHeader(String label) {
-    return DataColumn(label: Text(label.toString()));
-  }
-}
+//   DataColumn columnHeader(String label) {
+//     return DataColumn(label: Text(label.toString()));
+//   }
+// }
