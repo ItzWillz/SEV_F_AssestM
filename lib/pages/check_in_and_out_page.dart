@@ -44,7 +44,7 @@ class _CheckInandOutPageState extends State<CheckInandOutPage> {
           .toList();
     }
   }
-
+}
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -134,7 +134,6 @@ class _CheckInandOutPageState extends State<CheckInandOutPage> {
                       )),
                 ),
               ),
-            ]),
             Row(
               children: [
                 Expanded(
@@ -148,4 +147,4 @@ class _CheckInandOutPageState extends State<CheckInandOutPage> {
       ),
     );
   }
-}
+
