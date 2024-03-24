@@ -16,14 +16,14 @@ class AllUsersPage extends StatefulWidget {
 
 class _AllUsersPageState extends State<AllUsersPage> {
   late Future<List<User>> _userListFuture;
-  late Future<List<UserGroup>> _userGroupsFuture;
+  late final Future<List<UserGroup>> _userGroupsFuture =
+      User().fetchUserGroupNames();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
     _userListFuture = FirestoreStorage().getUsers();
-    _userGroupsFuture = FirestoreStorage().getUserGroups();
   }
 
   @override

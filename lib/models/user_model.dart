@@ -30,13 +30,13 @@ class User implements Tableable {
   late int schoolId;
   late List<UserGroup> userGroups;
 
-  Future<void> fetchUserGroupNames() async {
-    userGroups = await FirestoreStorage().getUserGroups();
+  Future<List<UserGroup>> fetchUserGroupNames() async {
+    return userGroups = await FirestoreStorage().getUserGroups();
   }
 
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'User Group', 'Action'];
+    return ['School ID', 'Name', 'Email', 'User Group'];
   }
 
   @override
