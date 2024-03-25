@@ -9,7 +9,7 @@ class CheckedOut implements Tableable {
     required this.name,
     required this.email,
     required this.asset,
-  }): id = '0';
+  }) : id = '0';
 
   CheckedOut.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
@@ -24,20 +24,13 @@ class CheckedOut implements Tableable {
   final String id;
   int schoolId;
 
-
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'Checked Out Device', 'Actions'];
+    return ['School ID', 'Name', 'Email', 'Asset'];
   }
 
   @override
   List<Object?> asRow() {
-    return [
-      schoolId,
-      name,
-      email,
-      asset
-    ];
+    return [schoolId, name, email, asset];
   }
-
 }
