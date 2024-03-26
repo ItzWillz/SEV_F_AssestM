@@ -10,6 +10,7 @@ import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:ocassetmanagement/pages/new_check_out_page.dart';
 import 'package:ocassetmanagement/pages/reports_page.dart';
+import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:ocassetmanagement/view_models/create_new_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
@@ -41,13 +42,13 @@ class _LandingState extends State<Landing> {
   bool _isOnCheckOutPage = false;
   // ignore: unused_field
   bool _isOnMaintenancePage = false;
+  
 
 
 
   @override
   Widget build(BuildContext context) {
-     
-
+    
     var name = context.watch<LoggedUserNotifier>().name;
     var userGroup = context.watch<LoggedUserNotifier>().userGroup;
     return Scaffold(
@@ -174,5 +175,9 @@ class _LandingState extends State<Landing> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void miscLoading(){
+    FirestoreStorage().loadMisc();
   }
 }

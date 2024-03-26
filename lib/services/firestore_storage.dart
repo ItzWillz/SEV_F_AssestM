@@ -14,6 +14,14 @@ class FirestoreStorage {
   final db = FirebaseFirestore.instance;
   List<String> ug = [];
 
+  static final FirestoreStorage _singleton = FirestoreStorage._internal();
+
+  factory FirestoreStorage() {
+    return _singleton;
+  }
+
+  FirestoreStorage._internal();
+
   Future<int> getValue() async {
     final doc = await db.collection('temp').doc('temp').get();
     return doc.get('num') ?? 0;
@@ -175,10 +183,7 @@ class FirestoreStorage {
   }
 
   Future<List<String>> getUserG() async {
-    DocumentSnapshot<Map<String, dynamic>> event =
-        await db.collection(_miscellaneous).doc('miscellaneous').get();
-
-    return event.data()?['UserGroups'];
+    return ug;
   }
 
   Future<void> insertUserGroup(UserGroup userGroup) {
@@ -196,20 +201,22 @@ class FirestoreStorage {
   }
 
   Future<void> removeUserGroup(String group) async {
-    final misc = await getUserGroups();
-
-    print(misc);
+    List<String> removeName = [];
+    removeName.add(group);
+    return db.collection(_miscellaneous).doc('miscellaneous').set({
+      'UserGroup': FieldValue.arrayRemove(removeName),
+    });
   }
 
   // Miscellaneous Load
 
   Future<void> loadMisc() async {
-
-    DocumentSnapshot<Map<String, dynamic>> event =
+    final event =
         await db.collection(_miscellaneous).doc('miscellaneous').get();
 
-    ug = event.data()?['UserGroups'];
-
-    print(ug);
+    ug = event
+        .data()?['UserGroup']
+        .map<String>((userGroup) => userGroup.toString())
+        .toList();
   }
 }

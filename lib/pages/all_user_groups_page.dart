@@ -31,7 +31,6 @@ class _AllUserGroupsPageState extends State<AllUserGroupsPage> {
 // Future Builder Way
 @override
 Widget build(BuildContext context) {
-
   return FutureBuilder<List<String>>(
     future: _userGroups,
     builder: (context, snapshot) {

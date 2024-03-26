@@ -9,24 +9,23 @@ UserGroup newUserGroup = UserGroup();
 FirestoreStorage firestore = FirestoreStorage();
 
 class AddUGPage extends StatefulWidget {
-const AddUGPage({super.key});
-
+  const AddUGPage({super.key});
 
   @override
-State<AddUGPage> createState() => _AssetPageState();
+  State<AddUGPage> createState() => _UserGroupPageState();
 }
 
-class _AssetPageState extends State<AddUGPage> {
-@override
-void initState() {
-  super.initState();
-}
+class _UserGroupPageState extends State<AddUGPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
-@override
-Widget build(BuildContext context) {
-  return Material(
-    child: Form(
-        key: _formKey,
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Form(
+          key: _formKey,
           child: ListView(
             children: [
               Padding(
@@ -35,45 +34,48 @@ Widget build(BuildContext context) {
                   children: [
                     Expanded(
                       flex: 4,
-                      child: 
-                        Column(
-                          children: [
-                            const Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 200,
-                                          child: Text('User Group Info', style: TextStyle(fontSize: 25),),
-                                        ),
-                                      ],
-                                    ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 200,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                      labelText: 'Name',
-                                    ),
-                                    onSaved: (String? value) {
-                                    },
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Enter a Name';
-                                      }
-                                      name = value;
-                                      return null;
-                                    },
-                                  ),
+                      child: Column(
+                        children: [
+                          const Row(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: Text(
+                                  'User Group Info',
+                                  style: TextStyle(fontSize: 25),
                                 ),
-                              ],
-                            ),       
-                          ],
-                        ),
-                    ),      
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                    labelText: 'Name',
+                                  ),
+                                  onSaved: (String? value) {},
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Enter a Name';
+                                    }
+                                    name = value;
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30,), 
+              const SizedBox(
+                height: 30,
+              ),
               Row(
                 children: [
                   const Spacer(),
@@ -84,47 +86,40 @@ Widget build(BuildContext context) {
                         SizedBox(
                           width: 100,
                           child: ElevatedButton(
-                      onPressed: () { //Route back to ug List
-                      dispose();
-                      },
-                      child: const Text('Cancel'),
-                    ),
+                            onPressed: () {
+                              //Route back to ug List
+                              dispose();
+                            },
+                            child: const Text('Cancel'),
+                          ),
                         ),
-                                                SizedBox(
-                          width: 100,
-                          child: ElevatedButton(
-                      onPressed: () { //Route back to ug List
-                      firestore.loadMisc();
-                      },
-                      child: const Text('Load'),
-                    ),
+                        const SizedBox(
+                          width: 20,
                         ),
-                        const SizedBox(width: 20,),
                         SizedBox(
                           width: 100,
                           child: ElevatedButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState!.validate()) {
-                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                              content: Text('User Group Saved!'),
-                                            ));
-                                            newUserGroup.name = name;
-                                            
-                                            firestore.insertUserGroup(newUserGroup);
-                                          }
-                                        },
-                                        child: const Text('Submit'),
-                                      ),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('User Group Saved!'),
+                                ));
+                                newUserGroup.name = name;
+
+                                firestore.insertUserGroup(newUserGroup);
+                              }
+                            },
+                            child: const Text('Submit'),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-              ],
-          )
-            ),
-  );
-
-}
+            ],
+          )),
+    );
+  }
 }

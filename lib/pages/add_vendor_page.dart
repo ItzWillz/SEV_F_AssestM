@@ -14,10 +14,10 @@ const AddVendorPage({super.key});
 
 
   @override
-State<AddVendorPage> createState() => _AssetPageState();
+State<AddVendorPage> createState() => _VendorPageState();
 }
 
-class _AssetPageState extends State<AddVendorPage> {
+class _VendorPageState extends State<AddVendorPage> {
 @override
 void initState() {
   super.initState();
