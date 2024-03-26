@@ -39,5 +39,5 @@ class Vendor implements Tableable {
       'type': type,
     };
   }
-
+  
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
@@ -37,6 +38,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check to see if there is a user currently logged-in. If so, set the LoggedUserNotifier to reflect the user's data.
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final notifier = Provider.of<LoggedUserNotifier>(context, listen: false);
+      notifier.completeLoginFunctionality(user);
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

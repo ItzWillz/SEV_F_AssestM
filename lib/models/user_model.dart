@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocassetmanagement/models/user_group_model.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import '../view_models/cells/dropdown_cell.dart';
 import 'tableable.dart';
@@ -9,48 +10,47 @@ class User implements Tableable {
         name = '',
         email = '',
         userGroup = '',
-        schoolId = schoolId ?? 0;
+        schoolId = schoolId ?? 0 {
+    fetchUserGroupNames(); // Fetch user groups when an instance is created
+  }
 
   User.fromFirestore(DocumentSnapshot snapshot)
       : email = snapshot['email'] ?? '',
         userGroup = snapshot['userGroup'] ?? '',
         name = snapshot['name'] ?? '',
         schoolId = snapshot['schoolId'] ?? 0,
-        userId = snapshot['userId'] ?? '';
-
-  String userGroup;
-  String name;
-  String email;
-  String userId;
-  int schoolId;
-
-  // static final userGroupOptions = <String>[
-  //   'Admin',
-  //   'IT',
-  //   'Support Central',
-  //   'Maintenance',
-  // ]; // store and pull this from Firestore.
-
-  static final List<String> userGroupOptions = [];
-
-  static init() async {
-    final userGroups = await FirestoreStorage().getUserGroups();
-    final names = userGroups.map<String>((e) => e.name);
-    userGroupOptions.addAll(names);
+        userId = snapshot['userId'] ?? '' {
+    fetchUserGroupNames(); // Fetch user groups when an instance is created
   }
 
-  // Future<List<String>> getNames( ) async {
-  //   final userGroups = await userGroupOptions;
-  //   List<String> names = userGroups.map<String>((UserGroup e) => e.name).toList();
-  // }
+  // Below is recommended from Griffin
+//   static final List<String> userGroupOptions = [];
+
+//   static init() async {
+//     final userGroups = await FirestoreStorage().getUserGroups();
+//     final names = userGroups.map<String>((e) => e.name);
+//     userGroupOptions.addAll(names);
+//   }
+  
+  late String userGroup;
+  late String name;
+  late String email;
+  late String userId;
+  late int schoolId;
+  late List<UserGroup> userGroups;
+
+  Future<List<UserGroup>> fetchUserGroupNames() async {
+    return userGroups = await FirestoreStorage().getUserGroups();
+  }
 
   @override
   List<String> header() {
-    return ['School ID', 'Name', 'Email', 'User Group', 'Action'];
+    return ['School ID', 'Name', 'Email', 'User Group'];
   }
 
   @override
   List<Object?> asRow() {
+    List<String> userGroupOptions = userGroups.map((e) => e.name).toList();
     return [
       schoolId,
       name,
