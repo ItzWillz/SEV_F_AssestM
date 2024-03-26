@@ -19,7 +19,17 @@ class FirestoreStorage {
 
   static const _vendors = 'Vendors';
   static const _userGroups = 'UserGroups';
+  static const _miscellaneous = 'Miscellaneous';
   final db = FirebaseFirestore.instance;
+  List<String> ug = [];
+
+  static final FirestoreStorage _singleton = FirestoreStorage._internal();
+
+  factory FirestoreStorage() {
+    return _singleton;
+  }
+
+  FirestoreStorage._internal();
 
   Future<int> getValue() async {
     final doc = await db.collection('temp').doc('temp').get();
@@ -34,8 +44,8 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => Vendor.fromFirestore(doc)).toList();
   }
 
-  Future<void> updateVendor(Vendor vendor) async {
-    await db.collection(_vendors).doc(vendor.vendorId).update(vendor.toMap());
+  Future<void> updateVendor(String vendorId, Map<String, dynamic> data) async {
+    await db.collection(_vendors).doc(vendorId).update(data);
   }
 
   Future<void> insertVendor(Vendor vendor) {
@@ -313,9 +323,41 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => UserGroup.fromFirestore(doc)).toList();
   }
 
+  Future<List<String>> getUserG() async {
+    return ug;
+  }
+
   Future<void> insertUserGroup(UserGroup userGroup) {
-    return db.collection(_userGroups).doc(userGroup.name).set({
-      'name': userGroup.name,
+    ug.add(userGroup.name);
+    return db.collection(_miscellaneous).doc('miscellaneous').set({
+      'UserGroup': FieldValue.arrayUnion(ug),
     });
+  }
+
+  Future<void> updateUserGroup(String group) async {
+    final newGroup = <String, dynamic>{
+      'UserGroup': group,
+    };
+    await db.collection(_miscellaneous).doc('miscellaneous').update(newGroup);
+  }
+
+  Future<void> removeUserGroup(String group) async {
+    List<String> removeName = [];
+    removeName.add(group);
+    return db.collection(_miscellaneous).doc('miscellaneous').set({
+      'UserGroup': FieldValue.arrayRemove(removeName),
+    });
+  }
+
+  // Miscellaneous Load
+
+  Future<void> loadMisc() async {
+    final event =
+        await db.collection(_miscellaneous).doc('miscellaneous').get();
+
+    ug = event
+        .data()?['UserGroup']
+        .map<String>((userGroup) => userGroup.toString())
+        .toList();
   }
 }

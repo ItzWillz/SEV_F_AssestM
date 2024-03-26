@@ -14,19 +14,20 @@ const AddVendorPage({super.key});
 
 
   @override
-State<AddVendorPage> createState() => _AssetPageState();
+State<AddVendorPage> createState() => _VendorPageState();
 }
 
-class _AssetPageState extends State<AddVendorPage> {
+class _VendorPageState extends State<AddVendorPage> {
 @override
 void initState() {
   super.initState();
 }
 
+@override
 void dispose() {
     // implement dispose
     final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-    notifier.completeNewScreen();
+    notifier.completeNewVScreen();
     super.dispose();
   }
 
@@ -50,7 +51,7 @@ Widget build(BuildContext context) {
                                       children: [
                                         SizedBox(
                                           width: 200,
-                                          child: Text('Asset Info', style: TextStyle(fontSize: 25),),
+                                          child: Text('Vendor Info', style: TextStyle(fontSize: 25),),
                                         ),
                                       ],
                                     ),
@@ -129,8 +130,8 @@ Widget build(BuildContext context) {
                                             ));
                                             newVendor.name = name;
                                             newVendor.type = type;
-                                            
                                             FirestoreStorage().insertVendor(newVendor);
+                                            newVendor = Vendor();
                                           }
                                         },
                                         child: const Text('Submit'),

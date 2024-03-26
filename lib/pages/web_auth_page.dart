@@ -266,6 +266,7 @@ class _TempWebAuthPageState extends State<TempWebAuthPage> {
     final notifier = Provider.of<LoggedUserNotifier>(context, listen: false);
     // User? user = FirebaseAuth.instance.currentUser;
     notifier.completeLoginFunctionality(user);
+    FirestoreStorage().loadMisc();
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const Landing()));
   }

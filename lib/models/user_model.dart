@@ -23,6 +23,15 @@ class User implements Tableable {
     fetchUserGroupNames(); // Fetch user groups when an instance is created
   }
 
+  // Below is recommended from Griffin
+//   static final List<String> userGroupOptions = [];
+
+//   static init() async {
+//     final userGroups = await FirestoreStorage().getUserGroups();
+//     final names = userGroups.map<String>((e) => e.name);
+//     userGroupOptions.addAll(names);
+//   }
+  
   late String userGroup;
   late String name;
   late String email;

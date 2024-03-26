@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 // ignore: unused_import
 import 'package:ocassetmanagement/pages/web_auth_page.dart';
 // ignore: unused_import
@@ -48,10 +47,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          //primarySwatch: Colors.blue,
-          ),
-      //home: const NewCheckOutPage(),
-
+        //primarySwatch: Colors.blue,
+      ),
      //home: const Landing(),
       home: Provider.of<LoggedUserNotifier>(context).isLoggedIn
          ? const Landing()

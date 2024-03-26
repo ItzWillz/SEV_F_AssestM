@@ -27,6 +27,7 @@ class MyDataSource extends DataTableSource {
   DataRow? getRow(int index) {
     final row = data[index];
 
+    // ignore: unnecessary_type_check
     if (row is Tableable) {
       List<DataCell> cells = row.asRow().map<DataCell>((item) {
         return DataCell(item is Widget ? item : Text(item?.toString() ?? ''));
@@ -73,6 +74,7 @@ class AssetListDataTable extends StatelessWidget {
 
     final asset = data.first;
 
+    // ignore: unnecessary_type_check
     if (asset is Tableable) {
       return PaginatedDataTable(
         columns: data.first
