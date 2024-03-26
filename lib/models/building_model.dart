@@ -7,7 +7,9 @@ class Building implements Tableable {
   Building({
     required this.name,
     required this.roomNum,
+    required this.rooms,
     required this.assetTotal,
+    required this.maintenanceNotes,
   }): id = '0';
 
   Building.fromFirestore(DocumentSnapshot snapshot)
@@ -15,17 +17,21 @@ class Building implements Tableable {
         roomNum = snapshot['roomNum'] ?? '',
         assetTotal = snapshot['assetTotal'] ?? '',
         name = snapshot['name'] ?? '',
+        rooms = snapshot['rooms'] ?? '',
+        maintenanceNotes = snapshot['maintenanceNotes'] ?? '',
         id = snapshot.id;
 
   String name;
   int roomNum;
   int assetTotal;
+  String? maintenanceNotes;
+  List<Object> rooms;
   final String id;
 
 
   @override
   List<String> header() {
-    return [ 'Name', 'Number of Rooms', "Total Asset's assigned"];
+    return [ 'Name', 'Number of Rooms', "Total Asset's assigned", 'Actions'];
 
   }
 

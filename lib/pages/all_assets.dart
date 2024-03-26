@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/constants/constants.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/widgets/asset_list_data_table.dart';
 import 'package:provider/provider.dart';
@@ -6,16 +7,15 @@ import '../models/asset_model.dart';
 import '../services/firestore_storage.dart';
 
 class AllAssetsPage extends StatefulWidget {
-  const AllAssetsPage({Key? key}) : super(key: key);
+  const AllAssetsPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AllAssetsPageState createState() => _AllAssetsPageState();
+  State<StatefulWidget> createState() => _AllAssetsPageState();
 }
 
 class _AllAssetsPageState extends State<AllAssetsPage>
     with WidgetsBindingObserver {
-  late Future<List<Asset>> _assetListFuture;
+  Future<List<Asset>> _assetListFuture = FirestoreStorage().getAssets();
 
   @override
   void initState() {
@@ -72,50 +72,60 @@ class _AllAssetsPageState extends State<AllAssetsPage>
                 padding: const EdgeInsets.all(10.0),
                 child: ListView(
                   children: [
-                 const Center(child: const Text("All Assets", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,)),
-
+                    const Center(
+                        child: Text(
+                      "All Assets",
+                      style: TextStyle(fontSize: 30.0),
+                      textAlign: TextAlign.center,
+                    )),
                     Row(
                       children: [
-                              Padding(
-                               padding: const EdgeInsets.only(bottom: 22.0, left: 20),
-                               child: SizedBox(
-                                width: 200,
-                                child: TextField(
-                                  onChanged: (value) => setState(() {
-                                   // _filter(value);
-                                  }
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: 'Search', suffixIcon: Icon(Icons.search),
-                                  ),
-                                ),
-                                                               ),
-                             ),
-                const Spacer(),
-                SizedBox(
-                            width: 50,
-                            child: IconButton(
-                                onPressed: (){
-                          final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: 22.0, left: 20),
+                          child: SizedBox(
+                            width: 200,
+                            child: TextField(
+                              onChanged: (value) => setState(() {
+                                // _filter(value);
+                              }),
+                              decoration: const InputDecoration(
+                                labelText: 'Search',
+                                suffixIcon: Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: 50,
+                          child: IconButton(
+                              onPressed: () {
+                                final notifier =
+                                    Provider.of<CreateAssetNotifier>(context,
+                                        listen: false);
                                 notifier.completeAllAssetScreen();
-                                }, 
-                              icon: const Icon(Icons.add, color: Colors.white,), 
+                              },
+                              icon: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
                               //label: const Text("", style: TextStyle(color: Colors.white)),
                               style: IconButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 76, 200, 63),
+                                backgroundColor: addGreen,
                                 //textStyle: const TextStyle(color: Colors.white),
                               )),
-                                ), 
+                        ),
                       ],
                     ),
-
                     Row(
                       children: [
                         Expanded(
                           flex: 4,
                           child: AssetListDataTable(
                             data: snapshot.data!,
-                            onViewMore: (asset) => _viewMoreInfo(context, asset),
+                            onViewMore: (asset) =>
+                                _viewMoreInfo(context, asset),
                             onEdit: (asset) => _editAsset(context, asset),
                           ),
                         ),
@@ -320,7 +330,6 @@ class _AllAssetsPageState extends State<AllAssetsPage>
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                _refreshAssets();
                 Navigator.of(context).pop();
               },
             ),

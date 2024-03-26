@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocassetmanagement/models/building_model.dart';
 import 'package:ocassetmanagement/pages/add_vendor_page.dart';
 import 'package:ocassetmanagement/pages/all_assets.dart';
 import 'package:ocassetmanagement/pages/all_buildings_page.dart';
@@ -9,6 +10,7 @@ import 'package:ocassetmanagement/pages/asset_page.dart';
 import 'package:ocassetmanagement/pages/asset_profile_selection_page.dart';
 import 'package:ocassetmanagement/pages/new_check_out_page.dart';
 import 'package:ocassetmanagement/pages/reports_page.dart';
+import 'package:ocassetmanagement/pages/view_building_page.dart';
 import 'package:ocassetmanagement/view_models/create_new_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
@@ -33,6 +35,7 @@ class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
   bool _showNavigationBar = true;
   String? _attachedprofile;
+  Building? _attachedbuilding;
   Object? _attachedasset;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
@@ -118,23 +121,34 @@ class _LandingState extends State<Landing> {
            : NewCheckOutPage(asset: _attachedasset,);
 
       //return const CheckInandOutPage();
-      }else if (_selectedIndex == 3) {
+      }else if (_selectedIndex == 5)//3
+       {
 
       return const AllUsersPage();
     } else if (_selectedIndex == 4) {
       return const ReportsPage();
-    } else if (_selectedIndex == 5) {
+    } else if (_selectedIndex == 3) //5 
+    {
       //return const AllAssetsPage();
       final notifierGeneric = Provider.of<CreateNewScreenNotifier>(context);
       if(notifierGeneric.isMaintenancescreen){
       return MaintenancePage(callBack: _navigateToMaintenancePage);
       }
       else if (notifierGeneric.isAllVendors){
-        return AllVendorsPage();
+        return const AllVendorsPage();
       } 
-      else {
-        return AddVendorPage();
+      else if (notifierGeneric.isNewVendorPage){
+        return const AddVendorPage();
       }
+      else if (notifierGeneric.isAllBuildings){
+        return  AllBuildingsPage(callBack: _navigateToViewandEditBuildingPage);
+      }
+      else if (notifierGeneric.isViewBuilding){
+        return ViewBuildingPage(building: _attachedbuilding, isReadOnly: true,);
+      }
+      // else if (notifierGeneric.isNewBuilding){
+      //   return const AddBuildingPage();
+      // }
       
       //const MaintenancePage();
     }
@@ -159,6 +173,12 @@ class _LandingState extends State<Landing> {
   void _navigateToMaintenancePage(){
     setState(() {
       _isOnMaintenancePage = true;
+    });
+  }
+
+  void _navigateToViewandEditBuildingPage(Building? building){
+    setState(() {
+      _attachedbuilding = building;
     });
   }
 

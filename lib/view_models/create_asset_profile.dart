@@ -20,8 +20,9 @@ class CreateAssetNotifier extends ChangeNotifier {
     if (assetName == null) {
       assetProfile = null;
     } else {
-      int value = await FirestoreStorage().getValue();
-      assetProfile = '$value';
+      //int value = await FirestoreStorage().getValue();
+      //assetProfile = '$value';
+      assetProfile = assetName;
     }
 
     notifyListeners();

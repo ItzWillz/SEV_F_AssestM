@@ -3,11 +3,11 @@ import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:provider/provider.dart';
 
 enum IconLabel {
-  smile('Smile', Icons.sentiment_satisfied_outlined),
-  cloud(
-    'Cloud',
+   laptop(
+    'Laptop',
     Icons.cloud_outlined,
   ),
+  projector('Projector', Icons.sentiment_satisfied_outlined),
   brush('Brush', Icons.brush_outlined),
   heart('Heart', Icons.favorite);
 
@@ -116,8 +116,8 @@ void dispose() {
                             ElevatedButton(
                                 onPressed: () {
                                   final notifier = Provider.of<CreateAssetNotifier>(context, listen: false);
+                                  widget.callBack(selectedIcon?.label);
                                   notifier.completeProfileSelectionScren(assetName: selectedIcon?.label);
-                                  // widget.callBack(selectedIcon?.label);
                                 },
                                 child: const Text('Continue'))
                           ],

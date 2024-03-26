@@ -36,12 +36,15 @@ Widget build(BuildContext context) {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(onPressed: () {
                       final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
-                                  notifier.newScreen();
+                                  notifier.allVendorScreen();
                     }, child: const Text("Vendors")),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(onPressed: () {}, child: const Text("Buildings & Rooms")),
+                    child: ElevatedButton(onPressed: () {
+                      final notifier = Provider.of<CreateNewScreenNotifier>(context, listen: false);
+                                  notifier.allBuildingScreen();
+                    }, child: const Text("Buildings & Rooms")),
                   )
                   ],
                   ),

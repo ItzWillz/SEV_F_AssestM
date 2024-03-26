@@ -25,7 +25,7 @@ class FirestoreStorage {
     return snapshot.docs.map((doc) => Vendor.fromFirestore(doc)).toList();
   }
 
-  Future<void> updateVendor(Vendor vendor) async {
+  Future<void> updateVendor(Vendor vendor, Map<String, String> map) async {
     await db.collection(_vendors).doc(vendor.vendorId).update(vendor.toMap());
   }
 

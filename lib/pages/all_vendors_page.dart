@@ -153,14 +153,15 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
     );
   }
 
-  void _updateAsset(
+  void _updateVendor(
+      Vendor vendor,
       String vendorId,
-      String name,
-      String type,
+      String vendorName,
+      String vendorType,
       ) {
-    FirestoreStorage().updateAsset(vendorId, {
-      'vendorName': name,
-      'vendorType': type,
+    FirestoreStorage().updateVendor(vendor, {
+      'vendorName': vendorName,
+      'vendorType': vendorType,
     }).then((_) {
       _refreshVendors();
       return "Success";
@@ -244,7 +245,8 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
               child: const Text('Save'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  _updateAsset(
+                  _updateVendor(
+                    vendor,
                     vendor.vendorId,
                     nameController.text,
                     typeController.text,
@@ -262,4 +264,5 @@ void _viewMoreInfo(BuildContext context, Vendor vendor) {
       },
     );
   }
+
 }

@@ -1,14 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/services/firestore_storage.dart';
 import 'package:provider/provider.dart';
 
-import '../models/tableable.dart';
+import '../constants/constants.dart';
 import '../models/user_model.dart';
 import '../view_models/create_check_out.dart';
 import '../widgets/data_table.dart';
-
-//final _userListFuture = FirestoreStorage().getUsers();
 
 class AllUsersPage extends StatefulWidget {
   const AllUsersPage({super.key});
@@ -17,112 +14,109 @@ class AllUsersPage extends StatefulWidget {
   State<AllUsersPage> createState() => _AllUsersPageState();
 }
 
+class _AllUsersPageState extends State<AllUsersPage>
+    with WidgetsBindingObserver {
+  Future<List<User>> _userListFuture = FirestoreStorage().getUsers();
+  String _filterCriteria = '';
+  final _formKey = GlobalKey<FormState>();
+  final schoolIdController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
 
-
-class _AllUsersPageState extends State<AllUsersPage> 
-      with WidgetsBindingObserver {
-  late Future<List<User>> _userListFuture = FirestoreStorage().getUsers();
-
-
-void _refreshUsers() {
+  void _refreshUsers() {
     setState(() {
       _userListFuture = FirestoreStorage().getUsers();
     });
   }
 
-// late List<User> _filtered = _userListFuture as List<User>;
-
-
-
-//   void _filter(String enteredKeyword, DocumentSnapshot? snapshot) {
-//   if (enteredKeyword.isEmpty) {
-//     _filtered =  snapshot?.data() as List<User>;
-//   } else {
-//     _filtered = List<User> (snapshot?.data()) 
-//     !.where((row) => 
-//     row.asRow().any((cell) => 
-//     cell?.toString().toLowerCase().contains(enteredKeyword.toLowerCase()) ?? false))
-//     .toList();
-//   }
- 
-// }
+  List<User> _filter(List<User> allUsers) {
+    if (_filterCriteria.isEmpty) {
+      return allUsers;
+    }
+    return allUsers
+        .where(
+          (user) =>
+              user.email.contains(_filterCriteria) ||
+              user.name.contains(_filterCriteria) ||
+              user.schoolId.toString().contains(_filterCriteria),
+        )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: FutureBuilder<List<User>>(
         future: _userListFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // While the future is still running, show a loading indicator or placeholder
             return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            // If there's an error, display an error message
-            return Text('Error: ${snapshot.error}');
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // If there's no data or the data is empty, display a message
-            return const Text('No users found.');
-          } else {
-            // If the data is available, build your UI with the data
-            return Material(
-              child: Padding(
-              padding: const EdgeInsets.all(10.0),
-                child: ListView(
-                  children:[
-                      const Text("Users", style: TextStyle( fontSize: 30.0), textAlign: TextAlign.center,),
-                Row(
-                children: [
-                             Padding(
-                               padding: const EdgeInsets.only(bottom: 22.0, left: 20),
-                               child: SizedBox(
-                                width: 200,
-                                child: TextField(
-                                  onChanged: (value) => setState(() {
-                                   // _filter(value);
-                                  }
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: 'Search', suffixIcon: Icon(Icons.search),
-                                  ),
-                                ),
-                                                               ),
-                             ),
-                const Spacer(),
-                SizedBox(
-                            width: 50,
-                            child: IconButton(
-                                onPressed: (){
-                          final notifier = Provider.of<CreateCheckOutNotifier>(context, listen: false);
-                                notifier.newCheckOutScreen(asset: null);
-                                }, 
-                              icon: const Icon(Icons.add, color: Colors.white,), 
-                              //label: const Text("", style: TextStyle(color: Colors.white)),
-                              style: IconButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 76, 200, 63),
-                                //textStyle: const TextStyle(color: Colors.white),
-                              )),
-                                ), 
-                ]
-                ),
-                       Row(
-                         children: [
-                           Expanded(
-                            flex: 4,
-                             child: AssetDataTable(data: snapshot.data!, 
-                             onViewMore: (user ) => _viewMoreInfo(context, user as User), 
-                             onEdit: (user ) => _editUser(context, user as User),
-                             ),
-                           ),
-                         ],
-                       ),
-                       ],
-              )
-            )
-            );
           }
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Text('No users found.');
+          }
+          final data = _filter(snapshot.data!);
+          return _allUserWithData(context, data);
         },
       ),
+    );
+  }
+
+  Material _allUserWithData(BuildContext context, List<User> data) {
+    return Material(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ListView(
+          children: [
+            const Text(
+              "Users",
+              style: TextStyle(fontSize: 30.0),
+              textAlign: TextAlign.center,
+            ),
+            _actionBar(context),
+            AssetDataTable(
+              data: data,
+              onViewMore: (user) => _viewMoreInfo(context, user as User),
+              onEdit: (user) => _editUser(context, user as User),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _actionBar(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(bottom: 22.0, left: 20),
+          width: 200,
+          child: TextField(
+            onChanged: (value) => setState(() {
+              _filterCriteria = value;
+            }),
+            decoration: const InputDecoration(
+              labelText: 'Search',
+              suffixIcon: Icon(Icons.search),
+            ),
+          ),
+        ),
+        const Spacer(),
+        SizedBox(
+          width: 50,
+          child: IconButton(
+              onPressed: () {
+                final notifier =
+                    Provider.of<CreateCheckOutNotifier>(context, listen: false);
+                notifier.newCheckOutScreen(asset: null);
+              },
+              icon: const Icon(Icons.add, color: Colors.white),
+              style: IconButton.styleFrom(backgroundColor: addGreen)),
+        ),
+      ],
     );
   }
 
@@ -136,14 +130,12 @@ void _refreshUsers() {
             constraints: BoxConstraints(
                 minWidth: MediaQuery.of(context).size.width * 0.3),
             child: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  _buildDetailRow('School Id:', user.schoolId.toString()),
-                  _buildDetailRow('Name:', user.name),
-                  _buildDetailRow('Email:', user.email),
-                  _buildDetailRow('User Group:', user.userGroup),
-                ]
-              ),
+              child: ListBody(children: <Widget>[
+                _buildDetailRow('School Id:', user.schoolId.toString()),
+                _buildDetailRow('Name:', user.name),
+                _buildDetailRow('Email:', user.email),
+                _buildDetailRow('User Group:', user.userGroup),
+              ]),
             ),
           ),
           actions: <Widget>[
@@ -164,12 +156,12 @@ void _refreshUsers() {
   }
 
   void _updateAsset(
-      String userId,
-      int schoolId,
-      String name,
-      String email,
-      String userGroup,
-      ) {
+    String userId,
+    int schoolId,
+    String name,
+    String email,
+    String userGroup,
+  ) {
     FirestoreStorage().updateAsset(userId, {
       'userSchoolId': schoolId,
       'userName': name,
@@ -193,9 +185,10 @@ void _refreshUsers() {
               fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
           children: <TextSpan>[
             TextSpan(
-                text: value,
-                style: const TextStyle(
-                    fontWeight: FontWeight.normal, fontSize: 16)),
+              text: value,
+              style:
+                  const TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+            ),
           ],
         ),
       ),
@@ -203,17 +196,11 @@ void _refreshUsers() {
   }
 
   void _editUser(BuildContext context, User user) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController schoolIdController =
-        TextEditingController(text: user.schoolId.toString());
-    final TextEditingController nameController =
-        TextEditingController(text: user.name);
-    final TextEditingController emailController =
-        TextEditingController(text: user.email);
+    schoolIdController.text = user.schoolId.toString();
+    nameController.text = user.name;
+    emailController.text = user.email;
 
-      String userGroup = user.userGroup;
-   
+    String userGroup = user.userGroup;
 
     showDialog(
       context: context,
@@ -239,32 +226,31 @@ void _refreshUsers() {
                     ),
                     TextFormField(
                       controller: nameController,
-                      decoration:
-                          const InputDecoration(labelText: 'Name'),
+                      decoration: const InputDecoration(labelText: 'Name'),
                       // Add validator if needed
                     ),
                     TextFormField(
                       controller: emailController,
-                      decoration: const InputDecoration(
-                          labelText: 'Email'),
+                      decoration: const InputDecoration(labelText: 'Email'),
                       // Add validator if needed
                     ),
                     DropdownButtonFormField<String>(
                       value: userGroup,
                       items: User.userGroupOptions
-                      .map<DropdownMenuItem<String>>((String value) {
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
-                        userGroup = newValue!;
+                        if (newValue != null) {
+                          userGroup = newValue;
+                        }
                       },
-                      decoration: const InputDecoration(labelText: 'User Group'),
+                      decoration:
+                          const InputDecoration(labelText: 'User Group'),
                     ),
-                    
-                    // Add other fields as necessary
                   ],
                 ),
               ),
@@ -274,7 +260,6 @@ void _refreshUsers() {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                _refreshUsers();
                 Navigator.of(context).pop();
               },
             ),
@@ -290,13 +275,13 @@ void _refreshUsers() {
                     userGroup,
                     emailController.text,
                   );
-                  _refreshUsers();
                   Navigator.of(context).pop();
                 }
               },
               style: TextButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(199, 108, 13, 13),
-                  foregroundColor: Colors.white),
+                backgroundColor: ocMaroon,
+                foregroundColor: Colors.white,
+              ),
             ),
           ],
         );
@@ -304,5 +289,3 @@ void _refreshUsers() {
     );
   }
 }
-
-

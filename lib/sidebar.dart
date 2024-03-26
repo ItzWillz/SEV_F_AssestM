@@ -70,6 +70,10 @@ class _SideBarState extends State<SideBar> {
           icon: Icon(Icons.checklist),
           label: Text("Check In/Out"),
         ),
+        const NavigationRailDestination(
+          icon: Icon(Icons.settings),
+          label: Text('Maintenance'),
+        )
       ];
     }
 
