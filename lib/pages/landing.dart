@@ -15,6 +15,7 @@ import 'package:ocassetmanagement/view_models/create_new_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:ocassetmanagement/view_models/create_asset_profile.dart';
 import 'package:ocassetmanagement/view_models/logged_user.dart';
+import '../models/room_model.dart';
 import '../view_models/create_check_out.dart';
 import 'check_in_and_out_page.dart';
 //import 'reservation_page.dart';
@@ -22,6 +23,7 @@ import 'check_in_and_out_page.dart';
 import 'home_page.dart';
 import '../sidebar.dart';
 import 'maintenance _page.dart';
+import 'roomPage.dart';
 // import 'package:ocassetmanagement/sidebar.dart';
 
 class Landing extends StatefulWidget {
@@ -34,8 +36,10 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   int _selectedIndex = 0;
   bool _showNavigationBar = true;
+  bool readOnly = true;
   String? _attachedprofile;
   Building? _attachedbuilding;
+  Room? _attachedroom;
   Object? _attachedasset;
   // ignore: unused_field
   bool _isOnAssetProfilePage = false;
@@ -144,7 +148,10 @@ class _LandingState extends State<Landing> {
         return  AllBuildingsPage(callBack: _navigateToViewandEditBuildingPage);
       }
       else if (notifierGeneric.isViewBuilding){
-        return ViewBuildingPage(building: _attachedbuilding, isReadOnly: true,);
+        return ViewBuildingPage(building: _attachedbuilding, isReadOnly: true, callBack: _navigateToViewandEditRoomPage);
+      }
+      else if (notifierGeneric.isRoomPage){
+        return RoomPage(room: _attachedroom, isReadOnly: readOnly,);
       }
       // else if (notifierGeneric.isNewBuilding){
       //   return const AddBuildingPage();
@@ -179,6 +186,13 @@ class _LandingState extends State<Landing> {
   void _navigateToViewandEditBuildingPage(Building? building){
     setState(() {
       _attachedbuilding = building;
+    });
+  }
+
+  void _navigateToViewandEditRoomPage(Room? room, bool viewOrEdit){
+    setState(() {
+      _attachedroom = room;
+      readOnly = viewOrEdit;
     });
   }
 

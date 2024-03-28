@@ -17,7 +17,7 @@ class Room implements Tableable {
         id = snapshot.id;
 
   int roomNum;
-  List assets;
+  List<Object> assets;
   final String id;
 
 

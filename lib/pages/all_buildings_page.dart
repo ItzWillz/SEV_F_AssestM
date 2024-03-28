@@ -21,7 +21,7 @@ class _AllBuildingsPageState extends State<AllBuildingsPage>{
 
 
 final _checkedOut = [
-Building(name: 'Prince Engineering Center (PEC)', roomNum: 30, assetTotal: 235, rooms: [Room(roomNum: 205, assets: ["none", "none"]), Room(roomNum: 105, assets: ["none", "none"])], maintenanceNotes: "No maintenance")
+Building(name: 'Prince Engineering Center (PEC)', roomNum: 30, assetTotal: 235, rooms: [Room(roomNum: 205, assets: ["none", "none"]), Room(roomNum: 105, assets: ["none", "none"])], maintenanceNotes: "No maintenance", assets: [])
 ];
 
 // ignore: unused_field

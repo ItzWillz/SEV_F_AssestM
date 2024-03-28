@@ -8,6 +8,7 @@ class Building implements Tableable {
     required this.name,
     required this.roomNum,
     required this.rooms,
+    required this.assets,
     required this.assetTotal,
     required this.maintenanceNotes,
   }): id = '0';
@@ -18,6 +19,7 @@ class Building implements Tableable {
         assetTotal = snapshot['assetTotal'] ?? '',
         name = snapshot['name'] ?? '',
         rooms = snapshot['rooms'] ?? '',
+        assets = snapshot['assets'] ?? '',
         maintenanceNotes = snapshot['maintenanceNotes'] ?? '',
         id = snapshot.id;
 
@@ -26,6 +28,7 @@ class Building implements Tableable {
   int assetTotal;
   String? maintenanceNotes;
   List<Object> rooms;
+  List<Object> assets;
   final String id;
 
 

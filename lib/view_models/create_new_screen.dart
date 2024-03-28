@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ocassetmanagement/models/building_model.dart';
 
+import '../models/room_model.dart';
+
 class CreateNewScreenNotifier extends ChangeNotifier {
   bool isMaintenancescreen = true;
   bool isNewVendorPage = false;
@@ -9,7 +11,9 @@ class CreateNewScreenNotifier extends ChangeNotifier {
   bool isAllBuildings = false;
   bool isNewBuilding = false;
   bool isViewBuilding = false;
+  bool isRoomPage = false;
   Building? selectedBuilding;
+  Room? selectedRoom;
 
   Future<void> allVendorScreen() async {
     isAllVendors = true;
@@ -31,7 +35,6 @@ class CreateNewScreenNotifier extends ChangeNotifier {
 
   Future<void> newBuilding() async {
     isAllBuildings = false;
-    isMaintenancescreen = false;
     isNewBuilding = true;
     notifyListeners();
 
@@ -40,7 +43,6 @@ class CreateNewScreenNotifier extends ChangeNotifier {
   Future<void> buildingScreen({required Building? building}) async{
     //print(building?.name);
     isAllBuildings = false;
-    isMaintenancescreen = false;
     isViewBuilding = true;
      if (building == null) {
       selectedBuilding = null;
@@ -51,8 +53,19 @@ class CreateNewScreenNotifier extends ChangeNotifier {
     }
     notifyListeners();
 
+  }
 
-
+  Future<void> roomScreen({required Room room}) async{
+    isViewBuilding = false;
+    isRoomPage = true;
+    //  if (room == null) {
+    //   selectedRoom = null;
+    // } else {
+      //int value = await FirestoreStorage().getValue();
+      //assetProfile = '$value';
+      selectedRoom = room;
+    //}
+    notifyListeners();
 
   }
 
@@ -69,4 +82,11 @@ class CreateNewScreenNotifier extends ChangeNotifier {
     isNewVendorPage = false;
     notifyListeners();
   }
+
+  void completeViewRoomPage(){
+    isRoomPage = false;
+    isViewBuilding = true;
+    notifyListeners();
+  }
+
 }
